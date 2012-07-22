@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="spacegame" basedir="." default="jar">
+	
+	<property name="src-dir" value="src" />
+	
+	<property name="bin-dir" value="bin" />
+	<property name="bin-dir.classes-dir" value="${bin-dir}/classes" />
+	<property name="bin-dir.jar-dir" value="${bin-dir}/jar" />
+	
+	<property name="lib-dir" value="lib" />
+	
+	<property name="main-class" value="org.seattlegamer.spacegame.Game" />
+	
+	<fileset id='assets' dir='assets'>
+		<patternset>
+			<include name='**/?*.gif'/>
+			<include name='**/?*.png'/>
+			<include name='**/?*.jpeg'/>
+			<include name='**/?*.jpg'/>
+			<include name='**/?*.bmp'/>
+			<include name='**/?*.wav'/>
+		 </patternset>
+	</fileset>
+	
+	<path id="classpath">
+		<fileset dir="${lib-dir}" includes="**/*.jar" />
+	</path>
+
+	<target name="clean">
+		<delete dir="${bin-dir}" />
+	</target>
+	
+    <target name="compile">
+    	<mkdir dir="${bin-dir.classes-dir}" />
+    	<javac srcdir="${src-dir}" destdir="${bin-dir.classes-dir}" classpathref="classpath" />
+    	<copy todir="${bin-dir.classes-dir}">
+			<fileset dir="${src-dir}" includes="**/*.properties" />
+		</copy>
+	</target>
+    
+	<target name='jar' depends='compile'>
+		<mkdir dir="${bin-dir.jar-dir}" />
+		<jar destfile='${bin-dir.jar-dir}/${ant.project.name}.jar'>
+			<fileset dir='${bin-dir.classes-dir}' />
+			<fileset refid='assets'/>
+			<manifest>
+				<attribute name="Main-Class" value="${main-class}" />
+			</manifest>
+		</jar>
+	</target>
+	
+	<target name="clean-build" depends="clean,jar" />
+	
+	<target name="run" depends="jar">
+		<java fork="true" classname="${main-class}">
+			<classpath>
+				<path location="${bin-dir.jar-dir}/${ant.project.name}.jar" />
+				<path refid="classpath" />
+			</classpath>
+		</java>
+	</target>
+
+</project>

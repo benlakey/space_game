@@ -1,6 +1,11 @@
-*.class
+# Mac OS X
+.DS_Store
 
-# Package Files #
-*.jar
-*.war
-*.ear
+# Eclipse
+.classpath
+.externalToolBuilders/
+.project
+.settings
+
+# Build artifacts
+bin/
