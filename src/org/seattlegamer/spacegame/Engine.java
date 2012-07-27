@@ -1,15 +1,14 @@
 package org.seattlegamer.spacegame;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 
 import org.apache.log4j.Logger;
 
 public class Engine {
-	
-	private static Logger logger = Logger.getLogger(Engine.class);
+
+	private static final Logger logger = Logger.getLogger(Engine.class);
 	private static final int targetMaxFramerate = 100;
-	private static final int framerateDelayMillis = 1000 / targetMaxFramerate;
+	private static final long framerateDelayMillis = 1000 / targetMaxFramerate;
 	
 	private GameCanvas canvas;
 	private boolean running;
@@ -22,12 +21,11 @@ public class Engine {
 	public void run() {
 		
 		this.running = true;
+		RateLimiter rateLimiter = new RateLimiter(framerateDelayMillis);
 
 		while(running) {
 			
-			long now = System.currentTimeMillis();
-			long elapsed = now - this.lastLoopTimestamp;
-			this.lastLoopTimestamp = now;
+			long elapsedTimeMillis = determineElapsedMillisSinceLastLoop();
 			
 			//TODO: implement. (outside of this class, SRP).
 			//this.processInput();
@@ -35,39 +33,30 @@ public class Engine {
 			
 			this.drawWorld();
 
-			this.enforceMaxFramerate();
+			rateLimiter.blockAsNeeded(System.currentTimeMillis());
 		}
 		
+	}
+	
+	private long determineElapsedMillisSinceLastLoop() {
+		
+		long now = System.currentTimeMillis();
+		long elapsed = now - this.lastLoopTimestamp;
+		this.lastLoopTimestamp = now;
+		
+		return elapsed;
+
 	}
 	
 	private void drawWorld() {
 		
+		this.canvas.clear();
+
 		Graphics2D graphics = this.canvas.getGraphics();
-		
-		this.resetScreen(graphics);
-		
 		//TODO: draw, using a class outside of Engine (SRP).
-		
 		graphics.dispose();
 		
 		this.canvas.showNextBuffer();
-	}
-
-	private void resetScreen(Graphics2D graphics) {
-		
-		graphics.setColor(Color.black);
-		graphics.fillRect(0, 0, this.canvas.getWidth(), this.canvas.getHeight());
-		
-	}
-	
-	private void enforceMaxFramerate() {
-		
-		try {
-			Thread.sleep(framerateDelayMillis);
-		} catch(InterruptedException ex) {
-			logger.warn("Something interrupted the framerate limiter.");
-		}
-		
 	}
 
 }

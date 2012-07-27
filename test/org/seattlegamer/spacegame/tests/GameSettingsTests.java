@@ -8,10 +8,10 @@ import org.seattlegamer.spacegame.GameSettings;
 public class GameSettingsTests {
 
 	@Test
-	public void testFoo1() {
+	public void gameSettingsPullsTitleFromProperties() {
 
 		GameSettings settings = new GameSettings();
 		assertEquals("Space Game!", settings.getTitle());
-		
+
 	}
 }

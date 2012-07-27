@@ -8,5 +8,6 @@ public interface GameCanvas {
 	int getWidth();
 	int getHeight();
 	void showNextBuffer();
+	void clear();
 	
 }

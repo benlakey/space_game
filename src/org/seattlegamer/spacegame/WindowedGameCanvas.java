@@ -1,6 +1,7 @@
 package org.seattlegamer.spacegame;
 
 import java.awt.Canvas;
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -23,6 +24,7 @@ public class WindowedGameCanvas extends Canvas implements GameCanvas {
 
 	}
 	
+	@Override
 	public Graphics2D getGraphics() {
 		
 		BufferStrategy bufferStrategy = this.getBufferStrategy();
@@ -30,6 +32,7 @@ public class WindowedGameCanvas extends Canvas implements GameCanvas {
 
 	}
 	
+	@Override
 	public void showNextBuffer() {
 		this.getBufferStrategy().show();
 	}
@@ -61,6 +64,16 @@ public class WindowedGameCanvas extends Canvas implements GameCanvas {
 		frame.setResizable(false);
 		frame.setVisible(true);
 
+	}
+
+	@Override
+	public void clear() {
+		
+		Graphics2D graphics = this.getGraphics();
+		
+		graphics.setColor(Color.black);
+		graphics.fillRect(0, 0, this.getWidth(), this.getHeight());
+		
 	}
 
 }

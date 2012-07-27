@@ -12,7 +12,7 @@ public class GameSettings {
 	private static final String propertiesFilename = "/spacegame.properties";
 	private static final String defaultTitle = "Space Game";
 
-	private Properties properties;
+	private final Properties properties;
 	
 	public GameSettings() {
 		
