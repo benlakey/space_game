@@ -9,21 +9,27 @@ import org.apache.log4j.Logger;
 public class GameSettings {
 	
 	private static final Logger logger = Logger.getLogger(GameSettings.class);
-	private static final String propertiesFilename = "/spacegame.properties";
-	private static final String defaultTitle = "Space Game";
+	private static final String defaultPropertiesFilePath = "/spacegame.properties";
+	private static final String defaultTitle = "Space Game!";
 
 	private final Properties properties;
 	
 	public GameSettings() {
-		
 		this.properties = new Properties();
+	}
+	
+	public void loadFromFile() {
+		this.loadFromFile(defaultPropertiesFilePath);
+	}
+	
+	public void loadFromFile(String filePath) {
 
-		InputStream in = this.getClass().getResourceAsStream(propertiesFilename);
+		InputStream in = this.getClass().getResourceAsStream(filePath);
 		
 		try {
 			this.properties.load(in);
 		} catch(IOException ex) {
-			logger.warn(String.format("Couldn't load game settings from %s", propertiesFilename));
+			logger.warn(String.format("Couldn't load game settings from %s", filePath));
 		} finally {
 			this.closePropertiesFileStream(in);
 		}
@@ -39,7 +45,7 @@ public class GameSettings {
 		try { 
 			in.close(); 
 		} catch(IOException closeEx) {
-			logger.warn(String.format("Couldn't close %s", propertiesFilename));
+			logger.warn("Couldn't close the game settings property file.");
 		}
 	}
 	
