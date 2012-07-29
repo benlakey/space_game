@@ -25,7 +25,7 @@ public class Engine {
 
 		while(running) {
 			
-			long elapsedTimeMillis = determineElapsedMillisSinceLastLoop();
+			long elapsedTimeMillis = this.determineElapsedMillisSinceLastLoop();
 			
 			//TODO: implement. (outside of this class, SRP).
 			//this.processInput();

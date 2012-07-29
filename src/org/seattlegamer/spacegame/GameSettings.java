@@ -31,12 +31,12 @@ public class GameSettings {
 		} catch(IOException ex) {
 			logger.warn(String.format("Couldn't load game settings from %s", filePath));
 		} finally {
-			this.closePropertiesFileStream(in);
+			closePropertiesFileStream(in);
 		}
 
 	}
 
-	private void closePropertiesFileStream(InputStream in) {
+	private static void closePropertiesFileStream(InputStream in) {
 		
 		if(in == null) {
 			return;
@@ -45,7 +45,7 @@ public class GameSettings {
 		try { 
 			in.close(); 
 		} catch(IOException closeEx) {
-			logger.warn("Couldn't close the game settings property file.");
+			logger.warn("Couldn't close game settings property file.");
 		}
 	}
 	
