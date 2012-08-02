@@ -10,8 +10,8 @@ public class RateLimiter {
 	private final long delayMillis;
 	private final Object timestampLock = new Object();
 	
-	public RateLimiter(long delayMillis) {
-		this.delayMillis = delayMillis;
+	public RateLimiter(long targetRatePerSecond) {
+		this.delayMillis = 1000 / targetRatePerSecond;
 	}
 
 	public void blockAsNeeded(long currentTimestampMillis) {
@@ -31,18 +31,10 @@ public class RateLimiter {
 	
 	private long calculateBlockMillis(long currentTimestampMillis) {
 
-		long limitTimestampMillis = this.calculateLimitTimestampMillis(currentTimestampMillis);
-		long delta = limitTimestampMillis - currentTimestampMillis;
+		Long limitTimestampMillis = this.calculateLimitTimestampMillis(currentTimestampMillis);
+		Long delta = limitTimestampMillis - currentTimestampMillis;
 
-		if(delta < 0) {
-			return 0;
-		}
-		
-		if(delta > this.delayMillis) {
-			return this.delayMillis;
-		}
-		
-		return delta;
+		return NumberUtil.<Long>clamp(delta, 0L, this.delayMillis);
 	}
 	
 	private long calculateLimitTimestampMillis(long currentTimestampMillis) {

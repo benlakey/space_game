@@ -11,6 +11,7 @@ public class GameSettings {
 	private static final Logger logger = Logger.getLogger(GameSettings.class);
 	private static final String defaultPropertiesFilePath = "/spacegame.properties";
 	private static final String defaultTitle = "Space Game!";
+	private static final int defaultTargetFramerate = 100;
 
 	private final Properties properties;
 	
@@ -51,6 +52,21 @@ public class GameSettings {
 	
 	public String getTitle() {
 		return this.properties.getProperty("title", defaultTitle);
+	}
+	
+	public int getTargetFramerate() {
+
+		String targetFramerateStr = this.properties.getProperty("target_framerate");
+		if(targetFramerateStr == null) { 
+			return defaultTargetFramerate;
+		}
+		
+		int targetFramerate = NumberUtil.IntegerUtil.tryParse(targetFramerateStr);
+		if(targetFramerate == 0) {
+			return defaultTargetFramerate;
+		}
+		
+		return targetFramerate;
 	}
 
 }

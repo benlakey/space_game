@@ -10,9 +10,10 @@ public class RateLimiterTests {
 	@Test
 	public void rateLimiterBlocksForSpecifiedTimeAtLeast() throws InterruptedException {
 
-		final long delayMillis = 400;
+		final int targetRate = 100;
+		final long delayMillis = 1000 / targetRate;
 		
-		RateLimiter rateLimiter = new RateLimiter(delayMillis);
+		RateLimiter rateLimiter = new RateLimiter(targetRate);
 		rateLimiter.blockAsNeeded(0);
 
 		long timestampMillisStart = System.currentTimeMillis();

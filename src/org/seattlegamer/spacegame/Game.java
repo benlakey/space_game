@@ -4,23 +4,21 @@ import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 
 public class Game {
-	
-	private static Logger logger = Logger.getLogger(Game.class);
 
+	private static Logger logger = Logger.getLogger(Game.class);
+	
 	public static void main(String[] args) {
 
 		BasicConfigurator.configure();
 
-		logger.info("Initializing game settings.");
 		GameSettings settings = new GameSettings();
-		
-		logger.info("Initializing game window.");
+		RateLimiter rateLimiter = new RateLimiter(settings.getTargetFramerate());
 		GameCanvas canvas = new WindowedGameCanvas(settings.getTitle());
+		CanvasRenderer renderer = new CanvasRenderer(canvas);
 		
 		logger.info("Initializing game engine.");
-		Engine engine = new Engine(canvas);
-		
-		logger.info("Launching game.");
+		Engine engine = new Engine(renderer, rateLimiter);
+
 		engine.run();
 		
 	}

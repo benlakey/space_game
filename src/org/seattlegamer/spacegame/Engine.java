@@ -1,62 +1,61 @@
 package org.seattlegamer.spacegame;
 
-import java.awt.Graphics2D;
-
 import org.apache.log4j.Logger;
 
 public class Engine {
 
-	private static final Logger logger = Logger.getLogger(Engine.class);
-	private static final int targetMaxFramerate = 100;
-	private static final long framerateDelayMillis = 1000 / targetMaxFramerate;
+	private static Logger logger = Logger.getLogger(Engine.class);
 	
-	private GameCanvas canvas;
 	private boolean running;
 	private long lastLoopTimestamp;
+	private final Renderer renderer;
+	private final RateLimiter rateLimiter;
 	
-	public Engine(GameCanvas canvas) {
-		this.canvas = canvas;
+	public Engine(Renderer renderer, RateLimiter rateLimiter) {
+		this.renderer = renderer;
+		this.rateLimiter = rateLimiter;
 	}
 	
 	public void run() {
 		
 		this.running = true;
-		RateLimiter rateLimiter = new RateLimiter(framerateDelayMillis);
-
+	
 		while(running) {
 			
-			long elapsedTimeMillis = this.determineElapsedMillisSinceLastLoop();
-			
-			//TODO: implement. (outside of this class, SRP).
-			//this.processInput();
-			//this.processWorld(elapsed);
-			
+			long elapsedTimeMillis = this.calculateLoopElapsedTime();
+			logger.info("elapsedTimeMillis:" + elapsedTimeMillis);
+	
+			this.processInput();
+			this.think(elapsedTimeMillis);
 			this.drawWorld();
-
-			rateLimiter.blockAsNeeded(System.currentTimeMillis());
+	
+			this.rateLimiter.blockAsNeeded(System.currentTimeMillis());
 		}
 		
 	}
 	
-	private long determineElapsedMillisSinceLastLoop() {
+	private long calculateLoopElapsedTime() {
 		
 		long now = System.currentTimeMillis();
 		long elapsed = now - this.lastLoopTimestamp;
 		this.lastLoopTimestamp = now;
 		
 		return elapsed;
-
+	
+	}
+	
+	private void processInput() {
+		//TODO: accept user input and apply it to the player entity.
+	}
+	
+	private void think(long elapsedTimeMillis) {
+		//TODO: act based on inputs, and position things based on elapsedTimeMillis
 	}
 	
 	private void drawWorld() {
-		
-		this.canvas.clear();
-
-		Graphics2D graphics = this.canvas.getGraphics();
-		//TODO: draw, using a class outside of Engine (SRP).
-		graphics.dispose();
-		
-		this.canvas.showNextBuffer();
+		//TODO: this is temporary just for compilation sake. Ultimately we'll have some way of managing all sprites.
+		Sprite[] sprites = new Sprite[0];
+		this.renderer.draw(sprites);
 	}
 
 }
