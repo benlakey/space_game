@@ -34,6 +34,7 @@
 
     <target name="compile">
     	<mkdir dir="${bin-dir.classes-dir}" />
+    	<mkdir dir="assets" />
     	<javac srcdir="${src-dir}" destdir="${bin-dir.classes-dir}" classpathref="libraries" includeantruntime="false" />
     	<javac srcdir="${test-dir}" destdir="${bin-dir.classes-dir}" classpathref="libraries" includeantruntime="false" />
     	<copy todir="${bin-dir.classes-dir}">
