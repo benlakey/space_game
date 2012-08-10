@@ -15,7 +15,7 @@ public class Game {
 		RateLimiter rateLimiter = new RateLimiter(settings.getTargetFramerate());
 		GameCanvas canvas = new WindowedGameCanvas(settings.getTitle());
 		CanvasRenderer renderer = new CanvasRenderer(canvas);
-		
+
 		logger.info("Initializing game engine.");
 		Engine engine = new Engine(renderer, rateLimiter);
 

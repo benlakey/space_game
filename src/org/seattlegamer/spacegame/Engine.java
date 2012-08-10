@@ -23,7 +23,6 @@ public class Engine {
 		while(running) {
 			
 			long elapsedTimeMillis = this.calculateLoopElapsedTime();
-			logger.info("elapsedTimeMillis:" + elapsedTimeMillis);
 	
 			this.processInput();
 			this.think(elapsedTimeMillis);
