@@ -17,29 +17,5 @@ public final class NumberUtil {
 		return val;
 		
 	}
-	
-	public static class IntegerUtil {
-
-		public static Integer tryParse(String text) {
-			try {
-				return new Integer(text);
-			} catch (NumberFormatException e) {
-				return 0;
-			}
-		}
-
-	}
-	
-	public static class LongUtil {
-
-		public static Long tryParse(String text) {
-			try {
-				return new Long(text);
-			} catch (NumberFormatException e) {
-				return 0L;
-			}
-		}
-
-	}
 
 }
