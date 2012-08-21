@@ -1,6 +1,7 @@
 package org.seattlegamer.spacegame;
 
 import org.apache.log4j.Logger;
+import org.seattlegamer.spacegame.utils.NumberUtil;
 
 public class RateLimiter {
 
