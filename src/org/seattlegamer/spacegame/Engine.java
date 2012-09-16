@@ -22,7 +22,11 @@ public class Engine {
 	
 		while(running) {
 			
-			long elapsedTimeMillis = this.calculateLoopElapsedTime();
+			long now = System.currentTimeMillis();
+			long elapsed = now - this.lastLoopTimestamp;
+			this.lastLoopTimestamp = now;
+			
+			long elapsedTimeMillis = elapsed;
 	
 			this.processInput();
 			this.think(elapsedTimeMillis);
@@ -31,16 +35,6 @@ public class Engine {
 			this.rateLimiter.blockAsNeeded(System.currentTimeMillis());
 		}
 		
-	}
-	
-	private long calculateLoopElapsedTime() {
-		
-		long now = System.currentTimeMillis();
-		long elapsed = now - this.lastLoopTimestamp;
-		this.lastLoopTimestamp = now;
-		
-		return elapsed;
-	
 	}
 	
 	private void processInput() {
