@@ -1,8 +1,8 @@
 package org.seattlegamer.spacegame.utils;
 
-public final class NumberUtil {
+public final class NumberUtils {
 	
-	private NumberUtil() {}
+	private NumberUtils() {}
 
 	public static <T extends Number & Comparable<T>> T clamp(T val, T min, T max) {
 		

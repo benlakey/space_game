@@ -1,6 +1,7 @@
 package org.seattlegamer.spacegame;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
@@ -9,7 +10,7 @@ public abstract class SpriteCache {
 	private static Logger logger = Logger.getLogger(SpriteCache.class);
 	private static final Object cacheLock = new Object();
 	
-	protected HashMap<String, Sprite> sprites;
+	protected Map<String, Sprite> sprites;
 	
 	protected SpriteCache() {
 		this.sprites = new HashMap<String, Sprite>();
@@ -25,6 +26,7 @@ public abstract class SpriteCache {
 			}
 			
 			return this.handleCacheMiss(key);
+
 		}
 		
 	}

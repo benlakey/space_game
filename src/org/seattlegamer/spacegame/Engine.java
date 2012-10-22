@@ -1,10 +1,9 @@
 package org.seattlegamer.spacegame;
 
-import org.apache.log4j.Logger;
 
 public class Engine {
 
-	private static Logger logger = Logger.getLogger(Engine.class);
+	//private static Logger logger = Logger.getLogger(Engine.class);
 	
 	private boolean running;
 	private long lastLoopTimestamp;
@@ -41,7 +40,7 @@ public class Engine {
 	}
 	
 	private void drawActivity() {
-		Renderable[] renderables = this.currentActivity.getRenderables();
+		Iterable<Renderable> renderables = this.currentActivity.getRenderables();
 		this.renderer.draw(renderables);
 	}
 

@@ -1,6 +1,7 @@
 package org.seattlegamer.spacegame;
 
 public interface Activity {
-	Renderable[] getRenderables();
-	void sendCommand(Command command);
+	Iterable<Renderable> getRenderables();
+	<T extends Command> boolean canHandle(T command);
+	<T extends Command> void handle(T command);
 }

@@ -1,7 +1,7 @@
 package org.seattlegamer.spacegame;
 
 import org.apache.log4j.Logger;
-import org.seattlegamer.spacegame.utils.NumberUtil;
+import org.seattlegamer.spacegame.utils.NumberUtils;
 
 public class RateLimiter {
 
@@ -35,7 +35,7 @@ public class RateLimiter {
 		Long limitTimestampMillis = this.calculateLimitTimestampMillis(currentTimestampMillis);
 		Long delta = limitTimestampMillis - currentTimestampMillis;
 
-		return NumberUtil.<Long>clamp(delta, 0L, this.delayMillis);
+		return NumberUtils.<Long>clamp(delta, 0L, this.delayMillis);
 	}
 	
 	private long calculateLimitTimestampMillis(long currentTimestampMillis) {

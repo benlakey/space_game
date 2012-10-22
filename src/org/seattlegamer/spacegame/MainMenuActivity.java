@@ -1,33 +1,57 @@
 package org.seattlegamer.spacegame;
 
 import java.awt.Font;
+import java.util.Collection;
+import java.util.LinkedList;
 
 public class MainMenuActivity implements Activity {
 	
-	private Renderable[] renderables;
+	private static final Font MENU_FONT = new Font("Courier", Font.PLAIN, 32);
+	
+	private Collection<Renderable> renderables;
 	
 	public MainMenuActivity() {
-		this.renderables = new Renderable[3];
-		this.setMenuItem("Start Game", 0);
-		this.setMenuItem("Options", 1);
-		this.setMenuItem("Exit", 2);
+		this.renderables = new LinkedList<Renderable>();
+		this.addMenuItem("Start Game");
+		this.addMenuItem("Options");
+		this.addMenuItem("Exit");
 	}
 	
-	private void setMenuItem(String text, int index) {
-		Font font = new Font("Comic Sans MS", Font.PLAIN, 40);
-		RenderableText renderableText = new RenderableText(text, font);
-		renderableText.setPosition(200, 200 + (index * 100));
-		this.renderables[index] = renderableText;
+	private void addMenuItem(String text) {
+		RenderableText renderableText = this.constructNewMenuItem(text);
+		this.renderables.add(renderableText);
+	}
+	
+	private int getNewMenuItemPositionY() {
+		int currentMenuItemsCount = this.renderables.size();
+		int fontPointSize = MENU_FONT.getSize(); //TODO: normalize to pixels
+		int positionY = fontPointSize + currentMenuItemsCount * fontPointSize;
+		return positionY;
+	}
+	
+	private RenderableText constructNewMenuItem(String text) {
+		
+		int positionY = this.getNewMenuItemPositionY();
+		
+		RenderableText renderableText = new RenderableText(text, MENU_FONT);
+		renderableText.setPositionY(positionY);
+		renderableText.center();
+		return renderableText;
+
 	}
 	
 	@Override
-	public Renderable[] getRenderables() {
+	public Iterable<Renderable> getRenderables() {
 		return this.renderables;
 	}
 
 	@Override
-	public void sendCommand(Command command) {
-		
+	public <T extends Command> boolean canHandle(T command) {
+		return false;
+	}
+
+	@Override
+	public <T extends Command> void handle(T command) {
 	}
 
 }
