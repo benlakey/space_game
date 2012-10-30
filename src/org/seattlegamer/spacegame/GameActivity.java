@@ -1,33 +1,36 @@
 package org.seattlegamer.spacegame;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
-import java.net.URL;
+import java.io.InputStream;
+import java.util.Arrays;
 
 import javax.imageio.ImageIO;
 
 public class GameActivity implements Activity {
 
 	@Override
-	public Renderable[] getRenderables() {
-		URL image = Engine.class.getClassLoader().getResource("mars.png");
-		File imageFile = new File(image.getFile());
+	public Iterable<Renderable> getRenderables() {
 		BufferedImage planet;
 		try {
-			planet = ImageIO.read(imageFile);
+			InputStream stream = Engine.class.getResourceAsStream("/mars.png");
+			planet = ImageIO.read(stream); //.read(imageFile);
 			Sprite planetSprite = new Sprite(planet);
 			Planet mars = new Planet(planetSprite);
-			return new Renderable[] { mars.sprite };
+			return Arrays.asList(new Renderable[] { mars.sprite });
 		} catch (IOException e) {
+			//TODO:
 		}
 		return null;
 	}
 
 	@Override
-	public void sendCommand(Command command) {
-		// TODO Auto-generated method stub
+	public <T extends Command> boolean canHandle(T command) {
+		return false;
+	}
 
+	@Override
+	public <T extends Command> void handle(T command) {
 	}
 
 }

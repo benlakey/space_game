@@ -18,7 +18,8 @@ public class Game {
 		
 		logger.info("Initializing game engine.");
 		
-		Activity startActivity = new MainMenuActivity();
+		//Activity startActivity = new MainMenuActivity();
+		Activity startActivity = new GameActivity();
 		
 		Engine engine = applicationContext.getBean(Engine.class);
 		engine.run(startActivity);

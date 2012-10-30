@@ -2,15 +2,21 @@
 
 <project name="spacegame" basedir="." default="jar">
 	
+    <!-- source paths -->
 	<property name="src-dir" value="src" />
 	<property name="test-dir" value="test" />
 	<property name="bin-dir" value="bin" />
-	<property name="bin-dir.classes-dir" value="${bin-dir}/classes" />
-	<property name="bin-dir.jar-dir" value="${bin-dir}/jar" />
 	<property name="lib-dir" value="lib" />
+	<property name="assets-dir" value="assets" />
 	
+	<!-- build artifact paths -->
+	<property name="bin-dir.classes-dir" value="${bin-dir}/classes" />
+	<property name="bin-dir.classes-dir.assets-dir" value="${bin-dir.classes-dir}/assets" />
+	<property name="bin-dir.jar-dir" value="${bin-dir}/jar" />
+
+	<property name="jar-path" value="${bin-dir.jar-dir}/${ant.project.name}.jar" />
 	<property name="main-class" value="org.seattlegamer.spacegame.Game" />
-	
+
 	<fileset id="assets" dir="assets">
 		<patternset>
 			<include name="**/?*.gif"/>
@@ -22,58 +28,56 @@
 		 </patternset>
 	</fileset>
 	
-	<path id="application" location="${bin-dir.jar-dir}/${ant.project.name}.jar"/>
-	
-	<path id="libraries">
-		<fileset dir="${lib-dir}" includes="**/*.jar"/>
-	</path>
-
-	<target name="clean">
-		<delete dir="${bin-dir}" />
-	</target>
-
-    <target name="compile">
-    	<mkdir dir="${bin-dir.classes-dir}" />
-    	<mkdir dir="assets" />
-    	<javac srcdir="${src-dir}" destdir="${bin-dir.classes-dir}" classpathref="libraries" includeantruntime="false" />
-    	<javac srcdir="${test-dir}" destdir="${bin-dir.classes-dir}" classpathref="libraries" includeantruntime="false" />
-    	<copy todir="${bin-dir.classes-dir}">
+	<target name="compile">
+	    <mkdir dir="${bin-dir.classes-dir}" />
+	    <javac srcdir="${src-dir}:${test-dir}" destdir="${bin-dir.classes-dir}" includeantruntime="false">
+	    	<classpath>
+	    		<fileset dir="${lib-dir}" includes="**/*.jar" />
+	    	</classpath>
+		</javac>
+		<copy todir="${bin-dir.classes-dir}">
 			<fileset dir="${src-dir}" includes="**/*.properties" />
     		<fileset refid="assets"/>
 		</copy>
-    	<junit>
-    		<formatter type="brief" usefile="false" />
+		<!--<junit>
+			<formatter type="brief" usefile="false" />
 			<classpath>
-				<path refid="libraries" />
-				<pathelement location="${bin-dir.classes-dir}" />
+				<fileset dir="${bin-dir.classes-dir}" />
+				<fileset dir="${lib-dir}" includes="**/*.jar" />
 			</classpath>
-    		<batchtest fork="yes">
+			<batchtest fork="yes">
 				<fileset dir="${test-dir}">
 					<include name="**/*Tests.java"/>
 				</fileset>
 			</batchtest>
-		</junit>
+		</junit>-->
 	</target>
 
 	<target name="jar" depends="compile">
-		<mkdir dir="${bin-dir.jar-dir}" />
-		<jar destfile="${bin-dir.jar-dir}/${ant.project.name}.jar">
-			<fileset dir="${bin-dir.classes-dir}" />
-			<manifest>
-				<attribute name="Main-Class" value="${main-class}" />
-			</manifest>
-		</jar>
+ 		<mkdir dir="${bin-dir.jar-dir}" />
+ 		<jar destfile="${bin-dir.jar-dir}/${ant.project.name}.jar">
+ 			<fileset dir="${bin-dir.classes-dir}" />
+ 			<manifest>
+ 				<attribute name="Main-Class" value="${main-class}" />
+ 			</manifest>
+ 		</jar>
+ 	</target>
+	
+	<target name="clean">
+		<delete dir="${bin-dir}" />
 	</target>
 	
-	<target name="clean-build" depends="clean,jar" />
+ 	<target name="clean-build" depends="clean,jar" />
 	
-	<target name="run" depends="jar">
-		<java fork="true" classname="${main-class}">
-			<classpath>
-				<path refid="libraries" />
-				<path refid="application"/>
-			</classpath>
-		</java>
-	</target>
+ 	<target name="run" depends="jar">
+ 		<java classname="${main-class}" fork="true" failonerror="true" maxmemory="128m">
+ 			<classpath>
+ 				<path>
+			        <fileset dir="${lib-dir}" includes="**/*.jar"/>
+			    </path>
+ 				<path location="${bin-dir.jar-dir}/${ant.project.name}.jar"/>
+ 			</classpath>
+ 		</java>
+ 	</target>
 
 </project>

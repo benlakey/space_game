@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 
 public class CanvasRenderer implements Renderer {
-
+	
 	private final GameCanvas canvas;
 
 	public CanvasRenderer(GameCanvas canvas) {
@@ -15,11 +15,13 @@ public class CanvasRenderer implements Renderer {
 	public void draw(Iterable<Renderable> itemsToRender) {
 		
 		Graphics2D graphics = this.canvas.getGraphics();
-		
+
 		this.clearScreen(graphics);
 
-		for(Renderable renderable : itemsToRender) {
-			renderable.render(graphics);
+		if(itemsToRender != null) {
+			for(Renderable renderable : itemsToRender) {
+				renderable.render(graphics);
+			}
 		}
 		
 		graphics.dispose();
