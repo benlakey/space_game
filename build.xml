@@ -39,18 +39,18 @@
 			<fileset dir="${src-dir}" includes="**/*.properties" />
     		<fileset refid="assets"/>
 		</copy>
-		<!--<junit>
+		<junit>
 			<formatter type="brief" usefile="false" />
 			<classpath>
-				<fileset dir="${bin-dir.classes-dir}" />
+				<pathelement location="${bin-dir.classes-dir}" />
 				<fileset dir="${lib-dir}" includes="**/*.jar" />
 			</classpath>
 			<batchtest fork="yes">
-				<fileset dir="${test-dir}">
-					<include name="**/*Tests.java"/>
+				<fileset dir="test">
+					<include name="**/*Test*.java"/>
 				</fileset>
 			</batchtest>
-		</junit>-->
+		</junit>
 	</target>
 
 	<target name="jar" depends="compile">
