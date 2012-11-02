@@ -35,7 +35,6 @@ public class MainMenuActivity implements Activity {
 		
 		RenderableText renderableText = new RenderableText(text, MENU_FONT);
 		renderableText.setPositionY(positionY);
-		renderableText.center();
 		return renderableText;
 
 	}
