@@ -39,7 +39,7 @@
 			<fileset dir="${src-dir}" includes="**/*.properties" />
     		<fileset refid="assets"/>
 		</copy>
-		<junit>
+		<junit failureproperty="junit.failure">
 			<formatter type="brief" usefile="false" />
 			<classpath>
 				<pathelement location="${bin-dir.classes-dir}" />
@@ -51,6 +51,7 @@
 				</fileset>
 			</batchtest>
 		</junit>
+		<fail if="junit.failure" message="Unit test(s) failed."/>
 	</target>
 
 	<target name="jar" depends="compile">
