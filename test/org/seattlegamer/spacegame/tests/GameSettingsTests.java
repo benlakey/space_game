@@ -25,9 +25,9 @@ public class GameSettingsTests {
 	public void gameSettingsPullsTitleFromProperties() {
 
 		PropertiesAccessor accessor = new PropertiesAccessor(testProperties);
-		GameSettings settings = new GameSettings(accessor);
+		GameSettings.initialize(accessor);
 
-		String title = settings.getTitle();
+		String title = GameSettings.getTitle();
 				
 		assertEquals(GAME_TITLE, title);
 
@@ -37,9 +37,9 @@ public class GameSettingsTests {
 	public void gameSettingsPullsTargetFramerateFromProperties() {
 
 		PropertiesAccessor accessor = new PropertiesAccessor(testProperties);
-		GameSettings settings = new GameSettings(accessor);
+		GameSettings.initialize(accessor);
 
-		Integer targetFramerate = settings.getTargetFramerate();
+		Integer targetFramerate = GameSettings.getTargetFramerate();
 				
 		assertEquals(TARGET_FRAMERATE, targetFramerate);
 

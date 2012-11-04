@@ -12,25 +12,17 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class DependencyConfig {
-
-	private static final String PROPERTIES_FILE_PATH = "/spacegame.properties";
-	
-	public @Bean GameSettings gameSettings() {
-		return GameSettingsLoader.loadFromFile(PROPERTIES_FILE_PATH);
-	}
 	
 	public @Bean RateLimiter rateLimiter() {
-		GameSettings gameSettings = gameSettings();
-		return new RateLimiter(gameSettings.getTargetFramerate());
+		return new RateLimiter(GameSettings.getTargetFramerate());
 	}
 	
 	public @Bean GameCanvas gameCanvas() {
-		GameSettings gameSettings = gameSettings();
 		GameCanvas gameCanvas = null;
-		if(gameSettings.shouldUseFullscreen()) {
-			gameCanvas = new FullScreenGameCanvas(gameSettings.getTitle(), keyboardInput());
+		if(GameSettings.shouldUseFullscreen()) {
+			gameCanvas = new FullScreenGameCanvas(GameSettings.getTitle(), keyboardInput());
 		} else {
-			gameCanvas = new WindowedGameCanvas(gameSettings.getTitle(), keyboardInput(), 800, 600);
+			gameCanvas = new WindowedGameCanvas(GameSettings.getTitle(), keyboardInput(), 800, 600);
 		}
 		return gameCanvas;
 	}

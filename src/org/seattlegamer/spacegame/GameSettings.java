@@ -10,22 +10,31 @@ public class GameSettings {
 	private static final String DEFAULT_TITLE = "Space Game!";
 	private static final int DEFAULT_TARGET_FRAMERATE = 100;
 
-	private final PropertiesAccessor propertiesAccessor;
+	private static PropertiesAccessor propertiesAccessor;
 	
-	public GameSettings(PropertiesAccessor propertiesAccessor) {
-		this.propertiesAccessor = propertiesAccessor;
+	public static void initialize(PropertiesAccessor accessor) {
+		propertiesAccessor = accessor;
 	}
 
-	public String getTitle() {
-		return this.propertiesAccessor.getString(KEY_TITLE, DEFAULT_TITLE);
+	public static String getTitle() {
+		ensureInitialized();
+		return propertiesAccessor.getString(KEY_TITLE, DEFAULT_TITLE);
 	}
 
-	public int getTargetFramerate() {
-		return this.propertiesAccessor.getInteger(KEY_TARGET_FRAMERATE, DEFAULT_TARGET_FRAMERATE);
+	public static int getTargetFramerate() {
+		ensureInitialized();
+		return propertiesAccessor.getInteger(KEY_TARGET_FRAMERATE, DEFAULT_TARGET_FRAMERATE);
 	}
 	
-	public boolean shouldUseFullscreen() {
-		return this.propertiesAccessor.getBoolean("fullscreen", true);
+	public static boolean shouldUseFullscreen() {
+		ensureInitialized();
+		return propertiesAccessor.getBoolean("fullscreen", true);
+	}
+	
+	private static void ensureInitialized() {
+		if(propertiesAccessor == null) {
+			throw new IllegalStateException("In order to use GameSettings, you must first call initialize.");
+		}
 	}
 
 }
