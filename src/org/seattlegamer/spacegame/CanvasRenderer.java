@@ -27,6 +27,7 @@ public class CanvasRenderer implements Renderer {
 		graphics.dispose();
 		
 		this.canvas.showNextBuffer();
+
 	}
 
 	private void clearScreen(Graphics2D graphics) {
