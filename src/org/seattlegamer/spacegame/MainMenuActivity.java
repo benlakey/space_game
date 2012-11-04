@@ -1,5 +1,6 @@
 package org.seattlegamer.spacegame;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -11,8 +12,7 @@ import org.seattlegamer.spacegame.utils.GraphicsUtils;
 
 public class MainMenuActivity implements Activity {
 
-	private static final Font MENU_STANDARD_FONT = new Font("Courier", Font.PLAIN, 32);
-	private static final Font MENU_SELECTED_FONT = new Font("Courier", Font.BOLD, 32);
+	private static final Font MENU_FONT = new Font("Courier", Font.BOLD, 32);
 
 	private Collection<Renderable> renderables;
 	private int selectedIndex;
@@ -20,9 +20,9 @@ public class MainMenuActivity implements Activity {
 	public MainMenuActivity() {
 		this.renderables = new LinkedList<Renderable>();
 		
-		this.renderables.add(new MenuItem("New Game", MENU_STANDARD_FONT, 0));
-		this.renderables.add(new MenuItem("Credits", MENU_STANDARD_FONT, 1));
-		this.renderables.add(new MenuItem("Exit", MENU_STANDARD_FONT, 2));
+		this.renderables.add(new MenuItem("New Game", 0));
+		this.renderables.add(new MenuItem("Credits", 1));
+		this.renderables.add(new MenuItem("Exit", 2));
 
 		this.selectedIndex = 0;
 	}
@@ -58,8 +58,8 @@ public class MainMenuActivity implements Activity {
 
 		private int index;
 		
-		public MenuItem(String text, Font font, int index) {
-			super(text, font);
+		public MenuItem(String text, int index) {
+			super(text, MENU_FONT);
 			this.index = index;
 		}
 		
@@ -77,9 +77,9 @@ public class MainMenuActivity implements Activity {
 			this.setPositionY(drawPositionY);
 			
 			if(selectedIndex == this.index) {
-				this.setFont(MENU_SELECTED_FONT);
+				this.setColor(Color.ORANGE);
 			} else {
-				this.setFont(MENU_STANDARD_FONT);
+				this.setColor(Color.WHITE);
 			}
 			
 			super.render(graphics);
