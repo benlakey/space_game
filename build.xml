@@ -34,6 +34,8 @@
 	    	<classpath>
 	    		<fileset dir="${lib-dir}" includes="**/*.jar" />
 	    	</classpath>
+	    	<compilerarg value="-Xlint:all"/>
+    	    <compilerarg value="-Werror"/>
 		</javac>
 		<copy todir="${bin-dir.classes-dir}">
 			<fileset dir="${src-dir}" includes="**/*.properties" />

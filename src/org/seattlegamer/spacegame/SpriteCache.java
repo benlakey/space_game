@@ -22,7 +22,7 @@ public abstract class SpriteCache {
 			
 			if(this.sprites.containsKey(key)) {
 				logger.info(String.format("Cache hit for key '%s'", key));
-				return (Sprite)this.sprites.get(key);
+				return this.sprites.get(key);
 			}
 			
 			return this.handleCacheMiss(key);
