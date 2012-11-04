@@ -16,17 +16,6 @@
 
 	<property name="jar-path" value="${bin-dir.jar-dir}/${ant.project.name}.jar" />
 	<property name="main-class" value="org.seattlegamer.spacegame.Game" />
-
-	<fileset id="assets" dir="assets">
-		<patternset>
-			<include name="**/?*.gif"/>
-			<include name="**/?*.png"/>
-			<include name="**/?*.jpeg"/>
-			<include name="**/?*.jpg"/>
-			<include name="**/?*.bmp"/>
-			<include name="**/?*.wav"/>
-		 </patternset>
-	</fileset>
 	
 	<target name="compile">
 	    <mkdir dir="${bin-dir.classes-dir}" />
@@ -39,7 +28,9 @@
 		</javac>
 		<copy todir="${bin-dir.classes-dir}">
 			<fileset dir="${src-dir}" includes="**/*.properties" />
-    		<fileset refid="assets"/>
+		</copy>
+		<copy todir="${bin-dir.classes-dir.assets-dir}">
+			<fileset dir="${assets-dir}" />
 		</copy>
 		<junit failureproperty="junit.failure">
 			<formatter type="brief" usefile="false" />

@@ -3,11 +3,8 @@ package org.seattlegamer.spacegame;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-
 public abstract class SpriteCache {
 
-	private static Logger logger = Logger.getLogger(SpriteCache.class);
 	private static final Object cacheLock = new Object();
 	
 	protected Map<String, Sprite> sprites;
@@ -21,7 +18,6 @@ public abstract class SpriteCache {
 		synchronized (cacheLock) {
 			
 			if(this.sprites.containsKey(key)) {
-				logger.info(String.format("Cache hit for key '%s'", key));
 				return this.sprites.get(key);
 			}
 			
