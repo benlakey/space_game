@@ -1,7 +1,7 @@
 package org.seattlegamer.spacegame;
 
-public interface Activity {
+import java.awt.event.KeyListener;
+
+public interface Activity extends KeyListener {
 	Iterable<Renderable> getRenderables();
-	<T extends Command> boolean canHandle(T command);
-	<T extends Command> void handle(T command);
 }

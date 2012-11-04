@@ -26,7 +26,17 @@ public class DependencyConfig {
 	
 	public @Bean GameCanvas gameCanvas() {
 		GameSettings gameSettings = gameSettings();
-		return new WindowedGameCanvas(gameSettings.getTitle());
+		GameCanvas gameCanvas = null;
+		if(gameSettings.shouldUseFullscreen()) {
+			gameCanvas = new FullScreenGameCanvas(gameSettings.getTitle(), keyboardInput());
+		} else {
+			gameCanvas = new WindowedGameCanvas(gameSettings.getTitle(), keyboardInput(), 800, 600);
+		}
+		return gameCanvas;
+	}
+	
+	public @Bean KeyboardInput keyboardInput() {
+		return new KeyboardInput();
 	}
 	
 	public @Bean Renderer renderer() { 
@@ -36,8 +46,9 @@ public class DependencyConfig {
 	
 	public @Bean Engine engine() {
 		Renderer renderer = renderer();
+		KeyboardInput keyboardInput = keyboardInput();
 		RateLimiter rateLimiter = rateLimiter();
-		return new Engine(renderer, rateLimiter);
+		return new Engine(renderer, keyboardInput, rateLimiter);
 	}
 	
 }

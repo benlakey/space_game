@@ -23,5 +23,9 @@ public class GameSettings {
 	public int getTargetFramerate() {
 		return this.propertiesAccessor.getInteger(KEY_TARGET_FRAMERATE, DEFAULT_TARGET_FRAMERATE);
 	}
+	
+	public boolean shouldUseFullscreen() {
+		return this.propertiesAccessor.getBoolean("fullscreen", true);
+	}
 
 }

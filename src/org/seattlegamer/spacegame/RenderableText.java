@@ -6,9 +6,9 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 
 public class RenderableText implements Renderable {
-
+	
 	private final String text;
-	private final Font font;
+	private Font font;
 	private int positionX;
 	private int positionY;
 
@@ -25,6 +25,18 @@ public class RenderableText implements Renderable {
 	
 	public void setPositionY(int y) {
 		this.positionY = y;
+	}
+	
+	public String getText() {
+		return this.text;
+	}
+	
+	public Font getFont() {
+		return this.font;
+	}
+	
+	public void setFont(Font font) {
+		this.font = font;
 	}
 	
 	@Override

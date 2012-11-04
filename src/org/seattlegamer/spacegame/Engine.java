@@ -8,17 +8,23 @@ public class Engine {
 	private boolean running;
 	private long lastLoopTimestamp;
 	private final Renderer renderer;
+	private final KeyboardInput keyboardInput;
 	private final RateLimiter rateLimiter;
 	private Activity currentActivity;
 	
-	public Engine(Renderer renderer, RateLimiter rateLimiter) {
+	public Engine(Renderer renderer, KeyboardInput keyboardInput, RateLimiter rateLimiter) {
 		this.renderer = renderer;
+		this.keyboardInput = keyboardInput;
 		this.rateLimiter = rateLimiter;
 	}
 	
-	public void run(Activity startActivity) {
-		
+	public void setActivity(Activity startActivity) {
 		this.currentActivity = startActivity;
+		this.keyboardInput.setKeyListener(this.currentActivity);
+	}
+	
+	public void run() {
+
 		this.running = true;
 
 		while(running) {

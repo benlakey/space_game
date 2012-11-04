@@ -22,7 +22,8 @@ public class Game {
 		//Activity startActivity = new GameActivity();
 		
 		Engine engine = applicationContext.getBean(Engine.class);
-		engine.run(startActivity);
+		engine.setActivity(startActivity);
+		engine.run();
 
 	}
 }

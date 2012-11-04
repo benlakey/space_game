@@ -1,5 +1,6 @@
 package org.seattlegamer.spacegame;
 
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,12 +26,15 @@ public class GameActivity implements Activity {
 	}
 
 	@Override
-	public <T extends Command> boolean canHandle(T command) {
-		return false;
+	public void keyTyped(KeyEvent e) {
 	}
 
 	@Override
-	public <T extends Command> void handle(T command) {
+	public void keyPressed(KeyEvent e) {
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
 	}
 
 }
