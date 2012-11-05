@@ -12,7 +12,7 @@ public class CanvasRenderer implements Renderer {
 	}
 	
 	@Override
-	public void draw(Iterable<Renderable> itemsToRender) {
+	public void draw(Iterable<? extends Renderable> itemsToRender) {
 		
 		Graphics2D graphics = this.canvas.getGraphics();
 

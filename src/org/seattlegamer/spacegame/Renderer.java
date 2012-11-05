@@ -1,5 +1,5 @@
 package org.seattlegamer.spacegame;
 
 public interface Renderer {
-	void draw(Iterable<Renderable> itemsToRender);
+	void draw(Iterable<? extends Renderable> itemsToRender);
 }

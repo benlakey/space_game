@@ -3,7 +3,7 @@ package org.seattlegamer.spacegame;
 import java.awt.event.KeyEvent;
 import java.util.Arrays;
 
-public class GameActivity implements Activity {
+public class GameActivity extends Activity {
 
 	@Override
 	public Iterable<Renderable> getRenderables() {

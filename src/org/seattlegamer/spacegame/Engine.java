@@ -21,6 +21,18 @@ public class Engine {
 	public void setActivity(Activity startActivity) {
 		this.currentActivity = startActivity;
 		this.keyboardInput.setKeyListener(this.currentActivity);
+		this.currentActivity.clearHandlers();
+		this.currentActivity.attachHandler(new ExitCommandHandler());
+		this.currentActivity.attachHandler(new Handler() {
+			@Override
+			public void handle(Command command) {
+				if(command instanceof ActivityTransitionCommand) {
+					ActivityTransitionCommand activityTransitionCommand = (ActivityTransitionCommand)command;
+					Activity newActivity = activityTransitionCommand.getNewActivity();
+					setActivity(newActivity);
+				}
+			}
+		});
 	}
 	
 	public void run() {
@@ -34,8 +46,7 @@ public class Engine {
 			this.lastLoopTimestamp = now;
 			
 			long elapsedTimeMillis = elapsed;
-	
-			this.processInput();
+
 			this.think(elapsedTimeMillis);
 			this.drawActivity();
 	
@@ -46,12 +57,8 @@ public class Engine {
 	}
 	
 	private void drawActivity() {
-		Iterable<Renderable> renderables = this.currentActivity.getRenderables();
+		Iterable<? extends Renderable> renderables = this.currentActivity.getRenderables();
 		this.renderer.draw(renderables);
-	}
-
-	private void processInput() {
-		//TODO: accept user input and apply it to this.currentActivity
 	}
 	
 	private void think(long elapsedTimeMillis) {
