@@ -3,8 +3,6 @@ package org.seattlegamer.spacegame;
 
 public class Engine {
 
-	//private static Logger logger = Logger.getLogger(Engine.class);
-	
 	private boolean running;
 	private long lastLoopTimestamp;
 	private final Renderer renderer;
@@ -47,7 +45,7 @@ public class Engine {
 			
 			long elapsedTimeMillis = elapsed;
 
-			this.think(elapsedTimeMillis);
+			this.currentActivity.update(elapsedTimeMillis);
 			this.drawActivity();
 	
 			this.rateLimiter.blockAsNeeded(System.currentTimeMillis());
@@ -59,10 +57,6 @@ public class Engine {
 	private void drawActivity() {
 		Iterable<? extends Renderable> renderables = this.currentActivity.getRenderables();
 		this.renderer.draw(renderables);
-	}
-	
-	private void think(long elapsedTimeMillis) {
-		//TODO: act based on inputs, and position things based on elapsedTimeMillis
 	}
 
 }

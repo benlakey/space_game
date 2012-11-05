@@ -30,6 +30,10 @@ public class MainMenuActivity extends Activity {
 	private MenuItem getCurrentMenuItem() {
 		return this.menuItems.get(this.selectedIndex);
 	}
+	
+	@Override
+	public void update(long elapsedTimeMillis) {
+	}
 
 	@Override
 	public Iterable<? extends Renderable> getRenderables() {

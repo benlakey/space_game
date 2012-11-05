@@ -9,6 +9,7 @@ public abstract class Activity implements KeyListener {
 	private Collection<Handler> attachedHandlers = new LinkedList<Handler>();
 	
 	public abstract Iterable<? extends Renderable> getRenderables();
+	public abstract void update(long elapsedTimeMillis);
 	
 	public void clearHandlers() {
 		this.attachedHandlers.clear();

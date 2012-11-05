@@ -6,6 +6,10 @@ import java.util.Arrays;
 public class GameActivity extends Activity {
 
 	@Override
+	public void update(long elapsedTimeMillis) {
+	}
+	
+	@Override
 	public Iterable<Renderable> getRenderables() {
 		SpriteCache cache = FilesystemBasedSpriteCache.get();
 		return Arrays.asList(new Renderable[] { cache.getSprite("assets/mars.png") });
