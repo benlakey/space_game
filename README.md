@@ -3,6 +3,16 @@ SpaceGame
 
 A space themed game written in Java, mostly as a learning exercise.
 
+== Instructions ==
+
+To build:
+
+* `ant`
+  
+To run:
+
+* `ant run`
+
 == General Brainstorming ==
 
 * zoom in and out on the entire map
