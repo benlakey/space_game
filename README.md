@@ -3,7 +3,7 @@ SpaceGame
 
 A space themed game written in Java, mostly as a learning exercise.
 
-== Instructions ==
+## Instructions 
 
 To build:
 
@@ -13,7 +13,7 @@ To run:
 
 * `ant run`
 
-== General Brainstorming ==
+## General Brainstorming
 
 * zoom in and out on the entire map
 * follow projectile on fire
