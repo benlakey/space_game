@@ -5,7 +5,6 @@ import org.seattlegamer.spacegame.commands.ActivityTransitionCommand;
 import org.seattlegamer.spacegame.commands.Command;
 import org.seattlegamer.spacegame.commands.ExitCommandHandler;
 
-
 public class Engine {
 
 	private boolean running;

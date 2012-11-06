@@ -4,6 +4,7 @@ import java.awt.event.KeyEvent;
 import java.util.Arrays;
 
 import org.seattlegamer.spacegame.Renderable;
+import org.seattlegamer.spacegame.commands.ActivityTransitionCommand;
 import org.seattlegamer.spacegame.sprites.FilesystemBasedSpriteCache;
 import org.seattlegamer.spacegame.sprites.SpriteCache;
 
@@ -25,6 +26,11 @@ public class GameActivity extends Activity {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
+		
+		if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+			this.notifyListeners(new ActivityTransitionCommand(new MainMenuActivity()));
+		}
+		
 	}
 
 	@Override
