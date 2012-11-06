@@ -1,4 +1,4 @@
-package org.seattlegamer.spacegame;
+package org.seattlegamer.spacegame.config;
 
 import org.seattlegamer.spacegame.utils.PropertiesAccessor;
 

@@ -1,4 +1,4 @@
-package org.seattlegamer.spacegame;
+package org.seattlegamer.spacegame.activities;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -8,6 +8,11 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.seattlegamer.spacegame.Renderable;
+import org.seattlegamer.spacegame.RenderableText;
+import org.seattlegamer.spacegame.commands.ActivityTransitionCommand;
+import org.seattlegamer.spacegame.commands.Command;
+import org.seattlegamer.spacegame.commands.ExitCommand;
 import org.seattlegamer.spacegame.utils.GraphicsUtils;
 
 public class MainMenuActivity extends Activity {
@@ -103,6 +108,7 @@ public class MainMenuActivity extends Activity {
 			}
 			
 			super.render(graphics);
+
 		}
 
 	}

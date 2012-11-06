@@ -1,4 +1,6 @@
-package org.seattlegamer.spacegame;
+package org.seattlegamer.spacegame.commands;
+
+import org.seattlegamer.spacegame.activities.Activity;
 
 public class ActivityTransitionCommand implements Command {
 

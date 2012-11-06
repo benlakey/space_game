@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.Properties;
 
 import org.junit.Test;
-import org.seattlegamer.spacegame.GameSettings;
+import org.seattlegamer.spacegame.config.GameSettings;
 import org.seattlegamer.spacegame.utils.PropertiesAccessor;
 
 public class GameSettingsTests {

@@ -8,9 +8,9 @@ import java.io.IOException;
 import org.apache.log4j.BasicConfigurator;
 import org.junit.Before;
 import org.junit.Test;
-import org.seattlegamer.spacegame.InMemorySpriteCache;
-import org.seattlegamer.spacegame.Sprite;
-import org.seattlegamer.spacegame.SpriteCache;
+import org.seattlegamer.spacegame.sprites.InMemorySpriteCache;
+import org.seattlegamer.spacegame.sprites.Sprite;
+import org.seattlegamer.spacegame.sprites.SpriteCache;
 
 public class SpriteCacheTests {
 	

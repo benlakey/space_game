@@ -1,4 +1,6 @@
-package org.seattlegamer.spacegame;
+package org.seattlegamer.spacegame.entities;
+
+import org.seattlegamer.spacegame.sprites.Sprite;
 
 public class Planet {
 	public Sprite sprite;

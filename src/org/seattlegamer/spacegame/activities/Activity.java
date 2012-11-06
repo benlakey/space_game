@@ -1,8 +1,12 @@
-package org.seattlegamer.spacegame;
+package org.seattlegamer.spacegame.activities;
 
 import java.awt.event.KeyListener;
 import java.util.Collection;
 import java.util.LinkedList;
+
+import org.seattlegamer.spacegame.Handler;
+import org.seattlegamer.spacegame.Renderable;
+import org.seattlegamer.spacegame.commands.Command;
 
 public abstract class Activity implements KeyListener {
 	

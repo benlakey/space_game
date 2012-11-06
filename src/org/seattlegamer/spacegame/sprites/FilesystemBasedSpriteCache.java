@@ -1,4 +1,4 @@
-package org.seattlegamer.spacegame;
+package org.seattlegamer.spacegame.sprites;
 
 import java.awt.Graphics;
 import java.awt.GraphicsConfiguration;

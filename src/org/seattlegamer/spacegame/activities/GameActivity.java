@@ -1,7 +1,11 @@
-package org.seattlegamer.spacegame;
+package org.seattlegamer.spacegame.activities;
 
 import java.awt.event.KeyEvent;
 import java.util.Arrays;
+
+import org.seattlegamer.spacegame.Renderable;
+import org.seattlegamer.spacegame.sprites.FilesystemBasedSpriteCache;
+import org.seattlegamer.spacegame.sprites.SpriteCache;
 
 public class GameActivity extends Activity {
 

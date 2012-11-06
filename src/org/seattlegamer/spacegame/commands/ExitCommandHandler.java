@@ -1,4 +1,6 @@
-package org.seattlegamer.spacegame;
+package org.seattlegamer.spacegame.commands;
+
+import org.seattlegamer.spacegame.Handler;
 
 public class ExitCommandHandler implements Handler {
 

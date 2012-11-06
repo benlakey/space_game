@@ -1,5 +1,10 @@
 package org.seattlegamer.spacegame;
 
+import org.seattlegamer.spacegame.activities.Activity;
+import org.seattlegamer.spacegame.commands.ActivityTransitionCommand;
+import org.seattlegamer.spacegame.commands.Command;
+import org.seattlegamer.spacegame.commands.ExitCommandHandler;
+
 
 public class Engine {
 

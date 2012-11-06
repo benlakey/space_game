@@ -1,4 +1,4 @@
-package org.seattlegamer.spacegame;
+package org.seattlegamer.spacegame.commands;
 
 public class ExitCommand implements Command {
 	

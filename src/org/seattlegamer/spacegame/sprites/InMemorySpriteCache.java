@@ -1,4 +1,4 @@
-package org.seattlegamer.spacegame;
+package org.seattlegamer.spacegame.sprites;
 
 
 public class InMemorySpriteCache extends SpriteCache {

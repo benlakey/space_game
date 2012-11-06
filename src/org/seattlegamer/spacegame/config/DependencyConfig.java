@@ -1,5 +1,13 @@
-package org.seattlegamer.spacegame;
+package org.seattlegamer.spacegame.config;
 
+import org.seattlegamer.spacegame.CanvasRenderer;
+import org.seattlegamer.spacegame.Engine;
+import org.seattlegamer.spacegame.FullScreenGameCanvas;
+import org.seattlegamer.spacegame.GameCanvas;
+import org.seattlegamer.spacegame.KeyboardInput;
+import org.seattlegamer.spacegame.RateLimiter;
+import org.seattlegamer.spacegame.Renderer;
+import org.seattlegamer.spacegame.WindowedGameCanvas;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

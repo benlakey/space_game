@@ -6,6 +6,10 @@ import java.util.Properties;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
+import org.seattlegamer.spacegame.activities.Activity;
+import org.seattlegamer.spacegame.activities.MainMenuActivity;
+import org.seattlegamer.spacegame.config.DependencyConfig;
+import org.seattlegamer.spacegame.config.GameSettings;
 import org.seattlegamer.spacegame.utils.PropertiesAccessor;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
