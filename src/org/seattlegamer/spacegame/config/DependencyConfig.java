@@ -29,9 +29,9 @@ public class DependencyConfig {
 	public @Bean GameCanvas gameCanvas() {
 		GameCanvas gameCanvas = null;
 		if(GameSettings.shouldUseFullscreen()) {
-			gameCanvas = new FullScreenGameCanvas(GameSettings.getTitle(), keyboardInput());
+			gameCanvas = new FullScreenGameCanvas(GameSettings.getTitle(), keyboardInput(), mouseInput());
 		} else {
-			gameCanvas = new WindowedGameCanvas(GameSettings.getTitle(), keyboardInput(), 800, 600);
+			gameCanvas = new WindowedGameCanvas(GameSettings.getTitle(), keyboardInput(), mouseInput(), 800, 600);
 		}
 		return gameCanvas;
 	}

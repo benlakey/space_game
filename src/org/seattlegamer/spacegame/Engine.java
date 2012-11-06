@@ -1,5 +1,6 @@
 package org.seattlegamer.spacegame;
 
+import org.apache.log4j.Logger;
 import org.seattlegamer.spacegame.activities.Activity;
 import org.seattlegamer.spacegame.commands.ActivityTransitionCommand;
 import org.seattlegamer.spacegame.commands.Command;
@@ -7,6 +8,8 @@ import org.seattlegamer.spacegame.commands.ExitCommandHandler;
 
 public class Engine {
 
+	private static Logger logger = Logger.getLogger(Engine.class);
+	
 	private boolean running;
 	private long lastLoopTimestamp;
 	private final Renderer renderer;
@@ -33,6 +36,8 @@ public class Engine {
 	
 	private void attachInputControlToCurrentActivity() {
 
+		logger.info("Attaching input control to activity: " + this.currentActivity);
+		
 		this.keyboardInput.setKeyListener(this.currentActivity);
 		this.mouseInput.setMouseListener(this.currentActivity);
 		this.mouseInput.setMouseMotionListener(this.currentActivity);

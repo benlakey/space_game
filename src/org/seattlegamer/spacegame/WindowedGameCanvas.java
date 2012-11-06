@@ -12,7 +12,7 @@ public class WindowedGameCanvas extends Canvas implements GameCanvas {
 	private static final long serialVersionUID = 1L;
 	private static final int bufferCount = 2;
 
-	public WindowedGameCanvas(String title, KeyboardInput keyboardInput, int width, int height) {
+	public WindowedGameCanvas(String title, KeyboardInput keyboardInput, MouseInput mouseInput, int width, int height) {
 
 		this.setBounds(0, 0, width, height);
 		this.setIgnoreRepaint(true);
@@ -23,9 +23,11 @@ public class WindowedGameCanvas extends Canvas implements GameCanvas {
 		frame.pack();
 		frame.setResizable(false);
 		frame.setVisible(true);
-		frame.addKeyListener(keyboardInput);
 		
 		this.addKeyListener(keyboardInput);
+		this.addMouseListener(mouseInput);
+		this.addMouseMotionListener(mouseInput);
+
 		this.createBufferStrategy(bufferCount);
 		this.requestFocus();
 		

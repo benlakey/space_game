@@ -14,7 +14,7 @@ public class FullScreenGameCanvas extends Canvas implements GameCanvas {
 	private static final long serialVersionUID = 1L;
 	private static final int bufferCount = 2;
 
-	public FullScreenGameCanvas(String title, KeyboardInput keyboardInput) {
+	public FullScreenGameCanvas(String title, KeyboardInput keyboardInput, MouseInput mouseInput) {
 
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	    this.setBounds(0, 0, screenSize.width, screenSize.height);
@@ -27,9 +27,11 @@ public class FullScreenGameCanvas extends Canvas implements GameCanvas {
 		frame.pack();
 		frame.setResizable(false);
 		frame.setVisible(true);
-		frame.addKeyListener(keyboardInput);
-		
+
 		this.addKeyListener(keyboardInput);
+		this.addMouseListener(mouseInput);
+		this.addMouseMotionListener(mouseInput);
+		
 		this.setFullscreen(frame);
 		this.createBufferStrategy(bufferCount);
 		this.requestFocus();

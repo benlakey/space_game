@@ -19,36 +19,57 @@ public class MouseInput implements MouseListener, MouseMotionListener {
 	
 	@Override
 	public void mouseDragged(MouseEvent e) {
+		if(this.innerMouseMotionListener == null) { 
+			return;
+		}
 		this.innerMouseMotionListener.mouseDragged(e);
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
+		if(this.innerMouseMotionListener == null) { 
+			return;
+		}
 		this.innerMouseMotionListener.mouseMoved(e);
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		if(this.innerMouseListener == null) { 
+			return;
+		}
 		this.innerMouseListener.mouseClicked(e);
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
+		if(this.innerMouseListener == null) { 
+			return;
+		}
 		this.innerMouseListener.mousePressed(e);
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
+		if(this.innerMouseListener == null) { 
+			return;
+		}
 		this.innerMouseListener.mouseReleased(e);
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
+		if(this.innerMouseListener == null) { 
+			return;
+		}
 		this.innerMouseListener.mouseEntered(e);
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
+		if(this.innerMouseListener == null) { 
+			return;
+		}
 		this.innerMouseListener.mouseExited(e);
 	}
 

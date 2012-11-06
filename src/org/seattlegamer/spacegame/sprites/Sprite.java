@@ -19,6 +19,15 @@ public class Sprite implements Renderable {
 	public void setPosition(Point position) {
 		this.position = position;
 	}
+	
+	public int getWidth() {
+		//TODO: scaled?
+		return this.image.getWidth(null);
+	}
+	
+	public int getHeight() {
+		return this.image.getHeight(null);
+	}
 
 	public void render(Graphics2D graphics) {
 		graphics.drawImage(this.image, this.position.x, this.position.y, null);
