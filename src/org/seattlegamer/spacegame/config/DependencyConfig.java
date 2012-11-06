@@ -5,6 +5,7 @@ import org.seattlegamer.spacegame.Engine;
 import org.seattlegamer.spacegame.FullScreenGameCanvas;
 import org.seattlegamer.spacegame.GameCanvas;
 import org.seattlegamer.spacegame.KeyboardInput;
+import org.seattlegamer.spacegame.MouseInput;
 import org.seattlegamer.spacegame.RateLimiter;
 import org.seattlegamer.spacegame.Renderer;
 import org.seattlegamer.spacegame.WindowedGameCanvas;
@@ -39,6 +40,10 @@ public class DependencyConfig {
 		return new KeyboardInput();
 	}
 	
+	public @Bean MouseInput mouseInput() {
+		return new MouseInput();
+	}
+	
 	public @Bean Renderer renderer() { 
 		GameCanvas gameCanvas = gameCanvas();
 		return new CanvasRenderer(gameCanvas);
@@ -47,8 +52,9 @@ public class DependencyConfig {
 	public @Bean Engine engine() {
 		Renderer renderer = renderer();
 		KeyboardInput keyboardInput = keyboardInput();
+		MouseInput mouseInput = mouseInput();
 		RateLimiter rateLimiter = rateLimiter();
-		return new Engine(renderer, keyboardInput, rateLimiter);
+		return new Engine(renderer, keyboardInput, mouseInput, rateLimiter);
 	}
 	
 }

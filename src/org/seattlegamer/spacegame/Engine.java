@@ -11,18 +11,36 @@ public class Engine {
 	private long lastLoopTimestamp;
 	private final Renderer renderer;
 	private final KeyboardInput keyboardInput;
+	private final MouseInput mouseInput;
 	private final RateLimiter rateLimiter;
 	private Activity currentActivity;
 	
-	public Engine(Renderer renderer, KeyboardInput keyboardInput, RateLimiter rateLimiter) {
+	public Engine(Renderer renderer, KeyboardInput keyboardInput, MouseInput mouseInput, RateLimiter rateLimiter) {
 		this.renderer = renderer;
 		this.keyboardInput = keyboardInput;
+		this.mouseInput = mouseInput;
 		this.rateLimiter = rateLimiter;
 	}
 	
 	public void setActivity(Activity startActivity) {
+		
 		this.currentActivity = startActivity;
+
+		this.attachInputControlToCurrentActivity();
+		this.attachCommandHandlersToCurrentActivity();
+
+	}
+	
+	private void attachInputControlToCurrentActivity() {
+
 		this.keyboardInput.setKeyListener(this.currentActivity);
+		this.mouseInput.setMouseListener(this.currentActivity);
+		this.mouseInput.setMouseMotionListener(this.currentActivity);
+
+	}
+	
+	private void attachCommandHandlersToCurrentActivity() {
+
 		this.currentActivity.clearHandlers();
 		this.currentActivity.attachHandler(new ExitCommandHandler());
 		this.currentActivity.attachHandler(new Handler() {
@@ -35,6 +53,7 @@ public class Engine {
 				}
 			}
 		});
+
 	}
 	
 	public void run() {

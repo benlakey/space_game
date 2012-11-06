@@ -46,10 +46,6 @@ public class MainMenuActivity extends Activity {
 	}
 
 	@Override
-	public void keyTyped(KeyEvent e) {
-	}
-
-	@Override
 	public void keyPressed(KeyEvent e) {
 		
 		if(e.getKeyCode() == KeyEvent.VK_DOWN) {
@@ -67,10 +63,6 @@ public class MainMenuActivity extends Activity {
 		int wrap = this.menuItems.size();
 		this.selectedIndex = (this.selectedIndex % wrap + wrap) % wrap;
 		
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e) {
 	}
 
 	private class MenuItem extends RenderableText {

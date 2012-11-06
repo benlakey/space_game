@@ -1,6 +1,7 @@
 package org.seattlegamer.spacegame.activities;
 
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.util.Arrays;
 
 import org.seattlegamer.spacegame.Renderable;
@@ -21,10 +22,6 @@ public class GameActivity extends Activity {
 	}
 
 	@Override
-	public void keyTyped(KeyEvent e) {
-	}
-
-	@Override
 	public void keyPressed(KeyEvent e) {
 		
 		if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
@@ -32,9 +29,10 @@ public class GameActivity extends Activity {
 		}
 		
 	}
-
+	
 	@Override
-	public void keyReleased(KeyEvent e) {
+	public void mouseMoved(MouseEvent e) {
+		
 	}
 
 }
