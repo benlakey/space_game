@@ -17,6 +17,8 @@ public class GameActivity extends Activity {
 
 	private final Planet planet;
 	private final Bus bus;
+
+	private Point mouseDragPlanetOffset;
 	
 	public GameActivity(Bus bus) {
 		this.bus = bus;
@@ -45,18 +47,24 @@ public class GameActivity extends Activity {
 	}
 	
 	@Override
-	public void mouseMoved(MouseEvent e) {
+	public void mousePressed(MouseEvent e) {
 
-		//TODO: this is just a proof of concept test code.
+		Sprite planetSprite = this.planet.getSprite();
+		Point position = planetSprite.getPosition();
 		
-		Sprite sprite = this.planet.getSprite();
-		int width = sprite.getWidth();
-		int height = sprite.getHeight();
+		int mouseDragPlanetOffsetX = position.x - e.getPoint().x;
+		int mouseDragPlanetOffsetY = position.y - e.getPoint().y;
 		
-		Point point = e.getPoint();
-		int x = point.x - (width / 2);
-		int y = point.y - (height / 2);
-		
+		this.mouseDragPlanetOffset = new Point(mouseDragPlanetOffsetX, mouseDragPlanetOffsetY);
+
+	}
+	
+	@Override
+	public void mouseDragged(MouseEvent e) {
+
+		int x = e.getPoint().x + this.mouseDragPlanetOffset.x;
+		int y = e.getPoint().y + this.mouseDragPlanetOffset.y;
+
 		this.planet.getSprite().setPosition(new Point(x, y));
 
 	}

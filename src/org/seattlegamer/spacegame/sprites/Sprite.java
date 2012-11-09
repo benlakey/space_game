@@ -16,6 +16,10 @@ public class Sprite implements Renderable {
 		this.position = new Point(0, 0);
 	}
 	
+	public Point getPosition() {
+		return this.position;
+	}
+	
 	public void setPosition(Point position) {
 		this.position = position;
 	}
