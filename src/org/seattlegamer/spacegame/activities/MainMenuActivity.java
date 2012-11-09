@@ -10,9 +10,10 @@ import java.util.List;
 
 import org.seattlegamer.spacegame.Renderable;
 import org.seattlegamer.spacegame.RenderableText;
-import org.seattlegamer.spacegame.commands.ActivityTransitionCommand;
-import org.seattlegamer.spacegame.commands.Command;
-import org.seattlegamer.spacegame.commands.ExitCommand;
+import org.seattlegamer.spacegame.communication.ActivityTransition;
+import org.seattlegamer.spacegame.communication.Bus;
+import org.seattlegamer.spacegame.communication.Command;
+import org.seattlegamer.spacegame.communication.ExitGame;
 import org.seattlegamer.spacegame.utils.GraphicsUtils;
 
 public class MainMenuActivity extends Activity {
@@ -21,13 +22,17 @@ public class MainMenuActivity extends Activity {
 
 	private List<MenuItem> menuItems;
 	private int selectedIndex;
+
+	private final Bus bus;
 	
-	public MainMenuActivity() {
+	public MainMenuActivity(Bus bus) {
+		this.bus = bus;
+		
 		this.menuItems = new ArrayList<MenuItem>();
 
-		this.menuItems.add(new MenuItem("New Game", 0, new ActivityTransitionCommand(new GameActivity())));
+		this.menuItems.add(new MenuItem("New Game", 0, new ActivityTransition(new GameActivity(this.bus))));
 		this.menuItems.add(new MenuItem("Credits", 1, null));
-		this.menuItems.add(new MenuItem("Exit", 2, new ExitCommand(0)));
+		this.menuItems.add(new MenuItem("Exit", 2, new ExitGame(0)));
 
 		this.selectedIndex = 0;
 	}
@@ -55,9 +60,9 @@ public class MainMenuActivity extends Activity {
 		} else if(e.getKeyCode() == KeyEvent.VK_ENTER) {
 			MenuItem currentMenuItem = this.getCurrentMenuItem();
 			Command command = currentMenuItem.getCommand();
-			this.notifyListeners(command);
+			this.bus.send(command);
 		} else if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-			this.notifyListeners(new ExitCommand(0));
+			this.bus.send(new ExitGame(0));
 		}
 		
 		int wrap = this.menuItems.size();

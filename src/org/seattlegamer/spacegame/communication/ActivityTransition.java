@@ -1,12 +1,12 @@
-package org.seattlegamer.spacegame.commands;
+package org.seattlegamer.spacegame.communication;
 
 import org.seattlegamer.spacegame.activities.Activity;
 
-public class ActivityTransitionCommand implements Command {
+public class ActivityTransition implements Command {
 
 	private Activity newActivity;
 	
-	public ActivityTransitionCommand(Activity newActivity) {
+	public ActivityTransition(Activity newActivity) {
 		this.newActivity = newActivity;
 	}
 

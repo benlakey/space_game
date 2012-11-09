@@ -6,7 +6,8 @@ import java.awt.event.MouseEvent;
 import java.util.Arrays;
 
 import org.seattlegamer.spacegame.Renderable;
-import org.seattlegamer.spacegame.commands.ActivityTransitionCommand;
+import org.seattlegamer.spacegame.communication.ActivityTransition;
+import org.seattlegamer.spacegame.communication.Bus;
 import org.seattlegamer.spacegame.entities.Planet;
 import org.seattlegamer.spacegame.sprites.FilesystemBasedSpriteCache;
 import org.seattlegamer.spacegame.sprites.Sprite;
@@ -15,8 +16,10 @@ import org.seattlegamer.spacegame.sprites.SpriteCache;
 public class GameActivity extends Activity {
 
 	private final Planet planet;
+	private final Bus bus;
 	
-	public GameActivity() {
+	public GameActivity(Bus bus) {
+		this.bus = bus;
 		//TODO: this is just here for testing and development. This will be replaced with maps/levels loading whats required.
 		SpriteCache cache = FilesystemBasedSpriteCache.get();
 		Sprite sprite = cache.getSprite("assets/mars.png");
@@ -36,7 +39,7 @@ public class GameActivity extends Activity {
 	public void keyPressed(KeyEvent e) {
 		
 		if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-			this.notifyListeners(new ActivityTransitionCommand(new MainMenuActivity()));
+			this.bus.send(new ActivityTransition(new MainMenuActivity(this.bus)));
 		}
 		
 	}

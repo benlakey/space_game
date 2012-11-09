@@ -9,6 +9,8 @@ import org.seattlegamer.spacegame.MouseInput;
 import org.seattlegamer.spacegame.RateLimiter;
 import org.seattlegamer.spacegame.Renderer;
 import org.seattlegamer.spacegame.WindowedGameCanvas;
+import org.seattlegamer.spacegame.communication.Bus;
+import org.seattlegamer.spacegame.communication.CommunicationBus;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -54,7 +56,12 @@ public class DependencyConfig {
 		KeyboardInput keyboardInput = keyboardInput();
 		MouseInput mouseInput = mouseInput();
 		RateLimiter rateLimiter = rateLimiter();
-		return new Engine(renderer, keyboardInput, mouseInput, rateLimiter);
+		Bus bus = bus();
+		return new Engine(renderer, bus, keyboardInput, mouseInput, rateLimiter);
+	}
+
+	private Bus bus() {
+		return new CommunicationBus();
 	}
 	
 }
