@@ -1,4 +1,4 @@
-package org.seattlegamer.spacegame.entities;
+package org.seattlegamer.spacegame;
 
 public enum PlanetType {
 

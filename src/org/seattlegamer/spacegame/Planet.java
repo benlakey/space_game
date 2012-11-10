@@ -1,4 +1,4 @@
-package org.seattlegamer.spacegame.entities;
+package org.seattlegamer.spacegame;
 
 import org.seattlegamer.spacegame.sprites.Sprite;
 

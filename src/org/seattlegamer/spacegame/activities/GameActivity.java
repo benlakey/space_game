@@ -5,12 +5,12 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
+import org.seattlegamer.spacegame.GameMap;
+import org.seattlegamer.spacegame.Player;
 import org.seattlegamer.spacegame.Renderable;
 import org.seattlegamer.spacegame.communication.ActivityTransition;
 import org.seattlegamer.spacegame.communication.Bus;
 import org.seattlegamer.spacegame.communication.HealthReport;
-import org.seattlegamer.spacegame.entities.GameMap;
-import org.seattlegamer.spacegame.entities.Player;
 import org.seattlegamer.spacegame.sprites.Sprite;
 
 public class GameActivity extends Activity {

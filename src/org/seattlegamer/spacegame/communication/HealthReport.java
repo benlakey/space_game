@@ -1,6 +1,6 @@
 package org.seattlegamer.spacegame.communication;
 
-import org.seattlegamer.spacegame.entities.Player;
+import org.seattlegamer.spacegame.Player;
 
 public class HealthReport implements Command {
 

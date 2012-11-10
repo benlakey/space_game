@@ -3,9 +3,9 @@ package org.seattlegamer.spacegame.communication;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.seattlegamer.spacegame.GameMap;
+import org.seattlegamer.spacegame.Player;
 import org.seattlegamer.spacegame.activities.GameActivity;
-import org.seattlegamer.spacegame.entities.GameMap;
-import org.seattlegamer.spacegame.entities.Player;
 
 public class NewGameHandler implements Handler {
 
