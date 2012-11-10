@@ -3,9 +3,12 @@ package org.seattlegamer.spacegame.communication;
 import java.util.Collection;
 import java.util.LinkedList;
 
+import org.apache.log4j.Logger;
 
 public class CommunicationBus implements Bus {
 
+	private static Logger logger = Logger.getLogger(CommunicationBus.class);
+	
 	private Collection<Handler> handlers = new LinkedList<Handler>();
 	
 	@Override
@@ -25,6 +28,7 @@ public class CommunicationBus implements Bus {
 	public void send(Command command) {
 		for(Handler handler : this.handlers) {
 			if(handler.canHandle(command)) {
+				logger.info(handler.getClass() + " handling " + command.getClass());
 				handler.handle(command);
 			}
 		}
