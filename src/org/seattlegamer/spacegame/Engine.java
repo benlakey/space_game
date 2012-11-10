@@ -6,6 +6,7 @@ import org.seattlegamer.spacegame.activities.MainMenuActivity;
 import org.seattlegamer.spacegame.communication.ActivityTransitionHandler;
 import org.seattlegamer.spacegame.communication.Bus;
 import org.seattlegamer.spacegame.communication.ExitGameHandler;
+import org.seattlegamer.spacegame.communication.NewGameHandler;
 
 public class Engine {
 
@@ -29,6 +30,7 @@ public class Engine {
 		
 		this.bus.register(new ActivityTransitionHandler(this));
 		this.bus.register(new ExitGameHandler());
+		this.bus.register(new NewGameHandler(this.bus));
 		
 		this.setActivity(new MainMenuActivity(this.bus));
 	}

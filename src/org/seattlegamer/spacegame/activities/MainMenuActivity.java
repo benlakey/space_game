@@ -10,10 +10,10 @@ import java.util.List;
 
 import org.seattlegamer.spacegame.Renderable;
 import org.seattlegamer.spacegame.RenderableText;
-import org.seattlegamer.spacegame.communication.ActivityTransition;
 import org.seattlegamer.spacegame.communication.Bus;
 import org.seattlegamer.spacegame.communication.Command;
 import org.seattlegamer.spacegame.communication.ExitGame;
+import org.seattlegamer.spacegame.communication.NewGame;
 import org.seattlegamer.spacegame.utils.GraphicsUtils;
 
 public class MainMenuActivity extends Activity {
@@ -30,7 +30,7 @@ public class MainMenuActivity extends Activity {
 		
 		this.menuItems = new ArrayList<MenuItem>();
 
-		this.menuItems.add(new MenuItem("New Game", 0, new ActivityTransition(new GameActivity(this.bus))));
+		this.menuItems.add(new MenuItem("New Game", 0, new NewGame("test")));
 		this.menuItems.add(new MenuItem("Credits", 1, null));
 		this.menuItems.add(new MenuItem("Exit", 2, new ExitGame(0)));
 

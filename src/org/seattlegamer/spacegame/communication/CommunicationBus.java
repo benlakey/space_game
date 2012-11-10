@@ -28,7 +28,7 @@ public class CommunicationBus implements Bus {
 	public void send(Command command) {
 		for(Handler handler : this.handlers) {
 			if(handler.canHandle(command)) {
-				logger.info(handler.getClass() + " handling " + command.getClass());
+				logger.info(handler.getClass().getSimpleName() + " handling " + command.getClass().getSimpleName());
 				handler.handle(command);
 			}
 		}
