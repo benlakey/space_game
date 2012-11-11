@@ -10,23 +10,21 @@ import org.seattlegamer.spacegame.GameMap;
 import org.seattlegamer.spacegame.HeadsUpDisplay;
 import org.seattlegamer.spacegame.Player;
 import org.seattlegamer.spacegame.Renderable;
-import org.seattlegamer.spacegame.communication.ActivityTransition;
+import org.seattlegamer.spacegame.communication.ComponentTransition;
 import org.seattlegamer.spacegame.communication.Bus;
 import org.seattlegamer.spacegame.sprites.Sprite;
 
-public class GameActivity extends Activity {
+public class GameComponent extends ComponentBase {
 
 	private final Bus bus;
 	private List<Player> players;
-	//private Player currentPlayer;
 	private GameMap gameMap;
 	private HeadsUpDisplay headsUpDisplay;
 	private Point mouseDragLast;
 	
-	public GameActivity(Bus bus, List<Player> players, GameMap gameMap) {
+	public GameComponent(Bus bus, List<Player> players, GameMap gameMap) {
 		this.bus = bus;
 		this.players = players;
-		//this.currentPlayer = players.get(0);
 		this.gameMap = gameMap;
 		
 		this.initializeHUD();
@@ -35,29 +33,29 @@ public class GameActivity extends Activity {
 	private void initializeHUD() {
 		this.headsUpDisplay = new HeadsUpDisplay();
 		for(Player player : players) {
-			this.headsUpDisplay.update(player.getName(), player.getHealth());
+			this.headsUpDisplay.updatePlayerHealth(player.getName(), player.getHealth());
 		}
-	}
-	
-	@Override
-	public void update(long elapsedTimeMillis) {
-
+		this.subComponents.add(this.headsUpDisplay);
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
 		
 		if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-			this.bus.send(new ActivityTransition(new MainMenuActivity(this.bus)));
+			this.bus.send(new ComponentTransition(new MainMenuComponent(this.bus)));
 		}
-		
-		//TODO: if is game controlling character press, controls this.players[this.currentControllingPlayerIndex]
+
+		super.keyPressed(e);
 		
 	}
 	
 	@Override
 	public void mousePressed(MouseEvent e) {
+		
 		this.mouseDragLast = e.getPoint();
+		
+		super.mousePressed(e);
+		
 	}
 	
 	@Override
@@ -73,6 +71,8 @@ public class GameActivity extends Activity {
 		}
 		
 		this.mouseDragLast = e.getPoint();
+		
+		super.mouseDragged(e);
 
 	}
 

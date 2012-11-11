@@ -13,13 +13,13 @@ import org.seattlegamer.spacegame.communication.Bus;
 import org.seattlegamer.spacegame.communication.Command;
 import org.seattlegamer.spacegame.utils.GraphicsUtils;
 
-public abstract class MenuActivity extends Activity {
+public abstract class MenuComponent extends ComponentBase {
 
 	protected List<MenuItem> menuItems;
 	protected int selectedIndex;
 	protected final Bus bus;
 	
-	public MenuActivity(Bus bus) {
+	public MenuComponent(Bus bus) {
 		this.bus = bus;
 		this.menuItems = new ArrayList<MenuItem>();
 		this.selectedIndex = 0;

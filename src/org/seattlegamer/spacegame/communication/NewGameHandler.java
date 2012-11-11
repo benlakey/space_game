@@ -5,7 +5,8 @@ import java.util.List;
 
 import org.seattlegamer.spacegame.GameMap;
 import org.seattlegamer.spacegame.Player;
-import org.seattlegamer.spacegame.activities.GameActivity;
+import org.seattlegamer.spacegame.activities.ComponentBase;
+import org.seattlegamer.spacegame.activities.GameComponent;
 
 public class NewGameHandler implements Handler {
 
@@ -31,8 +32,8 @@ public class NewGameHandler implements Handler {
 		players.add(new Player(newGame.getPlayer2Name()));
 		
 		GameMap testMap = GameMap.load(newGame.getMapResource());
-		GameActivity gameActivity = new GameActivity(this.bus, players, testMap);
-		ActivityTransition transition = new ActivityTransition(gameActivity);
+		ComponentBase gameComponent = new GameComponent(this.bus, players, testMap);
+		ComponentTransition transition = new ComponentTransition(gameComponent);
 		
 		this.bus.send(transition);
 		

@@ -3,16 +3,16 @@ package org.seattlegamer.spacegame.activities;
 import java.awt.event.KeyEvent;
 
 import org.seattlegamer.spacegame.MenuItem;
-import org.seattlegamer.spacegame.communication.ActivityTransition;
+import org.seattlegamer.spacegame.communication.ComponentTransition;
 import org.seattlegamer.spacegame.communication.Bus;
 import org.seattlegamer.spacegame.communication.ExitGame;
 
-public class MainMenuActivity extends MenuActivity {
+public class MainMenuComponent extends MenuComponent {
 	
-	public MainMenuActivity(Bus bus) {
+	public MainMenuComponent(Bus bus) {
 		super(bus);
 
-		this.menuItems.add(new MenuItem("New Game", new ActivityTransition(new NamingMenuActivity(this.bus))));
+		this.menuItems.add(new MenuItem("New Game", new ComponentTransition(new NamingMenuComponent(this.bus))));
 		this.menuItems.add(new MenuItem("Credits", null));
 		this.menuItems.add(new MenuItem("Exit", new ExitGame(0)));
 		

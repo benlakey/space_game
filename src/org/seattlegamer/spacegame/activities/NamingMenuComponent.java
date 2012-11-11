@@ -3,15 +3,15 @@ package org.seattlegamer.spacegame.activities;
 import java.awt.event.KeyEvent;
 
 import org.seattlegamer.spacegame.MenuItem;
-import org.seattlegamer.spacegame.communication.ActivityTransition;
+import org.seattlegamer.spacegame.communication.ComponentTransition;
 import org.seattlegamer.spacegame.communication.Bus;
 import org.seattlegamer.spacegame.communication.NewGame;
 
-public class NamingMenuActivity extends MenuActivity {
+public class NamingMenuComponent extends MenuComponent {
 
 	private NewGame newGameCommand;
 
-	public NamingMenuActivity(Bus bus) {
+	public NamingMenuComponent(Bus bus) {
 		super(bus);
 		
 		//TODO: accept map choice
@@ -29,7 +29,7 @@ public class NamingMenuActivity extends MenuActivity {
 	public void keyPressed(KeyEvent e) {
 
 		if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-			this.bus.send(new ActivityTransition(new MainMenuActivity(this.bus)));
+			this.bus.send(new ComponentTransition(new MainMenuComponent(this.bus)));
 			return;
 		}
 		

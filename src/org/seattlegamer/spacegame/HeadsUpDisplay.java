@@ -6,9 +6,10 @@ import java.awt.Graphics2D;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.seattlegamer.spacegame.activities.ComponentBase;
 import org.seattlegamer.spacegame.utils.GraphicsUtils;
 
-public class HeadsUpDisplay implements Renderable {
+public class HeadsUpDisplay extends ComponentBase {
 
 	private static final String HEALTH_REPORT_FORMAT = "%s: \u2665 %d";
 	private static final Font HEALTH_REPORT_FONT = new Font("Arial", Font.PLAIN, 24);
@@ -19,7 +20,7 @@ public class HeadsUpDisplay implements Renderable {
 		this.playerHealths = new HashMap<String, RenderableText>();
 	}
 
-	public void update(String name, int health) {
+	public void updatePlayerHealth(String name, int health) {
 
 		String newText = String.format(HEALTH_REPORT_FORMAT, name, health);
 
