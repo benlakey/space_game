@@ -25,15 +25,19 @@ public class CanvasRenderer implements Renderer {
 		
 		Graphics2D graphics = this.canvas.getGraphics();
 
-		this.clearScreen(graphics);
+		try {
 
-		if(itemsToRender != null) {
-			for(Renderable renderable : itemsToRender) {
-				renderable.render(graphics);
+			this.clearScreen(graphics);
+	
+			if(itemsToRender != null) {
+				for(Renderable renderable : itemsToRender) {
+					renderable.render(graphics);
+				}
 			}
+
+		} finally {
+			graphics.dispose();
 		}
-		
-		graphics.dispose();
 		
 		this.canvas.showNextBuffer();
 
