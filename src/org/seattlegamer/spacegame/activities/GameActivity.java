@@ -1,47 +1,47 @@
 package org.seattlegamer.spacegame.activities;
 
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
 import org.seattlegamer.spacegame.GameMap;
+import org.seattlegamer.spacegame.HeadsUpDisplay;
 import org.seattlegamer.spacegame.Player;
 import org.seattlegamer.spacegame.Renderable;
 import org.seattlegamer.spacegame.communication.ActivityTransition;
 import org.seattlegamer.spacegame.communication.Bus;
-import org.seattlegamer.spacegame.communication.HealthReport;
 import org.seattlegamer.spacegame.sprites.Sprite;
 
 public class GameActivity extends Activity {
 
 	private final Bus bus;
-	@SuppressWarnings("unused")
 	private List<Player> players;
-	private Player currentPlayer;
+	//private Player currentPlayer;
 	private GameMap gameMap;
-
+	private HeadsUpDisplay headsUpDisplay;
 	private Point mouseDragLast;
 	
 	public GameActivity(Bus bus, List<Player> players, GameMap gameMap) {
 		this.bus = bus;
 		this.players = players;
-		this.currentPlayer = players.get(0);
+		//this.currentPlayer = players.get(0);
 		this.gameMap = gameMap;
+		
+		this.initializeHUD();
+	}
+	
+	private void initializeHUD() {
+		this.headsUpDisplay = new HeadsUpDisplay();
+		for(Player player : players) {
+			this.headsUpDisplay.update(player.getName(), player.getHealth());
+		}
 	}
 	
 	@Override
 	public void update(long elapsedTimeMillis) {
-		//TODO: this is just an example. should only need to send this when health changes.
-		String name = this.currentPlayer.getName();
-		int health = this.currentPlayer.getHealth();
-		HealthReport healthReport = new HealthReport(name, health);
-		this.bus.send(healthReport);
-	}
-	
-	@Override
-	public Iterable<? extends Renderable> getRenderables() {
-		return this.gameMap.getSprites();
+
 	}
 
 	@Override
@@ -74,6 +74,17 @@ public class GameActivity extends Activity {
 		
 		this.mouseDragLast = e.getPoint();
 
+	}
+
+	@Override
+	public void render(Graphics2D graphics) {
+		
+		for(Renderable renderable : this.gameMap.getSprites()) {
+			renderable.render(graphics);
+		}
+		
+		this.headsUpDisplay.render(graphics);
+		
 	}
 
 }

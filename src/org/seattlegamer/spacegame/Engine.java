@@ -63,17 +63,12 @@ public class Engine {
 			long elapsedTimeMillis = elapsed;
 
 			this.currentActivity.update(elapsedTimeMillis);
-			this.drawActivity();
-	
+			this.renderer.draw(this.currentActivity);
+
 			this.rateLimiter.blockAsNeeded(System.currentTimeMillis());
 
 		}
 		
-	}
-	
-	private void drawActivity() {
-		Iterable<? extends Renderable> renderables = this.currentActivity.getRenderables();
-		this.renderer.draw(renderables);
 	}
 
 }

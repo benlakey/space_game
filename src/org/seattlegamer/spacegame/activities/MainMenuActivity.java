@@ -4,11 +4,11 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.seattlegamer.spacegame.Renderable;
 import org.seattlegamer.spacegame.RenderableText;
 import org.seattlegamer.spacegame.communication.Bus;
 import org.seattlegamer.spacegame.communication.Command;
@@ -43,11 +43,6 @@ public class MainMenuActivity extends Activity {
 	
 	@Override
 	public void update(long elapsedTimeMillis) {
-	}
-
-	@Override
-	public Iterable<? extends Renderable> getRenderables() {
-		return this.menuItems;
 	}
 
 	@Override
@@ -95,8 +90,8 @@ public class MainMenuActivity extends Activity {
 			int centerScreenX = GraphicsUtils.getCenterScreenX();
 			int drawPositionX = centerScreenX - (textSize.width / 2);
 			
-			this.setPositionX(drawPositionX);
-			this.setPositionY(drawPositionY);
+			Point drawPosition = new Point(drawPositionX, drawPositionY);
+			this.setPosition(drawPosition);
 			
 			if(selectedIndex == this.index) {
 				this.setColor(Color.ORANGE);
@@ -108,6 +103,13 @@ public class MainMenuActivity extends Activity {
 
 		}
 
+	}
+
+	@Override
+	public void render(Graphics2D graphics) {
+		for(MenuItem menuItem : this.menuItems) {
+			menuItem.render(graphics);
+		}
 	}
 
 }

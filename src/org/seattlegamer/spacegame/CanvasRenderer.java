@@ -2,6 +2,8 @@ package org.seattlegamer.spacegame;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.util.Collection;
+import java.util.LinkedList;
 
 public class CanvasRenderer implements Renderer {
 	
@@ -9,6 +11,13 @@ public class CanvasRenderer implements Renderer {
 
 	public CanvasRenderer(GameCanvas canvas) {
 		this.canvas = canvas;
+	}
+	
+	@Override
+	public void draw(Renderable renderable) {
+		Collection<Renderable> renderables = new LinkedList<Renderable>();
+		renderables.add(renderable);
+		this.draw(renderables);
 	}
 	
 	@Override
@@ -34,4 +43,6 @@ public class CanvasRenderer implements Renderer {
 		graphics.setColor(Color.black);
 		graphics.fillRect(0, 0, this.canvas.getWidth(), this.canvas.getHeight());
 	}
+
+
 }

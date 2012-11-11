@@ -8,9 +8,8 @@ import java.awt.event.MouseMotionListener;
 
 import org.seattlegamer.spacegame.Renderable;
 
-public abstract class Activity implements KeyListener, MouseListener, MouseMotionListener {
-	
-	public abstract Iterable<? extends Renderable> getRenderables();
+public abstract class Activity implements Renderable, KeyListener, MouseListener, MouseMotionListener {
+
 	public abstract void update(long elapsedTimeMillis);
 
 	@Override public void mouseDragged(MouseEvent e) {}

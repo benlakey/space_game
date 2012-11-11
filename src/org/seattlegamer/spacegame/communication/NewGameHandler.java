@@ -27,7 +27,8 @@ public class NewGameHandler implements Handler {
 		
 		List<Player> players = new LinkedList<Player>();
 		//TODO: gather input from players at start thru menu systems (put in NewGame command)
-		players.add(new Player("test"));
+		players.add(new Player("John Doe"));
+		players.add(new Player("Bob Smith"));
 		
 		GameMap testMap = GameMap.load(newGame.getMapResource());
 		GameActivity gameActivity = new GameActivity(this.bus, players, testMap);
