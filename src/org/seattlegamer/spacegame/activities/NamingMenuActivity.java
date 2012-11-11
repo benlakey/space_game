@@ -17,10 +17,12 @@ public class NamingMenuActivity extends MenuActivity {
 		//TODO: accept map choice
 		this.newGameCommand = new NewGame("test");
 		
-		this.menuItems.add(new MenuItem("Player1", null, true));
+		this.menuItems.add(new MenuItem("Player1", null));
 		this.menuItems.add(new MenuItem("Player2", null));
 		//TODO: allow choice of planet
 		this.menuItems.add(new MenuItem("Start!", newGameCommand));
+		
+		this.menuItems.get(0).setSelected(true);
 	}
 	
 	@Override

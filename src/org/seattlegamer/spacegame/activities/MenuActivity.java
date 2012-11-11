@@ -8,11 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.seattlegamer.spacegame.MenuItem;
+import org.seattlegamer.spacegame.RenderableText;
 import org.seattlegamer.spacegame.communication.Bus;
 import org.seattlegamer.spacegame.communication.Command;
 import org.seattlegamer.spacegame.utils.GraphicsUtils;
 
-public abstract  class MenuActivity extends Activity {
+public abstract class MenuActivity extends Activity {
 
 	protected List<MenuItem> menuItems;
 	protected int selectedIndex;
@@ -57,8 +58,10 @@ public abstract  class MenuActivity extends Activity {
 	public void render(Graphics2D graphics) {
 
 		for(MenuItem menuItem : this.menuItems) {
+			
+			RenderableText renderableText = menuItem.getRenderableText();
 
-			Dimension textSize = GraphicsUtils.measureTextPixels(graphics, menuItem.getFont(), menuItem.getText());
+			Dimension textSize = GraphicsUtils.measureTextPixels(graphics, renderableText.getFont(), renderableText.getText());
 
 			int centerScreenX = GraphicsUtils.getCenterScreenX();
 			int drawPositionX = centerScreenX - (textSize.width / 2);
@@ -67,8 +70,8 @@ public abstract  class MenuActivity extends Activity {
 			
 			int drawPositionY = textSize.height * (index + 1);
 			
-			menuItem.setPosition(new Point(drawPositionX, drawPositionY));
-			menuItem.render(graphics);
+			renderableText.setPosition(new Point(drawPositionX, drawPositionY));
+			renderableText.render(graphics);
 
 		}
 		

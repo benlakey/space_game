@@ -2,52 +2,43 @@ package org.seattlegamer.spacegame;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Graphics2D;
 
 import org.seattlegamer.spacegame.communication.Command;
 
-public class MenuItem extends RenderableText {
+public class MenuItem {
 	
 	private static final Font MENU_FONT = new Font("Courier", Font.BOLD, 32);
 
-	private boolean isSelected;
 	private final Command command;
+	private final RenderableText renderableText;
 	
 	public MenuItem(String text, Command command) {
-		super(text, MENU_FONT);
+		this.renderableText = new RenderableText(text, MENU_FONT);
 		this.command = command;
-	}
-	
-	public MenuItem(String text, Command command, boolean selected) {
-		super(text, MENU_FONT);
-		
-		this.command = command;
-		this.isSelected = selected;
-	}
-	
-	public boolean isSelected() {
-		return isSelected;
 	}
 
 	public void setSelected(boolean isSelected) {
-		this.isSelected = isSelected;
+		if(isSelected) {
+			this.getRenderableText().setColor(Color.ORANGE);
+		} else {
+			this.getRenderableText().setColor(Color.WHITE);
+		}
 	}
 	
 	public Command getCommand() {
 		return this.command;
 	}
+
+	public RenderableText getRenderableText() {
+		return this.renderableText;
+	}
 	
-	@Override
-	public void render(Graphics2D graphics) {
-
-		if(this.isSelected) {
-			this.setColor(Color.ORANGE);
-		} else {
-			this.setColor(Color.WHITE);
-		}
-		
-		super.render(graphics);
-
+	public String getText() {
+		return this.renderableText.getText();
+	}
+	
+	public void setText(String text) {
+		this.renderableText.setText(text);
 	}
 
 }

@@ -12,9 +12,11 @@ public class MainMenuActivity extends MenuActivity {
 	public MainMenuActivity(Bus bus) {
 		super(bus);
 
-		this.menuItems.add(new MenuItem("New Game", new ActivityTransition(new NamingMenuActivity(this.bus)), true));
+		this.menuItems.add(new MenuItem("New Game", new ActivityTransition(new NamingMenuActivity(this.bus))));
 		this.menuItems.add(new MenuItem("Credits", null));
 		this.menuItems.add(new MenuItem("Exit", new ExitGame(0)));
+		
+		this.menuItems.get(0).setSelected(true);
 	}
 
 	@Override
