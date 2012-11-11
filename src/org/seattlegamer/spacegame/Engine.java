@@ -20,6 +20,8 @@ public class Engine {
 	private final MouseInput mouseInput;
 	private final RateLimiter rateLimiter;
 	private Activity currentActivity;
+	private Activity nextActivity;
+	private static final Object activityLock = new Object();
 
 	public Engine(Renderer renderer, Bus bus, KeyboardInput keyboardInput, MouseInput mouseInput, RateLimiter rateLimiter) {
 		this.renderer = renderer;
@@ -35,9 +37,10 @@ public class Engine {
 		this.setActivity(new MainMenuActivity(this.bus));
 	}
 	
-	public void setActivity(Activity startActivity) {
-		this.currentActivity = startActivity;
-		this.attachInputControlToCurrentActivity();
+	public void setActivity(Activity activity) {
+		synchronized(activityLock) {
+			this.nextActivity = activity;
+		}
 	}
 	
 	private void attachInputControlToCurrentActivity() {
@@ -62,6 +65,14 @@ public class Engine {
 			
 			long elapsedTimeMillis = elapsed;
 
+			synchronized(activityLock) {
+				if(this.nextActivity != null) {
+					this.currentActivity = this.nextActivity;
+					this.attachInputControlToCurrentActivity();
+					this.nextActivity = null;
+				}
+			}
+			
 			this.currentActivity.update(elapsedTimeMillis);
 			this.renderer.draw(this.currentActivity);
 

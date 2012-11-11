@@ -20,6 +20,7 @@ public class MenuItem extends RenderableText {
 	
 	public MenuItem(String text, Command command, boolean selected) {
 		super(text, MENU_FONT);
+		
 		this.command = command;
 		this.isSelected = selected;
 	}

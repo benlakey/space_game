@@ -22,9 +22,9 @@ public class GraphicsUtils {
 	
 	public static Dimension measureTextPixels(Graphics2D graphics, Font font, String text) {
 		FontMetrics metrics = graphics.getFontMetrics(font);
-		int hgt = metrics.getHeight();
-		int adv = metrics.stringWidth(text);
-		return new Dimension(adv, hgt);
+		int width = metrics.stringWidth(text);
+		int height = metrics.getHeight();
+		return new Dimension(width, height);
 	}
 
 	public static Dimension getCurrentScreenDimension() {

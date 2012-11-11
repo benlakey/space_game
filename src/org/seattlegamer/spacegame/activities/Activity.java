@@ -12,6 +12,7 @@ public abstract class Activity implements Renderable, KeyListener, MouseListener
 
 	public void update(long elapsedTimeMillis) {}
 
+	/* dont force an activity to implement handling if they don't need it. but provide the hook if they do. */
 	@Override public void mouseDragged(MouseEvent e) {}
 	@Override public void mouseMoved(MouseEvent e) {}
 	@Override public void mouseClicked(MouseEvent e) {}

@@ -12,21 +12,16 @@ import org.seattlegamer.spacegame.communication.Bus;
 import org.seattlegamer.spacegame.communication.Command;
 import org.seattlegamer.spacegame.utils.GraphicsUtils;
 
-public abstract class MenuActivity extends Activity {
+public abstract  class MenuActivity extends Activity {
 
-	private List<MenuItem> menuItems;
-	private int selectedIndex;
-
+	protected List<MenuItem> menuItems;
+	protected int selectedIndex;
 	protected final Bus bus;
 	
 	public MenuActivity(Bus bus) {
 		this.bus = bus;
 		this.menuItems = new ArrayList<MenuItem>();
 		this.selectedIndex = 0;
-	}
-	
-	public void addMenuItem(MenuItem menuItem) {
-		this.menuItems.add(menuItem);
 	}
 
 	@Override
@@ -39,7 +34,9 @@ public abstract class MenuActivity extends Activity {
 		} else if(e.getKeyCode() == KeyEvent.VK_ENTER) {
 			MenuItem currentMenuItem = this.menuItems.get(this.selectedIndex);
 			Command command = currentMenuItem.getCommand();
-			this.bus.send(command);
+			if(command != null) {
+				this.bus.send(command);
+			}
 		}
 		
 		int wrap = this.menuItems.size();
@@ -59,15 +56,16 @@ public abstract class MenuActivity extends Activity {
 	@Override
 	public void render(Graphics2D graphics) {
 
-		for(int i = 0; i < this.menuItems.size(); i++) {
-			
-			MenuItem menuItem = this.menuItems.get(i);
-			
+		for(MenuItem menuItem : this.menuItems) {
+
 			Dimension textSize = GraphicsUtils.measureTextPixels(graphics, menuItem.getFont(), menuItem.getText());
 
 			int centerScreenX = GraphicsUtils.getCenterScreenX();
 			int drawPositionX = centerScreenX - (textSize.width / 2);
-			int drawPositionY = textSize.height * (i + 1);
+			
+			int index = this.menuItems.indexOf(menuItem);
+			
+			int drawPositionY = textSize.height * (index + 1);
 			
 			menuItem.setPosition(new Point(drawPositionX, drawPositionY));
 			menuItem.render(graphics);
