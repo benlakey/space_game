@@ -44,6 +44,9 @@ public class NamingMenuActivity extends MenuActivity {
 		} else if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
 			MenuItem menuItem = this.menuItems.get(this.selectedIndex);
 			String text = menuItem.getText();
+			if(text.equals("")) {
+				return;
+			}
 			String newText = text.substring(0, text.length() - 1);
 			menuItem.setText(newText);
 		}
