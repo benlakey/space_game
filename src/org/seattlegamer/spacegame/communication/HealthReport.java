@@ -1,17 +1,21 @@
 package org.seattlegamer.spacegame.communication;
 
-import org.seattlegamer.spacegame.Player;
-
 public class HealthReport implements Command {
 
-	private final Player player;
+	private final String name;
+	private final int health;
 
-	public HealthReport(Player player) {
-		this.player = player;
+	public HealthReport(String name, int health) {
+		this.name = name;
+		this.health = health;
 	}
 
-	public Player getPlayer() {
-		return player;
+	public String getName() {
+		return name;
+	}
+	
+	public int getHealth() {
+		return this.health;
 	}
 
 }

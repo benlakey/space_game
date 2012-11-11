@@ -33,7 +33,10 @@ public class GameActivity extends Activity {
 	@Override
 	public void update(long elapsedTimeMillis) {
 		//TODO: this is just an example. should only need to send this when health changes.
-		this.bus.send(new HealthReport(this.currentPlayer));
+		String name = this.currentPlayer.getName();
+		int health = this.currentPlayer.getHealth();
+		HealthReport healthReport = new HealthReport(name, health);
+		this.bus.send(healthReport);
 	}
 	
 	@Override
