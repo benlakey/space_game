@@ -1,4 +1,4 @@
-package org.seattlegamer.spacegame.activities;
+package org.seattlegamer.spacegame.components;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;

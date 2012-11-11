@@ -1,4 +1,4 @@
-package org.seattlegamer.spacegame.activities;
+package org.seattlegamer.spacegame.components;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;

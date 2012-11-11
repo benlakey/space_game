@@ -1,6 +1,6 @@
 package org.seattlegamer.spacegame.communication;
 
-import org.seattlegamer.spacegame.activities.ComponentBase;
+import org.seattlegamer.spacegame.components.ComponentBase;
 
 public class ComponentTransition implements Command {
 

@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.seattlegamer.spacegame.GameMap;
 import org.seattlegamer.spacegame.Player;
-import org.seattlegamer.spacegame.activities.ComponentBase;
-import org.seattlegamer.spacegame.activities.GameComponent;
+import org.seattlegamer.spacegame.components.ComponentBase;
+import org.seattlegamer.spacegame.components.GameComponent;
 
 public class NewGameHandler implements Handler {
 

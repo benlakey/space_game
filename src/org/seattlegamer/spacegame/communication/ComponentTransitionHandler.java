@@ -1,7 +1,7 @@
 package org.seattlegamer.spacegame.communication;
 
 import org.seattlegamer.spacegame.Engine;
-import org.seattlegamer.spacegame.activities.ComponentBase;
+import org.seattlegamer.spacegame.components.ComponentBase;
 
 public class ComponentTransitionHandler implements Handler {
 	

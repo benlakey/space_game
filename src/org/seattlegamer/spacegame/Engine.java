@@ -1,12 +1,12 @@
 package org.seattlegamer.spacegame;
 
 import org.apache.log4j.Logger;
-import org.seattlegamer.spacegame.activities.ComponentBase;
-import org.seattlegamer.spacegame.activities.MainMenuComponent;
 import org.seattlegamer.spacegame.communication.Bus;
 import org.seattlegamer.spacegame.communication.ComponentTransitionHandler;
 import org.seattlegamer.spacegame.communication.ExitGameHandler;
 import org.seattlegamer.spacegame.communication.NewGameHandler;
+import org.seattlegamer.spacegame.components.ComponentBase;
+import org.seattlegamer.spacegame.components.MainMenuComponent;
 
 public class Engine {
 

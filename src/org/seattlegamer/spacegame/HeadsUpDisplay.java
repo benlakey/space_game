@@ -6,7 +6,7 @@ import java.awt.Graphics2D;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.seattlegamer.spacegame.activities.ComponentBase;
+import org.seattlegamer.spacegame.components.ComponentBase;
 import org.seattlegamer.spacegame.utils.GraphicsUtils;
 
 public class HeadsUpDisplay extends ComponentBase {
