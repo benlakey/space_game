@@ -10,7 +10,7 @@ import org.seattlegamer.spacegame.Renderable;
 
 public abstract class Activity implements Renderable, KeyListener, MouseListener, MouseMotionListener {
 
-	public abstract void update(long elapsedTimeMillis);
+	public void update(long elapsedTimeMillis) {}
 
 	@Override public void mouseDragged(MouseEvent e) {}
 	@Override public void mouseMoved(MouseEvent e) {}

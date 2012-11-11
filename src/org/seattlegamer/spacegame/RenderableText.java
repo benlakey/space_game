@@ -44,16 +44,22 @@ public class RenderableText implements Renderable {
 		this.font = font;
 	}
 	
+	public Color getColor() {
+		return this.color;
+	}
+	
 	public void setColor(Color color) {
 		this.color = color;
 	}
 	
 	@Override
 	public void render(Graphics2D graphics) {
+
 		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		graphics.setFont(this.font);
 		graphics.setColor(this.color);
 		graphics.drawString(this.text, this.position.x, this.position.y);
+
 	}
 
 }
