@@ -8,8 +8,6 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.awt.Window;
-import java.lang.reflect.Method;
 
 public class GraphicsUtils {
 	
@@ -52,14 +50,6 @@ public class GraphicsUtils {
 		double screenWidth = currentScreenDimension.getWidth();
 		double centerX = screenWidth / 2;
 		return (int) centerX;
-	}
-
-	@SuppressWarnings({"unchecked", "rawtypes"})
-	public static void enableOSXFullscreen(Window window) throws IllegalArgumentException, ReflectiveOperationException, SecurityException {
-		Class util = Class.forName("com.apple.eawt.FullScreenUtilities");
-        Class params[] = new Class[]{Window.class, Boolean.TYPE};
-        Method method = util.getMethod("setWindowCanFullScreen", params);
-        method.invoke(util, window, true);
 	}
 
 }
