@@ -5,10 +5,11 @@ import java.awt.Font;
 
 import org.seattlegamer.spacegame.RenderableText;
 import org.seattlegamer.spacegame.communication.Command;
+import org.seattlegamer.spacegame.config.GameSettings;
 
 public class MenuItem extends ComponentBase {
 	
-	private static final Font MENU_FONT = new Font("Courier", Font.BOLD, 32);
+	private static final Font MENU_FONT = new Font(GameSettings.getFont(), Font.BOLD, 32);
 
 	private final Command command;
 	private final RenderableText renderableText;

@@ -6,9 +6,13 @@ public class GameSettings {
 
 	private static final String KEY_TITLE = "title";
 	private static final String KEY_TARGET_FRAMERATE = "target_framerate";
+	private static final String KEY_FULLSCREEN = "fullscreen";
+	private static final String KEY_FONT = "font";
 	
 	private static final String DEFAULT_TITLE = "Space Game!";
 	private static final int DEFAULT_TARGET_FRAMERATE = 100;
+	private static final boolean DEFAULT_FULLSCREEN = false;
+	private static final String DEFAULT_FONT = "Courier";
 
 	private static PropertiesAccessor propertiesAccessor;
 	
@@ -28,7 +32,12 @@ public class GameSettings {
 	
 	public static boolean shouldUseFullscreen() {
 		ensureInitialized();
-		return propertiesAccessor.getBoolean("fullscreen", true);
+		return propertiesAccessor.getBoolean(KEY_FULLSCREEN, DEFAULT_FULLSCREEN);
+	}
+	
+	public static String getFont() {
+		ensureInitialized();
+		return propertiesAccessor.getString(KEY_FONT, DEFAULT_FONT);
 	}
 	
 	private static void ensureInitialized() {

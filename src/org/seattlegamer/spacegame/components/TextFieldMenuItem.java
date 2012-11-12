@@ -7,12 +7,12 @@ import java.awt.Point;
 import java.awt.event.KeyEvent;
 
 import org.seattlegamer.spacegame.RenderableText;
+import org.seattlegamer.spacegame.config.GameSettings;
 import org.seattlegamer.spacegame.utils.GraphicsUtils;
 
 public class TextFieldMenuItem extends MenuItem {
 
-	//TODO: font controlled from properties. control all fonts app-wide.
-	private static final Font MENU_FONT = new Font("Courier", Font.BOLD, 32);
+	private static final Font MENU_FONT = new Font(GameSettings.getFont(), Font.BOLD, 32);
 	
 	private final RenderableText inputText;
 	

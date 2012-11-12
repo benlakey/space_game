@@ -1,4 +1,4 @@
-package org.seattlegamer.spacegame;
+package org.seattlegamer.spacegame.components;
 
 import java.awt.Dimension;
 import java.awt.Font;
@@ -6,13 +6,14 @@ import java.awt.Graphics2D;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.seattlegamer.spacegame.components.ComponentBase;
+import org.seattlegamer.spacegame.RenderableText;
+import org.seattlegamer.spacegame.config.GameSettings;
 import org.seattlegamer.spacegame.utils.GraphicsUtils;
 
 public class HeadsUpDisplay extends ComponentBase {
 
 	private static final String HEALTH_REPORT_FORMAT = "%s: \u2665 %d";
-	private static final Font HEALTH_REPORT_FONT = new Font("Arial", Font.PLAIN, 24);
+	private static final Font HEALTH_REPORT_FONT = new Font(GameSettings.getFont(), Font.PLAIN, 24);
 	
 	private final Map<String, RenderableText> playerHealths;
 	
