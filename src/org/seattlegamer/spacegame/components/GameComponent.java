@@ -10,28 +10,27 @@ import org.seattlegamer.spacegame.GameMap;
 import org.seattlegamer.spacegame.HeadsUpDisplay;
 import org.seattlegamer.spacegame.Player;
 import org.seattlegamer.spacegame.Renderable;
-import org.seattlegamer.spacegame.communication.ComponentTransition;
 import org.seattlegamer.spacegame.communication.Bus;
+import org.seattlegamer.spacegame.communication.ComponentTransition;
 import org.seattlegamer.spacegame.sprites.Sprite;
 
 public class GameComponent extends ComponentBase {
 
 	private final Bus bus;
-	private List<Player> players;
-	private GameMap gameMap;
-	private HeadsUpDisplay headsUpDisplay;
+	private final List<Player> players;
+	private final GameMap gameMap;
+	private final HeadsUpDisplay headsUpDisplay;
 	private Point mouseDragLast;
 	
 	public GameComponent(Bus bus, List<Player> players, GameMap gameMap) {
 		this.bus = bus;
 		this.players = players;
 		this.gameMap = gameMap;
-		
+		this.headsUpDisplay = new HeadsUpDisplay();
 		this.initializeHUD();
 	}
 	
 	private void initializeHUD() {
-		this.headsUpDisplay = new HeadsUpDisplay();
 		for(Player player : players) {
 			this.headsUpDisplay.updatePlayerHealth(player.getName(), player.getHealth());
 		}

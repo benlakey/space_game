@@ -8,9 +8,9 @@ import org.seattlegamer.spacegame.communication.NewGame;
 
 public class NamingMenu extends MenuComponent {
 
-	private NewGame newGameCommand;
-	private TextFieldMenuItem player1Input;
-	private TextFieldMenuItem player2Input;
+	private final NewGame newGameCommand;
+	private final TextFieldMenuItem player1Input;
+	private final TextFieldMenuItem player2Input;
 
 	public NamingMenu(Bus bus) {
 		super(bus);

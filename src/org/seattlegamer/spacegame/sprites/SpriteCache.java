@@ -7,7 +7,7 @@ public abstract class SpriteCache {
 
 	private static final Object cacheLock = new Object();
 	
-	protected Map<String, Sprite> sprites;
+	protected final Map<String, Sprite> sprites;
 	
 	protected SpriteCache() {
 		this.sprites = new HashMap<String, Sprite>();

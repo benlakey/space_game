@@ -4,7 +4,7 @@ import org.seattlegamer.spacegame.components.ComponentBase;
 
 public class ComponentTransition implements Command {
 
-	private ComponentBase newComponent;
+	private final ComponentBase newComponent;
 	
 	public ComponentTransition(ComponentBase newComponent) {
 		this.newComponent = newComponent;

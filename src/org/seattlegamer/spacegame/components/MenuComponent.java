@@ -14,7 +14,7 @@ import org.seattlegamer.spacegame.utils.GraphicsUtils;
 
 public abstract class MenuComponent extends ComponentBase {
 
-	private List<MenuItem> menuItems;
+	private final List<MenuItem> menuItems;
 	protected int selectedIndex;
 	protected final Bus bus;
 	

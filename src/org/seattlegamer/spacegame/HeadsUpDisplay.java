@@ -14,7 +14,7 @@ public class HeadsUpDisplay extends ComponentBase {
 	private static final String HEALTH_REPORT_FORMAT = "%s: \u2665 %d";
 	private static final Font HEALTH_REPORT_FONT = new Font("Arial", Font.PLAIN, 24);
 	
-	private Map<String, RenderableText> playerHealths;
+	private final Map<String, RenderableText> playerHealths;
 	
 	public HeadsUpDisplay() {
 		this.playerHealths = new HashMap<String, RenderableText>();
