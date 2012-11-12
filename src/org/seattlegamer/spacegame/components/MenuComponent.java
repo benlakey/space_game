@@ -7,7 +7,6 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.seattlegamer.spacegame.MenuItem;
 import org.seattlegamer.spacegame.RenderableText;
 import org.seattlegamer.spacegame.communication.Bus;
 import org.seattlegamer.spacegame.communication.Command;
@@ -15,43 +14,67 @@ import org.seattlegamer.spacegame.utils.GraphicsUtils;
 
 public abstract class MenuComponent extends ComponentBase {
 
-	protected List<MenuItem> menuItems;
+	private List<MenuItem> menuItems;
 	protected int selectedIndex;
 	protected final Bus bus;
 	
 	public MenuComponent(Bus bus) {
 		this.bus = bus;
 		this.menuItems = new ArrayList<MenuItem>();
-		this.selectedIndex = 0;
+	}
+	
+	public void addMenuItem(MenuItem menuItem) {
+		this.menuItems.add(menuItem);
+		this.subComponents.add(menuItem);
+	}
+	
+	public void selectIndex(int index) {
+		
+		this.selectedIndex = index;
+		
+		for(int i = 0; i < this.menuItems.size(); i++) {
+			this.menuItems.get(i).setSelected(i == this.selectedIndex);
+		}
+		
+	}
+	
+	public MenuItem getIndex(int index) {
+		return this.menuItems.get(index);
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
 		
-		if(e.getKeyCode() == KeyEvent.VK_DOWN) {
-			this.selectedIndex++;
-		} else if(e.getKeyCode() == KeyEvent.VK_UP) {
-			this.selectedIndex--;
-		} else if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+		int newIndex = this.selectedIndex;
+		
+		if(e.getKeyCode() == KeyEvent.VK_ENTER) {
 			MenuItem currentMenuItem = this.menuItems.get(this.selectedIndex);
 			Command command = currentMenuItem.getCommand();
 			if(command != null) {
 				this.bus.send(command);
-			}
-		}
-		
-		int wrap = this.menuItems.size();
-		this.selectedIndex = (this.selectedIndex % wrap + wrap) % wrap;
-		
-		for(int i = 0; i < this.menuItems.size(); i++) {
-			MenuItem menuItem = this.menuItems.get(i);
-			if(i == this.selectedIndex) {
-				menuItem.setSelected(true);
+				return;
 			} else {
-				menuItem.setSelected(false);
+				newIndex++;
 			}
 		}
+
+		if(e.getKeyCode() == KeyEvent.VK_DOWN) {
+			newIndex++;
+		} else if(e.getKeyCode() == KeyEvent.VK_UP) {
+			newIndex--;
+		}
 		
+		this.wrapAndSetIndex(newIndex);
+		
+		super.keyPressed(e);
+
+	}
+	
+	private void wrapAndSetIndex(int newIndex) {
+		int wrap = this.menuItems.size();
+		newIndex = (newIndex % wrap + wrap) % wrap;
+
+		this.selectIndex(newIndex);
 	}
 	
 	@Override
@@ -74,6 +97,8 @@ public abstract class MenuComponent extends ComponentBase {
 			renderableText.render(graphics);
 
 		}
+		
+		super.render(graphics);
 		
 	}
 

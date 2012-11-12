@@ -6,7 +6,7 @@ import org.seattlegamer.spacegame.communication.ComponentTransition;
 import org.seattlegamer.spacegame.communication.ExitGame;
 import org.seattlegamer.spacegame.communication.Handler;
 import org.seattlegamer.spacegame.components.ComponentBase;
-import org.seattlegamer.spacegame.components.MainMenuComponent;
+import org.seattlegamer.spacegame.components.MainMenu;
 
 public class Engine implements Handler {
 
@@ -27,7 +27,7 @@ public class Engine implements Handler {
 		this.mouseInput = mouseInput;
 		this.rateLimiter = rateLimiter;
 
-		this.setComponent(new MainMenuComponent(this.bus));
+		this.setComponent(new MainMenu(this.bus));
 	}
 	
 	public void setComponent(ComponentBase component) {

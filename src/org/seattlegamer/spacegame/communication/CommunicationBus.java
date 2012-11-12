@@ -46,12 +46,12 @@ public class CommunicationBus implements Bus {
 			for(final Handler handler : this.handlers) {
 				if(handler.canHandle(command)) {
 					try {
-					executor.execute(new Runnable() {
-						@Override
-						public void run() {
-							handler.handle(command);
-						}
-					});
+						executor.execute(new Runnable() {
+							@Override
+							public void run() {
+								handler.handle(command);
+							}
+						});
 					} catch(RejectedExecutionException e) {
 						logger.warn("Bus faulted on " + command.toString());
 					}

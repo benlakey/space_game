@@ -42,7 +42,7 @@ public class GameComponent extends ComponentBase {
 	public void keyPressed(KeyEvent e) {
 		
 		if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-			this.bus.send(new ComponentTransition(new MainMenuComponent(this.bus)));
+			this.bus.send(new ComponentTransition(new MainMenu(this.bus)));
 		}
 
 		super.keyPressed(e);
