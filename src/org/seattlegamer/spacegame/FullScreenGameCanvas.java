@@ -9,24 +9,33 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
 import java.awt.image.BufferStrategy;
 
+import org.seattlegamer.spacegame.communication.Bus;
+import org.seattlegamer.spacegame.communication.Command;
+import org.seattlegamer.spacegame.communication.ExitGame;
+
 public class FullScreenGameCanvas extends Canvas implements GameCanvas {
 
 	private static final long serialVersionUID = 1L;
 	private static final int bufferCount = 2;
+	
+	private final Frame frame;
+	private final Bus bus;
 
-	public FullScreenGameCanvas(String title, KeyboardInput keyboardInput, MouseInput mouseInput) {
+	public FullScreenGameCanvas(Bus bus, String title, KeyboardInput keyboardInput, MouseInput mouseInput) {
+
+		this.bus = bus;
 
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	    this.setBounds(0, 0, screenSize.width, screenSize.height);
 		this.setIgnoreRepaint(true);
 
-		Frame frame = new Frame(title);
-		frame.add(this);
-		frame.setUndecorated(true);
-		frame.setIgnoreRepaint(true);
-		frame.pack();
-		frame.setResizable(false);
-		frame.setVisible(true);
+		this.frame = new Frame(title);
+		this.frame.add(this);
+		this.frame.setUndecorated(true);
+		this.frame.setIgnoreRepaint(true);
+		this.frame.pack();
+		this.frame.setResizable(false);
+		this.frame.setVisible(true);
 
 		this.addKeyListener(keyboardInput);
 		this.addMouseListener(mouseInput);
@@ -39,21 +48,16 @@ public class FullScreenGameCanvas extends Canvas implements GameCanvas {
 	}
 
 	private void setFullscreen(Frame frame) {
+
 		GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		GraphicsDevice graphicsDevice = graphicsEnvironment.getDefaultScreenDevice();
 		
 		if (!graphicsDevice.isFullScreenSupported()) {
             throw new RuntimeException("Full screen mode not supported.");
         }
-
-		//TODO: Oracle introduced a bug:  http://stackoverflow.com/questions/13064607
-		//Uncomment the following once there is resolution to that issue.
-		//graphicsDevice.setFullScreenWindow(frame);
-		
-		//Alternative true fullscreen on Mac OS X for debugging purposes (do not use in production code!)
-		//enableOSXFullscreen(frame);
 		
 		//TODO: set display modes instead of just running with the current default
+
 	}
 	
 	
@@ -67,6 +71,34 @@ public class FullScreenGameCanvas extends Canvas implements GameCanvas {
 	@Override
 	public void showNextBuffer() {
 		this.getBufferStrategy().show();
+	}
+
+	@Override
+	public <T extends Command> boolean canHandle(T command) {
+		return command instanceof ExitGame;
+	}
+
+	@Override
+	public void handle(Command command) {
+
+		ExitGame exitGameCommand = (ExitGame)command;
+		
+		if(exitGameCommand.isCanvasDisposed()) {
+			return;
+		}
+		
+		if(!exitGameCommand.isEngineStopped()) {
+			return;
+		}
+		
+		this.frame.dispose();
+		
+		ExitGame newExitGameCommand = new ExitGame();
+		newExitGameCommand.setEngineStopped(true);
+		newExitGameCommand.setCanvasDisposed(true);
+		
+		this.bus.send(newExitGameCommand);
+
 	}
 
 }

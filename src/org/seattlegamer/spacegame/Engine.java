@@ -1,27 +1,24 @@
 package org.seattlegamer.spacegame;
 
-import org.apache.log4j.Logger;
 import org.seattlegamer.spacegame.communication.Bus;
-import org.seattlegamer.spacegame.communication.ComponentTransitionHandler;
-import org.seattlegamer.spacegame.communication.ExitGameHandler;
-import org.seattlegamer.spacegame.communication.NewGameHandler;
+import org.seattlegamer.spacegame.communication.Command;
+import org.seattlegamer.spacegame.communication.ComponentTransition;
+import org.seattlegamer.spacegame.communication.ExitGame;
+import org.seattlegamer.spacegame.communication.Handler;
 import org.seattlegamer.spacegame.components.ComponentBase;
 import org.seattlegamer.spacegame.components.MainMenuComponent;
 
-public class Engine {
+public class Engine implements Handler {
 
-	private static Logger logger = Logger.getLogger(Engine.class);
-	private static final Object componentLock = new Object();
-	
-	private boolean running;
+	private volatile boolean stopRequested;
+	private volatile ComponentBase currentComponent;
+
 	private long lastLoopTimestamp;
 	private final Renderer renderer;
 	private final Bus bus;
 	private final KeyboardInput keyboardInput;
 	private final MouseInput mouseInput;
 	private final RateLimiter rateLimiter;
-	private ComponentBase currentComponent;
-	private ComponentBase nextComponent;
 
 	public Engine(Renderer renderer, Bus bus, KeyboardInput keyboardInput, MouseInput mouseInput, RateLimiter rateLimiter) {
 		this.renderer = renderer;
@@ -29,35 +26,25 @@ public class Engine {
 		this.keyboardInput = keyboardInput;
 		this.mouseInput = mouseInput;
 		this.rateLimiter = rateLimiter;
-		
-		this.bus.register(new ComponentTransitionHandler(this));
-		this.bus.register(new ExitGameHandler());
-		this.bus.register(new NewGameHandler(this.bus));
-		
+
 		this.setComponent(new MainMenuComponent(this.bus));
 	}
 	
 	public void setComponent(ComponentBase component) {
-		synchronized(componentLock) {
-			this.nextComponent = component;
-		}
-	}
-	
-	private void attachInputControlToCurrentComponent() {
-
-		logger.info("Attaching input control to component: " + this.currentComponent);
+		
+		this.currentComponent = component;
 		
 		this.keyboardInput.setKeyListener(this.currentComponent);
 		this.mouseInput.setMouseListener(this.currentComponent);
 		this.mouseInput.setMouseMotionListener(this.currentComponent);
-
+		
 	}
-	
+
 	public void run() {
 
-		this.running = true;
+		this.stopRequested = false;
 
-		while(running) {
+		while(!this.stopRequested) {
 			
 			long now = System.currentTimeMillis();
 			long elapsed = now - this.lastLoopTimestamp;
@@ -65,20 +52,39 @@ public class Engine {
 			
 			long elapsedTimeMillis = elapsed;
 
-			synchronized(componentLock) {
-				if(this.nextComponent != null) {
-					this.currentComponent = this.nextComponent;
-					this.attachInputControlToCurrentComponent();
-					this.nextComponent = null;
-				}
-			}
-			
 			this.currentComponent.update(elapsedTimeMillis);
 			this.renderer.draw(this.currentComponent);
 
 			this.rateLimiter.blockAsNeeded(System.currentTimeMillis());
 
 		}
+		
+		ExitGame exitGameCommand = new ExitGame();
+		exitGameCommand.setEngineStopped(true);
+		
+		this.bus.send(exitGameCommand);
+
+	}
+
+	@Override
+	public <T extends Command> boolean canHandle(T command) {
+		return command instanceof ExitGame || command instanceof ComponentTransition;
+	}
+
+	@Override
+	public void handle(Command command) {
+		
+		if(command instanceof ExitGame) {
+			ExitGame exitGameCommand = (ExitGame)command;
+			if(!exitGameCommand.isEngineStopped()) {
+				this.stopRequested = true;
+			}
+		} else if(command instanceof ComponentTransition) {
+			ComponentTransition transition = (ComponentTransition)command;
+			ComponentBase newComponent = transition.getNewComponent();
+			this.setComponent(newComponent);
+		}
+		
 		
 	}
 
