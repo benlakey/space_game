@@ -2,11 +2,11 @@ package org.seattlegamer.spacegame;
 
 import org.seattlegamer.spacegame.sprites.Sprite;
 
-public class Planet {
+public class SpaceBody {
 
 	private final Sprite sprite;
 
-	public Planet(Sprite sprite) {
+	public SpaceBody(Sprite sprite) {
 		this.sprite = sprite;
 	}
 

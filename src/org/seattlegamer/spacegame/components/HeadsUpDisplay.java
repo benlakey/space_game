@@ -7,10 +7,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.seattlegamer.spacegame.RenderableText;
+import org.seattlegamer.spacegame.communication.Command;
+import org.seattlegamer.spacegame.communication.Handler;
+import org.seattlegamer.spacegame.communication.HealthUpdate;
 import org.seattlegamer.spacegame.config.GameSettings;
 import org.seattlegamer.spacegame.utils.GraphicsUtils;
 
-public class HeadsUpDisplay extends ComponentBase {
+public class HeadsUpDisplay extends ComponentBase implements Handler {
 
 	private static final String HEALTH_REPORT_FORMAT = "%s: \u2665 %d";
 	private static final Font HEALTH_REPORT_FONT = new Font(GameSettings.getFont(), Font.PLAIN, 24);
@@ -20,9 +23,20 @@ public class HeadsUpDisplay extends ComponentBase {
 	public HeadsUpDisplay() {
 		this.playerHealths = new HashMap<String, RenderableText>();
 	}
+	
+	@Override
+	public <T extends Command> boolean canHandle(T command) {
+		return command instanceof HealthUpdate;
+	}
 
-	public void updatePlayerHealth(String name, int health) {
-
+	@Override
+	public void handle(Command command) {
+		
+		HealthUpdate healthUpdate = (HealthUpdate)command;
+		
+		String name = healthUpdate.getName();
+		int health = healthUpdate.getHealth();
+		
 		String newText = String.format(HEALTH_REPORT_FORMAT, name, health);
 
 		if(this.playerHealths.containsKey(name)) {
@@ -31,7 +45,7 @@ public class HeadsUpDisplay extends ComponentBase {
 		} else {
 			this.playerHealths.put(name, new RenderableText(newText, HEALTH_REPORT_FONT));
 		}
-
+		
 	}
 
 	@Override
@@ -49,10 +63,11 @@ public class HeadsUpDisplay extends ComponentBase {
 			currentRenderableTextY -= renderableTextSize.height;
 
 			renderableText.getPosition().y = currentRenderableTextY;
-
 			renderableText.render(graphics);
 			
 		}
+		
+		super.render(graphics);
 		
 	}
 

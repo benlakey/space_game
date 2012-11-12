@@ -2,8 +2,7 @@ package org.seattlegamer.spacegame;
 
 public enum PlanetType {
 
-	MARS("assets/mars.png"),
-	EARTH("assets/earth.png");
+	MARS("assets/mars.png");
 	
 	private String assetPath;
 	

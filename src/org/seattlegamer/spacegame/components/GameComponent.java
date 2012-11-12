@@ -1,39 +1,32 @@
 package org.seattlegamer.spacegame.components;
 
-import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
-import java.util.List;
 
 import org.seattlegamer.spacegame.GameMap;
 import org.seattlegamer.spacegame.Player;
-import org.seattlegamer.spacegame.Renderable;
 import org.seattlegamer.spacegame.communication.Bus;
 import org.seattlegamer.spacegame.communication.ComponentTransition;
-import org.seattlegamer.spacegame.sprites.Sprite;
+import org.seattlegamer.spacegame.communication.HealthUpdate;
 
 public class GameComponent extends ComponentBase {
 
 	private final Bus bus;
-	private final List<Player> players;
-	private final GameMap gameMap;
-	private final HeadsUpDisplay headsUpDisplay;
-	private Point mouseDragLast;
+	private final Player player1;
+	private final Player player2;
 	
-	public GameComponent(Bus bus, List<Player> players, GameMap gameMap) {
+	public GameComponent(Bus bus, Player player1, Player player2, GameMap gameMap, HeadsUpDisplay headsUpDisplay) {
 		this.bus = bus;
-		this.players = players;
-		this.gameMap = gameMap;
-		this.headsUpDisplay = new HeadsUpDisplay();
+		this.player1 = player1;
+		this.player2 = player2;
+		this.subComponents.add(gameMap);
+		this.subComponents.add(headsUpDisplay);
+		
 		this.initializeHUD();
 	}
 	
 	private void initializeHUD() {
-		for(Player player : players) {
-			this.headsUpDisplay.updatePlayerHealth(player.getName(), player.getHealth());
-		}
-		this.subComponents.add(this.headsUpDisplay);
+		this.bus.send(new HealthUpdate(player1.getName(), player1.getHealth()));
+		this.bus.send(new HealthUpdate(player2.getName(), player2.getHealth()));
 	}
 
 	@Override
@@ -44,44 +37,6 @@ public class GameComponent extends ComponentBase {
 		}
 
 		super.keyPressed(e);
-		
-	}
-	
-	@Override
-	public void mousePressed(MouseEvent e) {
-		
-		this.mouseDragLast = e.getPoint();
-		
-		super.mousePressed(e);
-		
-	}
-	
-	@Override
-	public void mouseDragged(MouseEvent e) {
-
-		int distanceDraggedX = e.getPoint().x - this.mouseDragLast.x;
-		int distanceDraggedY = e.getPoint().y - this.mouseDragLast.y;
-		
-		for(Sprite sprite : this.gameMap.getSprites()) {
-			Point currentPosition = sprite.getPosition();
-			currentPosition.x += distanceDraggedX;
-			currentPosition.y += distanceDraggedY;
-		}
-		
-		this.mouseDragLast = e.getPoint();
-		
-		super.mouseDragged(e);
-
-	}
-
-	@Override
-	public void render(Graphics2D graphics) {
-		
-		for(Renderable renderable : this.gameMap.getSprites()) {
-			renderable.render(graphics);
-		}
-		
-		this.headsUpDisplay.render(graphics);
 		
 	}
 

@@ -22,7 +22,7 @@ public class NamingMenu extends MenuComponent {
 		
 		this.addMenuItem(player1Input);
 		this.addMenuItem(player2Input);
-		this.addMenuItem(new MenuItem("Start!", newGameCommand));
+		this.addMenuItem(new MenuItem("Start!", this.newGameCommand));
 		
 		this.selectIndex(0);
 	}

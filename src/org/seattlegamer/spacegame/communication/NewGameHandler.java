@@ -1,12 +1,10 @@
 package org.seattlegamer.spacegame.communication;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import org.seattlegamer.spacegame.GameMap;
 import org.seattlegamer.spacegame.Player;
 import org.seattlegamer.spacegame.components.ComponentBase;
 import org.seattlegamer.spacegame.components.GameComponent;
+import org.seattlegamer.spacegame.components.HeadsUpDisplay;
 
 public class NewGameHandler implements Handler {
 
@@ -26,13 +24,16 @@ public class NewGameHandler implements Handler {
 
 		NewGame newGame = (NewGame)command;
 
-		List<Player> players = new LinkedList<Player>();
-
-		players.add(new Player(newGame.getPlayer1Name()));
-		players.add(new Player(newGame.getPlayer2Name()));
-		
 		GameMap testMap = GameMap.load(newGame.getMapResource());
-		ComponentBase gameComponent = new GameComponent(this.bus, players, testMap);
+		
+		Player player1 = new Player(newGame.getPlayer1Name(), testMap.getPlayer1SpaceBody());
+		Player player2 = new Player(newGame.getPlayer2Name(), testMap.getPlayer2SpaceBody());
+		
+		HeadsUpDisplay headsUpDisplay = new HeadsUpDisplay();
+		
+		this.bus.register(headsUpDisplay);
+		
+		ComponentBase gameComponent = new GameComponent(this.bus, player1, player2, testMap, headsUpDisplay);
 		ComponentTransition transition = new ComponentTransition(gameComponent);
 		
 		this.bus.send(transition);
