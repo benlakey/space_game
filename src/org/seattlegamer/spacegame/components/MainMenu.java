@@ -12,7 +12,7 @@ public class MainMenu extends MenuComponent {
 		super(bus);
 
 		this.addMenuItem(new MenuItem("New Game", new ComponentTransition(new NamingMenu(this.bus))));
-		this.addMenuItem(new MenuItem("Credits", null));
+		this.addMenuItem(new MenuItem("Credits", new ComponentTransition(new CreditsMenu(this.bus))));
 		this.addMenuItem(new MenuItem("Exit", new ExitGame()));
 		
 		this.getIndex(0).setSelected(true);
