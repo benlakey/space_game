@@ -2,6 +2,7 @@ package org.seattlegamer.spacegame;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.util.Collection;
@@ -9,9 +10,7 @@ import java.util.LinkedList;
 import java.util.Random;
 
 import org.seattlegamer.spacegame.components.ComponentBase;
-import org.seattlegamer.spacegame.sprites.FilesystemBasedSpriteCache;
-import org.seattlegamer.spacegame.sprites.Sprite;
-import org.seattlegamer.spacegame.sprites.SpriteCache;
+import org.seattlegamer.spacegame.resources.ResourceCache;
 import org.seattlegamer.spacegame.utils.GraphicsUtils;
 
 public class GameMap extends ComponentBase {
@@ -100,19 +99,19 @@ public class GameMap extends ComponentBase {
 	}
 
 	private static SpaceBody loadHardcodedPlanet() {
-		SpriteCache cache = FilesystemBasedSpriteCache.get();
-		Sprite sprite = cache.getSprite(PlanetType.MARS.getAssetPath());
-		Point randomPosition = getRandomPointOnScreen();
-		sprite.setPosition(randomPosition);
+		Image image = ResourceCache.getImage(PlanetType.MARS.getAssetPath());
+		Sprite sprite = new Sprite(image);
+		setAtRandomPointOnScreen(sprite);
 		return new SpaceBody(sprite);
 	}
 	
-	private static Point getRandomPointOnScreen() {
+	private static void setAtRandomPointOnScreen(Sprite sprite) {
 		Dimension currentScreenDimension = GraphicsUtils.getCurrentScreenDimension();
 		Random random = new Random();
-		int x = random.nextInt(currentScreenDimension.width);
-		int y = random.nextInt(currentScreenDimension.height);
-		return new Point(x, y);
+		int x = random.nextInt(currentScreenDimension.width - sprite.getWidth());
+		int y = random.nextInt(currentScreenDimension.height - sprite.getHeight());
+		Point randomPosition = new Point(x, y);
+		sprite.setPosition(randomPosition);
 	}
 
 }

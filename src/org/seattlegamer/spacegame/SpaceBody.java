@@ -1,6 +1,5 @@
 package org.seattlegamer.spacegame;
 
-import org.seattlegamer.spacegame.sprites.Sprite;
 
 public class SpaceBody {
 

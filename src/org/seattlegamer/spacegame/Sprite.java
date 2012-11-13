@@ -1,10 +1,9 @@
-package org.seattlegamer.spacegame.sprites;
+package org.seattlegamer.spacegame;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 
-import org.seattlegamer.spacegame.Renderable;
 
 public class Sprite implements Renderable {
 

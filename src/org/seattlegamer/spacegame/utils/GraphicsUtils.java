@@ -5,9 +5,14 @@ import java.awt.Dimension;
 import java.awt.DisplayMode;
 import java.awt.Font;
 import java.awt.FontMetrics;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.Image;
+import java.awt.Transparency;
+import java.awt.image.BufferedImage;
 
 public class GraphicsUtils {
 	
@@ -50,6 +55,25 @@ public class GraphicsUtils {
 		double screenWidth = currentScreenDimension.getWidth();
 		double centerX = screenWidth / 2;
 		return (int) centerX;
+	}
+	
+	public static Image bufferedImageToAcceleratedImage(BufferedImage bufferedImage) {
+		
+		GraphicsConfiguration graphicsConfiguration = GraphicsEnvironment
+				.getLocalGraphicsEnvironment()
+				.getDefaultScreenDevice()
+				.getDefaultConfiguration();
+			
+		Image acceleratedImage = graphicsConfiguration.createCompatibleImage(
+				bufferedImage.getWidth(), 
+				bufferedImage.getHeight(),
+				Transparency.BITMASK);
+		
+		Graphics graphicsForAcceleratedImage = acceleratedImage.getGraphics();
+		graphicsForAcceleratedImage.drawImage(bufferedImage, 0, 0, null);
+		
+		return acceleratedImage;
+	
 	}
 
 }
