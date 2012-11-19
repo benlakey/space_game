@@ -13,12 +13,6 @@ import org.seattlegamer.spacegame.utils.GraphicsUtils;
 public class ImageResourceLoader implements ResourceLoader<Image> {
 
 	@Override
-	public Class<Image> getLoadableType() {
-		//yay java type erasure!
-		return Image.class;
-	}
-
-	@Override
 	public Image load(String name) throws IOException {
 
 		ClassLoader classLoader = this.getClass().getClassLoader();
@@ -31,6 +25,11 @@ public class ImageResourceLoader implements ResourceLoader<Image> {
 
 		return GraphicsUtils.bufferedImageToAcceleratedImage(bufferedImage);
 
+	}
+
+	@Override
+	public Class<Image> getResourceType() {
+		return Image.class;
 	}
 
 }

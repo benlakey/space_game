@@ -1,91 +1,80 @@
 package org.seattlegamer.spacegame;
 
-import org.seattlegamer.spacegame.communication.Bus;
-import org.seattlegamer.spacegame.communication.Command;
-import org.seattlegamer.spacegame.communication.ComponentTransition;
-import org.seattlegamer.spacegame.communication.ExitGame;
-import org.seattlegamer.spacegame.communication.Handler;
-import org.seattlegamer.spacegame.components.ComponentBase;
-import org.seattlegamer.spacegame.components.MainMenu;
+import java.awt.Canvas;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.image.BufferStrategy;
 
-public class Engine implements Handler {
+import org.seattlegamer.spacegame.utils.Throttle;
 
-	private volatile boolean stopRequested;
-	private volatile ComponentBase currentComponent;
+public class Engine {
 
-	private long lastLoopTimestamp;
-	private final Renderer renderer;
-	private final Bus bus;
-	private final KeyboardInput keyboardInput;
-	private final MouseInput mouseInput;
-	private final RateLimiter rateLimiter;
+	private long lastMillis;
+	private final Throttle throttle;
+	private final Input input;
+	private final Canvas canvas;
+	private final StateManager stateManager;
 
-	public Engine(Renderer renderer, Bus bus, KeyboardInput keyboardInput, MouseInput mouseInput, RateLimiter rateLimiter) {
-		this.renderer = renderer;
-		this.bus = bus;
-		this.keyboardInput = keyboardInput;
-		this.mouseInput = mouseInput;
-		this.rateLimiter = rateLimiter;
+	public Engine(Throttle throttle, Input input, Canvas canvas, StateManager stateManager) {
+		this.throttle = throttle;
+		this.input = input;
+		this.canvas = canvas;
+		this.stateManager = stateManager;
+	}
 
-		this.setComponent(new MainMenu(this.bus));
+	public void run() throws InterruptedException {
+
+		this.stateManager.handle(new OpenMenu());
+		
+		while(true) {
+
+			long nowMillis = System.currentTimeMillis();
+			long elapsedMillis = nowMillis - this.lastMillis;
+			this.lastMillis = nowMillis;
+			
+			throttle.tick(elapsedMillis);
+			long remaining = throttle.timeRemaining();
+			if(remaining != 0) {
+				Thread.sleep(remaining);
+			} else {
+				throttle.rethrottle();
+			}
+			
+			this.updateEntities(elapsedMillis);
+			this.renderEntities();
+
+		}
+
 	}
 	
-	public void setComponent(ComponentBase component) {
-		
-		this.currentComponent = component;
-		
-		this.keyboardInput.setKeyListener(this.currentComponent);
-		this.mouseInput.setMouseListener(this.currentComponent);
-		this.mouseInput.setMouseMotionListener(this.currentComponent);
-		
+	private void clearScreen(Graphics2D graphics) {
+		graphics.setColor(Color.black);
+		graphics.fillRect(0, 0, this.canvas.getWidth(), this.canvas.getHeight());
 	}
-
-	public void run() {
-
-		this.stopRequested = false;
-
-		while(!this.stopRequested) {
-			
-			long now = System.currentTimeMillis();
-			long elapsed = now - this.lastLoopTimestamp;
-			this.lastLoopTimestamp = now;
-			
-			long elapsedTimeMillis = elapsed;
-
-			this.currentComponent.update(elapsedTimeMillis);
-			this.renderer.draw(this.currentComponent);
-
-			this.rateLimiter.blockAsNeeded(System.currentTimeMillis());
-
+	
+	private void updateEntities(long elapsedMillis) {
+		for(Entity entity : this.stateManager.getEntities()) {
+			entity.update(this.input, elapsedMillis);
 		}
-		
-		ExitGame exitGameCommand = new ExitGame();
-		exitGameCommand.setEngineStopped(true);
-		
-		this.bus.send(exitGameCommand);
-
 	}
+	
+	private void renderEntities() {
 
-	@Override
-	public <T extends Command> boolean canHandle(T command) {
-		return command instanceof ExitGame || command instanceof ComponentTransition;
-	}
-
-	@Override
-	public void handle(Command command) {
+		BufferStrategy bufferStrategy = this.canvas.getBufferStrategy();
+		Graphics2D graphics = (Graphics2D)bufferStrategy.getDrawGraphics();
 		
-		if(command instanceof ExitGame) {
-			ExitGame exitGameCommand = (ExitGame)command;
-			if(!exitGameCommand.isEngineStopped()) {
-				this.stopRequested = true;
+		try {
+			graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			this.clearScreen(graphics);
+			for(Entity entity : this.stateManager.getEntities()) {
+				entity.render(graphics);
 			}
-		} else if(command instanceof ComponentTransition) {
-			ComponentTransition transition = (ComponentTransition)command;
-			ComponentBase newComponent = transition.getNewComponent();
-			this.setComponent(newComponent);
+			bufferStrategy.show();
+		} finally {
+			graphics.dispose();
 		}
-		
-		
+
 	}
 
 }

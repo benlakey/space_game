@@ -1,5 +1,7 @@
 package org.seattlegamer.spacegame.config;
 
+import java.awt.Dimension;
+
 import org.seattlegamer.spacegame.utils.PropertiesAccessor;
 
 public class GameSettings {
@@ -29,12 +31,7 @@ public class GameSettings {
 		ensureInitialized();
 		return propertiesAccessor.getInteger(KEY_TARGET_FRAMERATE, DEFAULT_TARGET_FRAMERATE);
 	}
-	
-	public static boolean shouldUseFullscreen() {
-		ensureInitialized();
-		return propertiesAccessor.getBoolean(KEY_FULLSCREEN, DEFAULT_FULLSCREEN);
-	}
-	
+
 	public static String getFont() {
 		ensureInitialized();
 		return propertiesAccessor.getString(KEY_FONT, DEFAULT_FONT);
@@ -44,6 +41,16 @@ public class GameSettings {
 		if(propertiesAccessor == null) {
 			throw new IllegalStateException("In order to use GameSettings, you must first call initialize.");
 		}
+	}
+
+	public static Dimension getWindowedDimension() {
+		//TODO: read from props
+		return new Dimension(800, 600);
+	}
+
+	public static boolean useFullscreen() {
+		ensureInitialized();
+		return propertiesAccessor.getBoolean(KEY_FULLSCREEN, DEFAULT_FULLSCREEN);
 	}
 
 }

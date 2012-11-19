@@ -1,19 +1,21 @@
 package org.seattlegamer.spacegame.config;
 
-import java.awt.Dimension;
+import java.awt.Canvas;
+import java.awt.Image;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
-import org.seattlegamer.spacegame.CanvasRenderer;
+import org.seattlegamer.spacegame.AWTInput;
 import org.seattlegamer.spacegame.Engine;
-import org.seattlegamer.spacegame.FullScreenGameCanvas;
 import org.seattlegamer.spacegame.GameCanvas;
-import org.seattlegamer.spacegame.KeyboardInput;
-import org.seattlegamer.spacegame.MouseInput;
-import org.seattlegamer.spacegame.RateLimiter;
-import org.seattlegamer.spacegame.Renderer;
-import org.seattlegamer.spacegame.WindowedGameCanvas;
-import org.seattlegamer.spacegame.communication.Bus;
-import org.seattlegamer.spacegame.communication.CommunicationBus;
-import org.seattlegamer.spacegame.communication.NewGameHandler;
+import org.seattlegamer.spacegame.Input;
+import org.seattlegamer.spacegame.StateManager;
+import org.seattlegamer.spacegame.resources.ImageResourceLoader;
+import org.seattlegamer.spacegame.resources.InMemoryResourceCache;
+import org.seattlegamer.spacegame.resources.ResourceCache;
+import org.seattlegamer.spacegame.resources.ResourceLoader;
+import org.seattlegamer.spacegame.utils.Throttle;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -26,62 +28,48 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class DependencyConfig {
-	
-	public @Bean RateLimiter rateLimiter() {
-		return new RateLimiter(GameSettings.getTargetFramerate());
-	}
-	
-	public @Bean GameCanvas gameCanvas() {
+
+	public @Bean Canvas canvas() {
 		
-		Bus bus = bus();
-		
-		GameCanvas gameCanvas = null;
-		
-		if(GameSettings.shouldUseFullscreen()) {
-			gameCanvas = new FullScreenGameCanvas(bus, GameSettings.getTitle(), keyboardInput(), mouseInput());
-		} else {
-			Dimension dimension = new Dimension(800, 600);
-			gameCanvas = new WindowedGameCanvas(bus, GameSettings.getTitle(), keyboardInput(), mouseInput(), dimension);
+		String title = GameSettings.getTitle();
+		GameCanvas screen = new GameCanvas(title);
+		Input input = input();
+		if(input instanceof MouseListener) {
+			screen.addMouseListener((MouseListener)input);
 		}
+		if(input instanceof MouseMotionListener) {
+			screen.addMouseMotionListener((MouseMotionListener)input);
+		}
+		if(input instanceof KeyListener) {
+			screen.addKeyListener((KeyListener)input);
+		}
+		return screen;
 		
-		
-		bus.register(gameCanvas);
-		
-		return gameCanvas;
 	}
-	
-	public @Bean KeyboardInput keyboardInput() {
-		return new KeyboardInput();
-	}
-	
-	public @Bean MouseInput mouseInput() {
-		return new MouseInput();
-	}
-	
-	public @Bean Renderer renderer() { 
-		GameCanvas gameCanvas = gameCanvas();
-		return new CanvasRenderer(gameCanvas);
-	}
-	
+
 	public @Bean Engine engine() {
-		
-		Renderer renderer = renderer();
-		KeyboardInput keyboardInput = keyboardInput();
-		MouseInput mouseInput = mouseInput();
-		RateLimiter rateLimiter = rateLimiter();
-		Bus bus = bus();
-		
-		Engine engine = new Engine(renderer, bus, keyboardInput, mouseInput, rateLimiter);
-
-		bus.register(engine);
-		bus.register(new NewGameHandler(bus));
-
-		return engine;
-
-	}
-
-	public @Bean Bus bus() {
-		return new CommunicationBus();
+		return new Engine(framerateThrottle(), input(), canvas(), stateManager());
 	}
 	
+	public @Bean StateManager stateManager() {
+		return new StateManager();
+	}
+	
+	public @Bean Throttle framerateThrottle() {
+		int targetFramerate = GameSettings.getTargetFramerate();
+		return new Throttle(1000 / targetFramerate);
+	}
+
+	public @Bean Input input() {
+		return new AWTInput();
+	}
+
+	public @Bean ResourceCache resourceCache() {
+		return new InMemoryResourceCache(imageResourceLoader());
+	}
+
+	public @Bean ResourceLoader<Image> imageResourceLoader() {
+		return new ImageResourceLoader();
+	}
+
 }

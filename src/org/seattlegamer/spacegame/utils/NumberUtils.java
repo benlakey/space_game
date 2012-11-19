@@ -17,5 +17,9 @@ public final class NumberUtils {
 		return val;
 		
 	}
+	
+	public static int wrap(int index, int size) {
+		return (index % size + size) % size;
+	}
 
 }

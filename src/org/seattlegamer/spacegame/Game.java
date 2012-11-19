@@ -16,7 +16,7 @@ public class Game {
 	private static Logger logger = Logger.getLogger(Game.class);
 	private static final String PROPERTIES_FILE_PATH = "/spacegame.properties";
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 
 		bootstrapConfig();
 
@@ -59,4 +59,5 @@ public class Game {
 		}
 		
 	}
+
 }

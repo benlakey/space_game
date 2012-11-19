@@ -1,4 +1,4 @@
-package org.seattlegamer.spacegame.tests;
+package org.seattlegamer.spacegame.config.tests;
 
 import static org.junit.Assert.assertEquals;
 
