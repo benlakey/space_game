@@ -1,33 +1,13 @@
 package org.seattlegamer.spacegame.ui;
 
-import java.util.UUID;
-
 import org.seattlegamer.spacegame.Message;
 
 public class MenuEntryChange implements Message {
 
-	private final UUID componentId;
-	private final String text;
-	private final boolean selected;
 	private final int index;
-	
-	public MenuEntryChange(UUID componentId, String text, boolean selected, int index) {
-		this.componentId = componentId;
-		this.text = text;
-		this.selected = selected;
-		this.index = index;
-	}
-	
-	public UUID getComponentId() {
-		return this.componentId;
-	}
-	
-	public String getText() {
-		return this.text;
-	}
 
-	public boolean isSelected() {
-		return this.selected;
+	public MenuEntryChange(int index) {
+		this.index = index;
 	}
 	
 	public int getIndex() {
@@ -36,7 +16,7 @@ public class MenuEntryChange implements Message {
 
 	@Override
 	public String toString() {
-		return String.format("%s - text: %s, selected: %s", this.getClass().getSimpleName(), this.text, this.selected);
+		return String.format("%s - index %d selected", this.getClass().getSimpleName(), this.index);
 	}
 
 }

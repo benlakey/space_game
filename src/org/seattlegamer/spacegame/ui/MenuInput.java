@@ -46,7 +46,7 @@ public class MenuInput extends Component {
 			long remaining = throttle.timeRemaining();
 			if(remaining == 0) {
 				this.selectionIndex = NumberUtils.wrap(this.selectionIndex + change, this.size);
-				this.owner.handle(new MenuEntrySelection(this.selectionIndex));
+				this.owner.handle(new MenuEntryChange(this.selectionIndex));
 				throttle.rethrottle();
 			}
 		} else {

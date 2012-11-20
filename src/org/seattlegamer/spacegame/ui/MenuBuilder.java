@@ -13,16 +13,22 @@ public class MenuBuilder {
 	}
 
 	public MenuBuilder addEntry(String text, Message message) {
-		MenuEntry menuEntry = new MenuEntry(this.menu, currentIndex, text, message, currentIndex == 0);
-		this.menu.add(new MenuEntryRenderer(this.menu, menuEntry.getId()));
-		this.menu.add(menuEntry);
-		menuEntry.advertiseSelf();
+		
+		MenuEntry entry = new MenuEntry(this.menu, this.currentIndex, message);
+		MenuEntryRenderer renderer = new MenuEntryRenderer(this.menu, this.currentIndex, text);
+		
+		this.menu.add(renderer);
+		this.menu.add(entry);
+		
 		this.currentIndex++;
+		
 		return this;
+
 	}
 	
 	public Entity build() {
 		this.menu.add(new MenuInput(this.menu, 0, currentIndex + 1));
+		this.menu.handle(new MenuEntryChange(0));
 		return this.menu;
 	}
 	

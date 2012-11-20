@@ -6,7 +6,6 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.util.UUID;
 
 import org.seattlegamer.spacegame.Handler;
 import org.seattlegamer.spacegame.Message;
@@ -21,15 +20,16 @@ public class MenuEntryRenderer extends RenderableComponent {
 	private static final Font MENU_FONT = new Font(FONT_NAME, Font.PLAIN, FONT_SIZE);
 	private static final Font MENU_FONT_SELECTED = new Font(FONT_NAME, Font.BOLD, FONT_SIZE);
 	private static final Color MENU_COLOR = Color.WHITE;
-	
-	private final UUID idToRenderFor;
+
+	private int index;
 	private String text;
 	private Font font;
-	private int index;
-	
-	public MenuEntryRenderer(Handler owner, UUID idToRenderFor) {
+
+	public MenuEntryRenderer(Handler owner, int index, String text) {
 		super(owner);
-		this.idToRenderFor = idToRenderFor;
+		this.index = index;
+		this.text = text;
+		this.font = MENU_FONT;
 	}
 
 	@Override
@@ -43,23 +43,20 @@ public class MenuEntryRenderer extends RenderableComponent {
 	}
 	
 	private void handleMenuEntryChange(MenuEntryChange change) {
-		UUID componentId = change.getComponentId();
-		if(this.idToRenderFor.equals(componentId)) {
-			this.text = change.getText();
-			if(change.isSelected()) {
-				this.font = MENU_FONT_SELECTED;
-			} else {
-				this.font = MENU_FONT;
-			}
-			this.index = change.getIndex();
+		
+		if(this.index == change.getIndex()) {
+			this.font = MENU_FONT_SELECTED;
+		} else {
+			this.font = MENU_FONT;
 		}
+
 	}
 
 	@Override
 	public void render(Graphics2D graphics) {
 
 		FontMetrics fontMetrics = graphics.getFontMetrics(this.font);
-		Dimension textSize = GraphicsUtils.measureTextPixels(fontMetrics, font, text);
+		Dimension textSize = GraphicsUtils.measureTextPixels(fontMetrics, this.font, this.text);
 
 		Rectangle screenSize = graphics.getDeviceConfiguration().getBounds();
 

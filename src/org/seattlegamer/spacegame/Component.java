@@ -2,24 +2,17 @@ package org.seattlegamer.spacegame;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 public abstract class Component implements Handler {
 
 	protected final Handler owner;
-	protected final UUID id;
 	private boolean enabled;
 	private Set<ComponentGroup> groups;
 	
 	public Component(Handler owner) {
 		this.owner = owner;
-		this.id = UUID.randomUUID();
 		this.enabled = true;
 		this.groups = new HashSet<ComponentGroup>();
-	}
-	
-	public UUID getId() {
-		return this.id;
 	}
 
 	public void applyGroup(ComponentGroup group) {
