@@ -7,9 +7,11 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 import org.seattlegamer.spacegame.AWTInput;
+import org.seattlegamer.spacegame.AWTRenderer;
 import org.seattlegamer.spacegame.Engine;
 import org.seattlegamer.spacegame.GameCanvas;
 import org.seattlegamer.spacegame.Input;
+import org.seattlegamer.spacegame.Renderer;
 import org.seattlegamer.spacegame.StateManager;
 import org.seattlegamer.spacegame.resources.ImageResourceLoader;
 import org.seattlegamer.spacegame.resources.InMemoryResourceCache;
@@ -48,7 +50,11 @@ public class DependencyConfig {
 	}
 
 	public @Bean Engine engine() {
-		return new Engine(framerateThrottle(), input(), canvas(), stateManager());
+		return new Engine(framerateThrottle(), input(), renderer(), stateManager());
+	}
+	
+	public @Bean Renderer renderer() {
+		return new AWTRenderer(canvas());
 	}
 	
 	public @Bean StateManager stateManager() {
