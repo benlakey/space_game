@@ -1,4 +1,4 @@
-package org.seattlegamer.spacegame.menu;
+package org.seattlegamer.spacegame.ui;
 
 import org.seattlegamer.spacegame.Entity;
 import org.seattlegamer.spacegame.Message;

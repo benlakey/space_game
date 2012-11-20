@@ -1,17 +1,17 @@
-package org.seattlegamer.spacegame.menu;
+package org.seattlegamer.spacegame.ui;
 
 import java.util.UUID;
 
 import org.seattlegamer.spacegame.Message;
 
-public class MenuEntryChanged implements Message {
+public class MenuEntryChange implements Message {
 
 	private final UUID componentId;
 	private final String text;
 	private final boolean selected;
 	private final int index;
 	
-	public MenuEntryChanged(UUID componentId, String text, boolean selected, int index) {
+	public MenuEntryChange(UUID componentId, String text, boolean selected, int index) {
 		this.componentId = componentId;
 		this.text = text;
 		this.selected = selected;

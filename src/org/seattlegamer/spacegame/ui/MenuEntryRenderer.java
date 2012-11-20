@@ -1,4 +1,4 @@
-package org.seattlegamer.spacegame.menu;
+package org.seattlegamer.spacegame.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -35,23 +35,23 @@ public class MenuEntryRenderer extends RenderableComponent {
 	@Override
 	public void handle(Message message) {
 		
-		if(message instanceof MenuEntryChanged) {
-			MenuEntryChanged menuConfiguration = (MenuEntryChanged)message;
-			this.handleMenuEntryConfiguration(menuConfiguration);
+		if(message instanceof MenuEntryChange) {
+			MenuEntryChange change = (MenuEntryChange)message;
+			this.handleMenuEntryChange(change);
 		}
 
 	}
 	
-	private void handleMenuEntryConfiguration(MenuEntryChanged menuConfiguration) {
-		UUID componentId = menuConfiguration.getComponentId();
+	private void handleMenuEntryChange(MenuEntryChange change) {
+		UUID componentId = change.getComponentId();
 		if(this.idToRenderFor.equals(componentId)) {
-			this.text = menuConfiguration.getText();
-			if(menuConfiguration.isSelected()) {
+			this.text = change.getText();
+			if(change.isSelected()) {
 				this.font = MENU_FONT_SELECTED;
 			} else {
 				this.font = MENU_FONT;
 			}
-			this.index = menuConfiguration.getIndex();
+			this.index = change.getIndex();
 		}
 	}
 

@@ -1,12 +1,12 @@
-package org.seattlegamer.spacegame.menu;
+package org.seattlegamer.spacegame.ui;
 
 import org.seattlegamer.spacegame.Message;
 
-public class MenuEntryExecuted implements Message {
+public class MenuEntryExecution implements Message {
 	
 	private final int selectionIndex;
 	
-	public MenuEntryExecuted(int selectionIndex) {
+	public MenuEntryExecution(int selectionIndex) {
 		this.selectionIndex = selectionIndex;
 	}
 	

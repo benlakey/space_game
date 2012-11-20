@@ -1,4 +1,4 @@
-package org.seattlegamer.spacegame.menu;
+package org.seattlegamer.spacegame.ui;
 
 import org.seattlegamer.spacegame.Component;
 import org.seattlegamer.spacegame.ComponentGroup;
@@ -26,23 +26,23 @@ public class MenuEntry extends Component {
 	}
 	
 	public void advertiseSelf() {
-		this.owner.handle(new MenuEntryChanged(this.id, this.text, this.selected, this.index));
+		this.owner.handle(new MenuEntryChange(this.id, this.text, this.selected, this.index));
 	}
 	
 	@Override
 	public void handle(Message message) {
 		
-		if(message instanceof MenuEntrySelected) {
-			MenuEntrySelected selectMenuIndex = (MenuEntrySelected)message;
-			this.handleSelectMenuIndex(selectMenuIndex);
-		} else if(message instanceof MenuEntryExecuted) {
-			this.handleMenuSelectionExecuted();
+		if(message instanceof MenuEntrySelection) {
+			MenuEntrySelection menuEntrySelection = (MenuEntrySelection)message;
+			this.handleMenuEntrySelection(menuEntrySelection);
+		} else if(message instanceof MenuEntryExecution) {
+			this.handleMenuEntryExecution();
 		}
 
 	}
 
-	private void handleSelectMenuIndex(MenuEntrySelected selectMenuIndex) {
-		if(this.index == selectMenuIndex.getIndex()) {
+	private void handleMenuEntrySelection(MenuEntrySelection menuEntrySelection) {
+		if(this.index == menuEntrySelection.getIndex()) {
 			this.selected = true;
 		} else {
 			this.selected = false;
@@ -51,7 +51,7 @@ public class MenuEntry extends Component {
 		this.advertiseSelf();
 	}
 	
-	private void handleMenuSelectionExecuted() {
+	private void handleMenuEntryExecution() {
 		if(this.selected) {
 			this.owner.handle(this.message);
 		}

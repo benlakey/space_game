@@ -1,4 +1,4 @@
-package org.seattlegamer.spacegame.menu;
+package org.seattlegamer.spacegame.ui;
 
 import java.awt.event.KeyEvent;
 
@@ -35,7 +35,7 @@ public class MenuInput extends Component {
 		checkThrottledInput(input, KeyEvent.VK_DOWN, elapsedMillis, this.downThrottle, 1);
 		
 		if(input.isKeyInputActive(KeyEvent.VK_ENTER)) {
-			this.owner.handle(new MenuEntryExecuted(this.selectionIndex));
+			this.owner.handle(new MenuEntryExecution(this.selectionIndex));
 		}
 
 	}
@@ -46,7 +46,7 @@ public class MenuInput extends Component {
 			long remaining = throttle.timeRemaining();
 			if(remaining == 0) {
 				this.selectionIndex = NumberUtils.wrap(this.selectionIndex + change, this.size);
-				this.owner.handle(new MenuEntrySelected(this.selectionIndex));
+				this.owner.handle(new MenuEntrySelection(this.selectionIndex));
 				throttle.rethrottle();
 			}
 		} else {

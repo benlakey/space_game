@@ -3,7 +3,7 @@ package org.seattlegamer.spacegame;
 import java.util.Collection;
 import java.util.LinkedList;
 
-import org.seattlegamer.spacegame.menu.MenuBuilder;
+import org.seattlegamer.spacegame.ui.MenuBuilder;
 
 public class StateManager implements Handler {
 
