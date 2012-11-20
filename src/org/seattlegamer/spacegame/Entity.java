@@ -6,7 +6,7 @@ import java.util.LinkedList;
 
 import org.apache.log4j.Logger;
 
-public class Entity implements Handler {
+public final class Entity implements Handler {
 	
 	private static Logger logger = Logger.getLogger(Entity.class);
 
