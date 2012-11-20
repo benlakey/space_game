@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferStrategy;
+import java.util.Iterator;
 
 public class CanvasRenderer implements Renderer {
 	
@@ -23,9 +24,14 @@ public class CanvasRenderer implements Renderer {
 		try {
 			graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			this.clearScreen(graphics);
-			for(Entity entity : entities) {
+			
+			//warning! dont change this to a for(:) style loop, because we are modifying this collection inside the game as we iterate!
+			Iterator<Entity> entityIterator = entities.iterator();
+			while (entityIterator.hasNext()) {
+				Entity entity = entityIterator.next();
 				entity.render(graphics);
 			}
+
 			bufferStrategy.show();
 		} finally {
 			graphics.dispose();

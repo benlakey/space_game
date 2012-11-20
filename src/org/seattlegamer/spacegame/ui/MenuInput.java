@@ -6,6 +6,7 @@ import org.seattlegamer.spacegame.Component;
 import org.seattlegamer.spacegame.ComponentGroup;
 import org.seattlegamer.spacegame.Handler;
 import org.seattlegamer.spacegame.Input;
+import org.seattlegamer.spacegame.StateChange;
 import org.seattlegamer.spacegame.utils.NumberUtils;
 import org.seattlegamer.spacegame.utils.Throttle;
 
@@ -37,6 +38,10 @@ public class MenuInput extends Component {
 		if(input.isKeyInputActive(KeyEvent.VK_ENTER)) {
 			this.owner.handle(new MenuEntryExecution(this.selectionIndex));
 		}
+		
+		if(input.isKeyInputActive(KeyEvent.VK_ESCAPE)) {
+			this.owner.handle(StateChange.CLOSE_MENU);
+		}
 
 	}
 	
@@ -45,7 +50,7 @@ public class MenuInput extends Component {
 			throttle.tick(elapsedMillis);
 			long remaining = throttle.timeRemaining();
 			if(remaining == 0) {
-				this.selectionIndex = NumberUtils.wrap(this.selectionIndex + change, this.size);
+				this.selectionIndex = NumberUtils.wrap(this.selectionIndex + change, this.size - 1);
 				this.owner.handle(new MenuEntryChange(this.selectionIndex));
 				throttle.rethrottle();
 			}

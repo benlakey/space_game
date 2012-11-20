@@ -34,9 +34,15 @@ public final class Entity implements Handler {
 	
 	@Override
 	public void handle(Message message) {
-		logger.debug("broadcasting " + message);
+		logger.info("broadcasting " + message);
 		for(Handler handler : this.handlers) {
 			handler.handle(message);
+		}
+	}
+	
+	public void setEnabled(boolean enabled) {
+		for(Component component : this.components) {
+			component.setEnabled(enabled);
 		}
 	}
 	

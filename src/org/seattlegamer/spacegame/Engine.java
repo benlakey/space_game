@@ -1,5 +1,7 @@
 package org.seattlegamer.spacegame;
 
+import java.util.Iterator;
+
 import org.seattlegamer.spacegame.utils.Throttle;
 
 public class Engine {
@@ -19,7 +21,7 @@ public class Engine {
 
 	public void run() throws InterruptedException {
 
-		this.stateManager.handle(new OpenMenu());
+		this.stateManager.handle(StateChange.OPEN_MENU);
 		
 		while(true) {
 
@@ -35,9 +37,13 @@ public class Engine {
 				throttle.rethrottle();
 			}
 			
-			for(Entity entity : this.stateManager.getEntities()) {
+			//warning! dont change this to a for(:) style loop, because we are modifying this collection inside the game as we iterate!
+			Iterator<Entity> entityIterator = this.stateManager.getEntities().iterator();
+			while (entityIterator.hasNext()) {
+				Entity entity = entityIterator.next();
 				entity.update(this.input, elapsedMillis);
 			}
+
 			this.renderer.render(this.stateManager.getEntities());
 
 		}
