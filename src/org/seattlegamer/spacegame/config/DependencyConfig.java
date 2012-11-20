@@ -2,12 +2,8 @@ package org.seattlegamer.spacegame.config;
 
 import java.awt.Canvas;
 import java.awt.Image;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 
-import org.seattlegamer.spacegame.AWTInput;
-import org.seattlegamer.spacegame.AWTRenderer;
+import org.seattlegamer.spacegame.CanvasRenderer;
 import org.seattlegamer.spacegame.Engine;
 import org.seattlegamer.spacegame.GameCanvas;
 import org.seattlegamer.spacegame.Input;
@@ -32,21 +28,13 @@ import org.springframework.context.annotation.Configuration;
 public class DependencyConfig {
 
 	public @Bean Canvas canvas() {
-		
 		String title = GameSettings.getTitle();
 		GameCanvas screen = new GameCanvas(title);
 		Input input = input();
-		if(input instanceof MouseListener) {
-			screen.addMouseListener((MouseListener)input);
-		}
-		if(input instanceof MouseMotionListener) {
-			screen.addMouseMotionListener((MouseMotionListener)input);
-		}
-		if(input instanceof KeyListener) {
-			screen.addKeyListener((KeyListener)input);
-		}
+		screen.addKeyListener(input.getKeyListener());
+		screen.addMouseListener(input.getMouseListener());
+		screen.addMouseMotionListener(input.getMouseMotionListener());
 		return screen;
-		
 	}
 
 	public @Bean Engine engine() {
@@ -54,7 +42,7 @@ public class DependencyConfig {
 	}
 	
 	public @Bean Renderer renderer() {
-		return new AWTRenderer(canvas());
+		return new CanvasRenderer(canvas());
 	}
 	
 	public @Bean StateManager stateManager() {
@@ -67,7 +55,7 @@ public class DependencyConfig {
 	}
 
 	public @Bean Input input() {
-		return new AWTInput();
+		return new Input();
 	}
 
 	public @Bean ResourceCache resourceCache() {

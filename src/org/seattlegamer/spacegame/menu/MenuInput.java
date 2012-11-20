@@ -1,10 +1,11 @@
 package org.seattlegamer.spacegame.menu;
 
+import java.awt.event.KeyEvent;
+
 import org.seattlegamer.spacegame.Component;
 import org.seattlegamer.spacegame.ComponentGroup;
 import org.seattlegamer.spacegame.Handler;
 import org.seattlegamer.spacegame.Input;
-import org.seattlegamer.spacegame.InputCode;
 import org.seattlegamer.spacegame.utils.NumberUtils;
 import org.seattlegamer.spacegame.utils.Throttle;
 
@@ -30,10 +31,10 @@ public class MenuInput extends Component {
 	@Override
 	public void update(Input input, long elapsedMillis) {
 
-		checkThrottledInput(input, InputCode.Keyboard.UP, elapsedMillis, this.upThrottle, -1);
-		checkThrottledInput(input, InputCode.Keyboard.DOWN, elapsedMillis, this.downThrottle, 1);
+		checkThrottledInput(input, KeyEvent.VK_UP, elapsedMillis, this.upThrottle, -1);
+		checkThrottledInput(input, KeyEvent.VK_DOWN, elapsedMillis, this.downThrottle, 1);
 		
-		if(input.isKeyInputActive(InputCode.Keyboard.ACTION_PRIMARY)) {
+		if(input.isKeyInputActive(KeyEvent.VK_ENTER)) {
 			this.owner.handle(new MenuEntryExecuted(this.selectionIndex));
 		}
 

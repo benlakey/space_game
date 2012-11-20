@@ -10,7 +10,6 @@ public class MenuBuilder {
 	
 	public MenuBuilder() {
 		this.menu = new Entity();
-		
 	}
 
 	public MenuBuilder addEntry(String text, Message message) {

@@ -6,11 +6,11 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferStrategy;
 
-public class AWTRenderer implements Renderer {
+public class CanvasRenderer implements Renderer {
 	
 	private final Canvas canvas;
 
-	public AWTRenderer(Canvas canvas) {
+	public CanvasRenderer(Canvas canvas) {
 		this.canvas = canvas;
 	}
 

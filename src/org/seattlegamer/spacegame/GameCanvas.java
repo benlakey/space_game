@@ -9,7 +9,7 @@ import java.awt.Toolkit;
 
 import org.seattlegamer.spacegame.config.GameSettings;
 
-public class GameCanvas extends Canvas {
+public final class GameCanvas extends Canvas {
 
 	private static final long serialVersionUID = 1L;
 	

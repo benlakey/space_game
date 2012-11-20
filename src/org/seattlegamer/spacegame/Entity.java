@@ -7,11 +7,11 @@ import java.util.LinkedList;
 import org.apache.log4j.Logger;
 
 public final class Entity implements Handler {
-	
+
 	private static Logger logger = Logger.getLogger(Entity.class);
 
 	private final Collection<Component> components;
-	private final Collection<RenderableComponent> renderables;
+	protected final Collection<RenderableComponent> renderables;
 	private final Collection<Handler> handlers;
 
 	public Entity() {
