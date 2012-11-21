@@ -34,7 +34,7 @@ public class Engine {
 			if(remaining != 0) {
 				Thread.sleep(remaining);
 			} else {
-				throttle.rethrottle();
+				throttle.throttle();
 			}
 			
 			//warning! dont change this to a for(:) style loop, because we are modifying this collection inside the game as we iterate!

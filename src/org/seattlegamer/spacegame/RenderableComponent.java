@@ -9,4 +9,5 @@ public abstract class RenderableComponent extends Component {
 	}
 	
 	public abstract void render(Graphics2D graphics);
+
 }

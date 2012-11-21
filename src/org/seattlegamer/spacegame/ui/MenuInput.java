@@ -52,7 +52,7 @@ public class MenuInput extends Component {
 			if(remaining == 0) {
 				this.selectionIndex = NumberUtils.wrap(this.selectionIndex + change, this.size - 1);
 				this.owner.handle(new MenuEntryChange(this.selectionIndex));
-				throttle.rethrottle();
+				throttle.throttle();
 			}
 		} else {
 			throttle.unthrottle();

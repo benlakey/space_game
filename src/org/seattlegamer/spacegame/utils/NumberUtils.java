@@ -19,6 +19,9 @@ public final class NumberUtils {
 	}
 	
 	public static int wrap(int index, int size) {
+		if(size == 0) {
+			return 0;
+		}
 		return (index % size + size) % size;
 	}
 

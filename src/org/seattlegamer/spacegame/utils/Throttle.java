@@ -1,6 +1,5 @@
 package org.seattlegamer.spacegame.utils;
 
-//TODO: use this instead of RateLimiter?
 public class Throttle {
 
 	private long delayMillis;
@@ -20,12 +19,12 @@ public class Throttle {
 		return NumberUtils.<Long>clamp(remaining, 0L, Long.MAX_VALUE);
 	}
 	
-	public void unthrottle() {
-		this.millisSinceLastExecution = this.delayMillis;
-	}
-	
-	public void rethrottle() {
+	public void throttle() {
 		this.millisSinceLastExecution = 0;
 	}
 	
+	public void unthrottle() {
+		this.millisSinceLastExecution = this.delayMillis;
+	}
+
 }
