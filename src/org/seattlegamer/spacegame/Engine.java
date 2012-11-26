@@ -37,14 +37,16 @@ public class Engine {
 				throttle.throttle();
 			}
 			
+			Iterable<Entity> entities = this.stateManager.getEntities();
+			
 			//warning! dont change this to a for(:) style loop, because we are modifying this collection inside the game as we iterate!
-			Iterator<Entity> entityIterator = this.stateManager.getEntities().iterator();
+			Iterator<Entity> entityIterator = entities.iterator();
 			while (entityIterator.hasNext()) {
 				Entity entity = entityIterator.next();
 				entity.update(this.input, elapsedMillis);
 			}
 
-			this.renderer.render(this.stateManager.getEntities());
+			this.renderer.render(entities);
 
 		}
 

@@ -40,9 +40,11 @@ public final class Entity implements Handler {
 		}
 	}
 	
-	public void setEnabled(boolean enabled) {
+	public void setEnabled(ComponentGroup group, boolean enabled) {
 		for(Component component : this.components) {
-			component.setEnabled(enabled);
+			if(component.isMember(group)) {
+				component.setEnabled(enabled);
+			}
 		}
 	}
 	

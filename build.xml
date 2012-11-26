@@ -19,7 +19,7 @@
 	
 	<target name="compile">
 	    <mkdir dir="${bin-dir.classes-dir}" />
-	    <javac srcdir="${src-dir}:${test-dir}" destdir="${bin-dir.classes-dir}" includeantruntime="false">
+	    <javac srcdir="${src-dir}:${test-dir}" destdir="${bin-dir.classes-dir}" includeantruntime="false" debug="true">
 	    	<classpath>
 	    		<fileset dir="${lib-dir}" includes="**/*.jar" />
 	    	</classpath>

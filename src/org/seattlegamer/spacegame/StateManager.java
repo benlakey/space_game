@@ -22,7 +22,6 @@ public class StateManager implements Handler {
 		return this.entities;
 	}
 
-	//TODO: attach me somewhere so i can operate
 	@Override
 	public void handle(Message message) {
 		
@@ -89,7 +88,7 @@ public class StateManager implements Handler {
 	
 	private void setEnabled(ComponentGroup group, boolean enabled) {
 		for(Entity entity : this.entities) {
-			entity.setEnabled(enabled);
+			entity.setEnabled(group, enabled);
 		}
 	}
 	
