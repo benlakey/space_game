@@ -21,8 +21,6 @@ public class Engine {
 
 	public void run() throws InterruptedException {
 
-		this.stateManager.handle(StateChange.OPEN_MENU);
-		
 		while(true) {
 
 			long nowMillis = System.currentTimeMillis();

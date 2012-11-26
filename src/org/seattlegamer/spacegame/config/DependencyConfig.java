@@ -13,6 +13,7 @@ import org.seattlegamer.spacegame.resources.ImageResourceLoader;
 import org.seattlegamer.spacegame.resources.InMemoryResourceCache;
 import org.seattlegamer.spacegame.resources.ResourceCache;
 import org.seattlegamer.spacegame.resources.ResourceLoader;
+import org.seattlegamer.spacegame.ui.MainMenuState;
 import org.seattlegamer.spacegame.utils.Throttle;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -46,7 +47,7 @@ public class DependencyConfig {
 	}
 	
 	public @Bean StateManager stateManager() {
-		return new StateManager();
+		return new StateManager(new MainMenuState());
 	}
 	
 	public @Bean Throttle framerateThrottle() {

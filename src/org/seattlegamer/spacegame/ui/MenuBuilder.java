@@ -2,6 +2,7 @@ package org.seattlegamer.spacegame.ui;
 
 import org.seattlegamer.spacegame.Entity;
 import org.seattlegamer.spacegame.Message;
+import org.seattlegamer.spacegame.StateControlInput;
 
 public class MenuBuilder {
 
@@ -27,6 +28,7 @@ public class MenuBuilder {
 	}
 	
 	public Entity build() {
+		this.menu.add(new StateControlInput(this.menu));
 		this.menu.add(new MenuInput(this.menu, 0, currentIndex + 1));
 		this.menu.handle(new MenuEntryChange(0));
 		return this.menu;
