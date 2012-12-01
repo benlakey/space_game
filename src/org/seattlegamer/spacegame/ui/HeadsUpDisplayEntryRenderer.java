@@ -7,14 +7,14 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
+import org.seattlegamer.spacegame.Component;
+import org.seattlegamer.spacegame.Entity;
 import org.seattlegamer.spacegame.Handler;
-import org.seattlegamer.spacegame.Message;
-import org.seattlegamer.spacegame.RenderableComponent;
 import org.seattlegamer.spacegame.config.GameSettings;
 import org.seattlegamer.spacegame.game.PlayerStatusChange;
 import org.seattlegamer.spacegame.utils.GraphicsUtils;
 
-public class HeadsUpDisplayEntryRenderer extends RenderableComponent {
+public class HeadsUpDisplayEntryRenderer extends Component {
 
 	private static final int FONT_SIZE = 32;
 	private static final String FONT_NAME = GameSettings.getFont();
@@ -25,25 +25,21 @@ public class HeadsUpDisplayEntryRenderer extends RenderableComponent {
 	private String name;
 	private int health;
 	
-	public HeadsUpDisplayEntryRenderer(Handler owner, int playerNumber, String name) {
+	public HeadsUpDisplayEntryRenderer(Entity owner, int playerNumber, String name) {
 		super(owner);
 		this.playerNumber = playerNumber;
 		this.name = name;
 		this.health = 0;
+		this.entity.registerHandler(PlayerStatusChange.class, this.getPlayerStatusChangeHandler());
 	}
-
-	@Override
-	public void handle(Message message) {
-		
-		if(message instanceof PlayerStatusChange) {
-			PlayerStatusChange change = (PlayerStatusChange)message;
-			this.handlePlayerStatusChange(change);
-		}
-		
-	}
-
-	private void handlePlayerStatusChange(PlayerStatusChange change) {
-		this.health = change.getHealth(); 
+	
+	private Handler<PlayerStatusChange> getPlayerStatusChangeHandler() {
+		return new Handler<PlayerStatusChange>() {
+			@Override
+			public void handle(PlayerStatusChange message) {
+				health = message.getHealth(); 
+			}
+		};
 	}
 
 	@Override

@@ -1,25 +1,26 @@
 package org.seattlegamer.spacegame;
 
+import java.awt.Graphics2D;
 import java.util.EnumSet;
 
-public abstract class Component implements Handler {
+public abstract class Component {
 
-	protected final Handler owner;
+	protected final Entity entity;
 	private boolean enabled;
-	private EnumSet<ComponentGroup> groupBitMask;
-	
-	public Component(Handler owner) {
-		this.owner = owner;
+	private final EnumSet<ComponentGroup> groupBitMask;
+
+	public Component(Entity entity) {
+		this.entity = entity;
 		this.enabled = true;
 		this.groupBitMask = EnumSet.noneOf(ComponentGroup.class);
 	}
-	
-	public void applyGroup(ComponentGroup group) {
-		this.groupBitMask.add(group);
-    }
 
-    public void removeGroup(ComponentGroup group) {
-    	this.groupBitMask.remove(group);
+	public void setGroupMembership(ComponentGroup group, boolean isMember) {
+		if(isMember) {
+			this.groupBitMask.add(group);
+		} else {
+			this.groupBitMask.remove(group);
+		}
     }
 
 	public boolean isMember(ComponentGroup group) {
@@ -38,9 +39,8 @@ public abstract class Component implements Handler {
 		
 	}
 	
-	@Override
-	public void handle(Message message) {
-
+	public void render(Graphics2D graphics) {
+		
 	}
 
 	@Override

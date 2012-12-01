@@ -7,7 +7,6 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.seattlegamer.spacegame.Component;
 import org.seattlegamer.spacegame.Entity;
-import org.seattlegamer.spacegame.Handler;
 import org.seattlegamer.spacegame.Input;
 
 public class EntityTests {
@@ -37,7 +36,7 @@ public class EntityTests {
 
 		private boolean updated;
 		
-		public TestComponent(Handler owner) {
+		public TestComponent(Entity owner) {
 			super(owner);
 		}
 		
@@ -47,7 +46,7 @@ public class EntityTests {
 		}
 		
 		public Entity getOwner() {
-			return (Entity)this.owner;
+			return this.entity;
 		}
 		
 		public boolean wasUpdated() {

@@ -1,5 +1,5 @@
 package org.seattlegamer.spacegame;
 
-public interface Handler {
-	void handle(Message message);
+public interface Handler<T> {
+	void handle(T message);
 }

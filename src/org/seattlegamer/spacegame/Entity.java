@@ -2,52 +2,45 @@ package org.seattlegamer.spacegame;
 
 import java.awt.Graphics2D;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
-import org.apache.log4j.Logger;
-
-public final class Entity implements Handler {
-
-	private static Logger logger = Logger.getLogger(Entity.class);
+@SuppressWarnings("rawtypes")
+public final class Entity {
 
 	private final Collection<Component> components;
-	protected final Collection<RenderableComponent> renderables;
-	private final Collection<Handler> handlers;
+	private final Map<Class<? extends Message>, Collection<Handler>> handlerRegistry;
 
 	public Entity() {
 		this.components = new LinkedList<Component>();
-		this.renderables = new LinkedList<RenderableComponent>();
-		this.handlers = new LinkedList<Handler>();
+		this.handlerRegistry = new HashMap<Class<? extends Message>, Collection<Handler>>();
+	}
+	
+	public <T extends Message> void registerHandler(Class<T> messageClass, Handler handler) {
+		Collection<Handler> handlers = this.handlerRegistry.get(messageClass);
+		if(handlers == null) {
+			handlers = new LinkedList<Handler>();
+			this.handlerRegistry.put(messageClass, handlers);
+		}
+		handlers.add(handler);
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T> void broadcast(Class<T> messageClass, Message message) {
+		Collection<Handler> handlers = this.handlerRegistry.get(messageClass);
+		if(handlers == null) {
+			return;
+		}
+		for(Handler handler : handlers) {
+			handler.handle(message);
+		}
 	}
 
 	public void add(Component component) {
 		this.components.add(component);
-		if(component instanceof RenderableComponent) {
-			this.renderables.add((RenderableComponent)component);
-		}
-		this.handlers.add(component);
 	}
-	
-	public void registerHandler(Handler handler) {
-		this.handlers.add(handler);
-	}
-	
-	@Override
-	public void handle(Message message) {
-		logger.info("broadcasting " + message);
-		for(Handler handler : this.handlers) {
-			handler.handle(message);
-		}
-	}
-	
-	public void setEnabled(ComponentGroup group, boolean enabled) {
-		for(Component component : this.components) {
-			if(component.isMember(group)) {
-				component.setEnabled(enabled);
-			}
-		}
-	}
-	
+
 	public void update(Input input, long elapsedMillis) {
 		for(Component component : this.components) {
 			if(component.isEnabled()) {
@@ -57,9 +50,9 @@ public final class Entity implements Handler {
 	}
 	
 	public void render(Graphics2D graphics) {
-		for(RenderableComponent renderable : this.renderables) {
-			if(renderable.isEnabled()) {
-				renderable.render(graphics);
+		for(Component component : this.components) {
+			if(component.isEnabled()) {
+				component.render(graphics);
 			}
 		}
 	}

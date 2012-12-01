@@ -6,16 +6,16 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.seattlegamer.spacegame.Component;
 import org.seattlegamer.spacegame.ComponentGroup;
-import org.seattlegamer.spacegame.Handler;
+import org.seattlegamer.spacegame.Entity;
 
 
 public class ComponentTests {
 
 	@Test
 	public void canAddComponentToGroup() {
-		ComponentGroup group = ComponentGroup.GAME;
+		ComponentGroup group = ComponentGroup.MENU;
 		Component component = new TestComponent(null);
-		component.applyGroup(group);
+		component.setGroupMembership(group, true);
 		assertTrue(component.isMember(group));
 	}
 	
@@ -42,7 +42,7 @@ public class ComponentTests {
 	
 	private class TestComponent extends Component {
 
-		public TestComponent(Handler owner) {
+		public TestComponent(Entity owner) {
 			super(owner);
 		} 
 		

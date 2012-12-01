@@ -30,7 +30,7 @@ public class MenuBuilder {
 	public Entity build() {
 		this.menu.add(new StateControlInput(this.menu));
 		this.menu.add(new MenuInput(this.menu, 0, currentIndex + 1));
-		this.menu.handle(new MenuEntryChange(0));
+		this.menu.broadcast(MenuEntryChange.class, new MenuEntryChange(0));
 		return this.menu;
 	}
 	

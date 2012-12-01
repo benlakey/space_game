@@ -10,24 +10,22 @@ public class StateControlInput extends Component {
 
 	private static final Throttle exitStateThrottle = new Throttle(KEY_DELAY);
 	
-	public StateControlInput(Handler owner) {
+	public StateControlInput(Entity owner) {
 		super(owner);
 	}
 
 	@Override
 	public void update(Input input, long elapsedMillis) {
-		
-		checkThrottledInput(input, KeyEvent.VK_ESCAPE, elapsedMillis, exitStateThrottle, new ExitStateCommand());
-		
+		checkThrottledInput(input, KeyEvent.VK_ESCAPE, elapsedMillis, exitStateThrottle, ExitStateCommand.class, new ExitStateCommand());
 	}
 	
 	//TODO: this was duplicated in part from MenuInput. Need to encapsulate this somewhere.
-	private void checkThrottledInput(Input input, int inputCode, long elapsedMillis, Throttle throttle, Message message) {
+	private void checkThrottledInput(Input input, int inputCode, long elapsedMillis, Throttle throttle, Class<?> messageClass, Message message) {
 		if(input.isKeyInputActive(inputCode)) {
 			throttle.tick(elapsedMillis);
 			long remaining = throttle.timeRemaining();
 			if(remaining == 0) {
-				this.owner.handle(message);
+				this.entity.broadcast(messageClass, message);
 				throttle.throttle();
 			}
 		} else {

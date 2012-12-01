@@ -2,14 +2,13 @@ package org.seattlegamer.spacegame;
 
 import java.util.Stack;
 
-public class StateManager implements Handler {
+public class StateManager {
 
 	private final Stack<State> states;
 	
-	public StateManager(State startState) {
+	public StateManager(State initialState) {
 		this.states = new Stack<State>();
-		startState.load(this);
-		this.states.push(startState);
+		this.loadState(initialState);
 	}
 	
 	public Iterable<Entity> getEntities() {
@@ -17,27 +16,37 @@ public class StateManager implements Handler {
 		return currentState.getEntities();
 	}
 	
-	@Override
-	public void handle(Message message) {
-		if(message instanceof LoadStateCommand) {
-			LoadStateCommand loadStateCommand = (LoadStateCommand)message;
-			State stateToLoad = loadStateCommand.getStateToLoad();
-			this.loadState(stateToLoad);
-		} else if(message instanceof ExitStateCommand) {
-			this.exitCurrentState();
-		}
-	}
-	
 	public void loadState(State state) {
-		state.load(this);
+		state.load();
+		state.applyGlobalHandler(LoadStateCommand.class, this.getLoadStateCommandHandler());
+		state.applyGlobalHandler(ExitStateCommand.class, this.getExitStateCommandHandler());
 		this.states.push(state);
 	}
 	
-	public void exitCurrentState() {
-		if(this.states.size() == 1) {
+	public void exitState() {
+		if(this.states.size() <= 1) {
 			System.exit(0);
 		}
 		this.states.pop();
+	}
+
+	private Handler<LoadStateCommand> getLoadStateCommandHandler() {
+		return new Handler<LoadStateCommand>() {
+			@Override
+			public void handle(LoadStateCommand message) {
+				State stateToLoad = message.getStateToLoad();
+				StateManager.this.loadState(stateToLoad);
+			}
+		};
+	}
+	
+	private Handler<ExitStateCommand> getExitStateCommandHandler() {
+		return new Handler<ExitStateCommand>() {
+			@Override
+			public void handle(ExitStateCommand message) {
+				StateManager.this.exitState();
+			}
+		};
 	}
 
 }
