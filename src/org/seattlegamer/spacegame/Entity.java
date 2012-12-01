@@ -3,6 +3,7 @@ package org.seattlegamer.spacegame;
 import java.awt.Graphics2D;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 
@@ -17,13 +18,29 @@ public final class Entity {
 		this.handlerRegistry = new HashMap<Class<? extends Message>, Collection<Handler>>();
 	}
 	
-	public <T extends Message> void registerHandler(Class<T> messageClass, Handler handler) {
+	public <T extends Message> void register(Class<T> messageClass, Handler handler) {
 		Collection<Handler> handlers = this.handlerRegistry.get(messageClass);
 		if(handlers == null) {
 			handlers = new LinkedList<Handler>();
 			this.handlerRegistry.put(messageClass, handlers);
 		}
 		handlers.add(handler);
+	}
+	
+	public <T extends Message> void deregister(Class<T> messageClass, Handler handler) {
+		Collection<Handler> handlers = this.handlerRegistry.get(messageClass);
+		if(handlers == null) {
+			return;
+		}
+		handlers.remove(handler);
+	}
+	
+	public void register(Component component) {
+		this.components.add(component);
+	}
+	
+	public void deregister(Component component) {
+		this.components.remove(component);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -37,12 +54,10 @@ public final class Entity {
 		}
 	}
 
-	public void add(Component component) {
-		this.components.add(component);
-	}
-
 	public void update(Input input, long elapsedMillis) {
-		for(Component component : this.components) {
+		Iterator<Component> iterator = this.components.iterator();
+		while (iterator.hasNext()) {
+			Component component = iterator.next();
 			if(component.isEnabled()) {
 				component.update(input, elapsedMillis);
 			}
@@ -50,7 +65,9 @@ public final class Entity {
 	}
 	
 	public void render(Graphics2D graphics) {
-		for(Component component : this.components) {
+		Iterator<Component> iterator = this.components.iterator();
+		while (iterator.hasNext()) {
+			Component component = iterator.next();
 			if(component.isEnabled()) {
 				component.render(graphics);
 			}

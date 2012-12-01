@@ -11,8 +11,8 @@ public class GameState extends State {
 	public void load() {
 		
 		Entity player = new Entity();
-		player.add(new HeadsUpDisplayEntryRenderer(player, 1, "John Doe"));
-		player.add(new StateControlInput(player));
+		player.register(new HeadsUpDisplayEntryRenderer(player, 1, "John Doe"));
+		player.register(new StateControlInput(player));
 		player.broadcast(PlayerStatusChange.class, new PlayerStatusChange(100));
 
 		this.registerEntity(player);

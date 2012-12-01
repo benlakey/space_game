@@ -30,7 +30,7 @@ public class MenuEntryRenderer extends Component {
 		this.index = index;
 		this.text = text;
 		this.font = MENU_FONT;
-		this.entity.registerHandler(MenuEntryChange.class, this.getMenuEntryChangeHandler());
+		this.entity.register(MenuEntryChange.class, this.getMenuEntryChangeHandler());
 	}
 
 	private Handler<MenuEntryChange> getMenuEntryChangeHandler() {

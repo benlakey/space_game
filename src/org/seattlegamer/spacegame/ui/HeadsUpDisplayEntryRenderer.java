@@ -30,7 +30,7 @@ public class HeadsUpDisplayEntryRenderer extends Component {
 		this.playerNumber = playerNumber;
 		this.name = name;
 		this.health = 0;
-		this.entity.registerHandler(PlayerStatusChange.class, this.getPlayerStatusChangeHandler());
+		this.entity.register(PlayerStatusChange.class, this.getPlayerStatusChangeHandler());
 	}
 	
 	private Handler<PlayerStatusChange> getPlayerStatusChangeHandler() {

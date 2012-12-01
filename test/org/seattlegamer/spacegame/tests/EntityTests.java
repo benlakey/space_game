@@ -15,7 +15,7 @@ public class EntityTests {
 	public void canAddComponents() {
 		Entity entity = new Entity();
 		TestComponent component = new TestComponent(entity);
-		entity.add(component);
+		entity.register(component);
 		assertEquals(entity, component.getOwner());
 	}
 	
@@ -24,7 +24,7 @@ public class EntityTests {
 		
 		Entity entity = new Entity();
 		TestComponent component = new TestComponent(entity);
-		entity.add(component);
+		entity.register(component);
 		
 		assertFalse(component.wasUpdated());
 		entity.update(null, 0);

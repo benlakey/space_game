@@ -22,8 +22,8 @@ public class MenuEntry extends Component {
 		this.executionMessage = message;
 		this.selected = selected;
 		this.setGroupMembership(ComponentGroup.MENU, true);
-		this.entity.registerHandler(MenuEntryChange.class, this.getMenuEntryChangeHandler());
-		this.entity.registerHandler(MenuEntryExecution.class, this.getMenuEntryExecutionHandler());
+		this.entity.register(MenuEntryChange.class, this.getMenuEntryChangeHandler());
+		this.entity.register(MenuEntryExecution.class, this.getMenuEntryExecutionHandler());
 	}
 
 	private Handler<MenuEntryChange> getMenuEntryChangeHandler() {
