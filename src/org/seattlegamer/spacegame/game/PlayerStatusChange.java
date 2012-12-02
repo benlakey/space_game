@@ -4,14 +4,14 @@ import org.seattlegamer.spacegame.Message;
 
 public class PlayerStatusChange implements Message {
 
-	private final int health;
+	private final int healthOffset;
 	
-	public PlayerStatusChange(int health) {
-		this.health = health;
+	public PlayerStatusChange(int healthOffset) {
+		this.healthOffset = healthOffset;
 	}
 
-	public int getHealth() {
-		return this.health;
+	public int getHealthOffset() {
+		return this.healthOffset;
 	}
 
 }

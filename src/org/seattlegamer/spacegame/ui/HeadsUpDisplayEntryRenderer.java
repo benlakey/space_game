@@ -16,7 +16,7 @@ import org.seattlegamer.spacegame.Position.VerticalAlignment;
 import org.seattlegamer.spacegame.PositionInitialization;
 import org.seattlegamer.spacegame.PositionQuery;
 import org.seattlegamer.spacegame.config.GameSettings;
-import org.seattlegamer.spacegame.game.PlayerStatusChange;
+import org.seattlegamer.spacegame.game.PlayerStatusReport;
 import org.seattlegamer.spacegame.utils.GraphicsUtils;
 
 public class HeadsUpDisplayEntryRenderer extends Component {
@@ -37,13 +37,13 @@ public class HeadsUpDisplayEntryRenderer extends Component {
 		this.name = name;
 		this.health = 0;
 		this.needsPositionInitialization = true;
-		this.entity.register(PlayerStatusChange.class, this.getPlayerStatusChangeHandler());
+		this.entity.register(PlayerStatusReport.class, this.getPlayerStatusReportHandler());
 	}
 
-	private Handler<PlayerStatusChange> getPlayerStatusChangeHandler() {
-		return new Handler<PlayerStatusChange>() {
+	private Handler<PlayerStatusReport> getPlayerStatusReportHandler() {
+		return new Handler<PlayerStatusReport>() {
 			@Override
-			public void handle(PlayerStatusChange message) {
+			public void handle(PlayerStatusReport message) {
 				health = message.getHealth();
 			}
 		};
