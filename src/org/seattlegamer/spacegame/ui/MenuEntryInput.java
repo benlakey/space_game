@@ -34,7 +34,7 @@ public class MenuEntryInput extends Component {
 		checkThrottledInput(input, KeyEvent.VK_DOWN, elapsedMillis, this.downThrottle, 1);
 
 		if(input.isKeyInputActive(KeyEvent.VK_ENTER)) {
-			this.entity.broadcast(MenuEntryExecution.class, new MenuEntryExecution(this.selectionIndex));
+			this.entity.broadcast(new MenuEntryExecution(this.selectionIndex));
 		}
 
 	}
@@ -46,7 +46,7 @@ public class MenuEntryInput extends Component {
 			long remaining = throttle.timeRemaining();
 			if(remaining == 0) {
 				this.selectionIndex = NumberUtils.wrapIndex(this.selectionIndex + change, this.maxIndex);
-				this.entity.broadcast(MenuEntryChange.class, new MenuEntryChange(this.selectionIndex));
+				this.entity.broadcast(new MenuEntryChange(this.selectionIndex));
 				throttle.throttle();
 			}
 		} else {

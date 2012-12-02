@@ -24,7 +24,7 @@ public class GameState extends State {
 		player1.register(new Position(player1));
 		player1.register(new Sprite(player1, resourceCache.getImage("assets/mars.png")));
 		
-		player1.broadcast(PositionInitialization.class, 
+		player1.broadcast(
 				new PositionInitialization(new Point(0, 0), HorizontalAlignment.CENTER, VerticalAlignment.MIDDLE));
 
 		this.registerEntity(player1);
@@ -36,7 +36,7 @@ public class GameState extends State {
 		player2.register(new Position(player2));
 		player2.register(new Sprite(player2, resourceCache.getImage("assets/mars.png")));
 		
-		player2.broadcast(PositionInitialization.class, 
+		player2.broadcast(
 				new PositionInitialization(new Point(0, 0), HorizontalAlignment.LEFT, VerticalAlignment.TOP));
 
 		this.registerEntity(player2);

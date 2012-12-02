@@ -19,9 +19,8 @@ public abstract class State {
 	public Iterable<Entity> getEntities() {
 		return this.entities;
 	}
-	
-	@SuppressWarnings("rawtypes")
-	public <T extends Message> void applyGlobalHandler(Class<T> messageClass, Handler handler) {
+
+	public <T extends Message> void applyGlobalHandler(Class<T> messageClass, Handler<T> handler) {
 		for(Entity entity : this.entities) {
 			entity.register(messageClass, handler);
 		}

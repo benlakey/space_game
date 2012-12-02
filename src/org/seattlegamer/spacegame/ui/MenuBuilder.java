@@ -36,7 +36,7 @@ public class MenuBuilder {
 		entry.register(new StateControlInput(entry));
 		entry.register(new MenuEntryInput(entry, 0, this.maxIndex));
 		entry.register(new Position(entry));
-		entry.broadcast(MenuEntryChange.class, new MenuEntryChange(0));
+		entry.broadcast(new MenuEntryChange(0));
 
 		this.menuEntries.add(entry);
 		

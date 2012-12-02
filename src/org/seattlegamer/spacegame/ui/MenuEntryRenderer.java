@@ -81,7 +81,7 @@ public class MenuEntryRenderer extends Component {
 		offset.x = 0 - (textSize.width / 2);
 		offset.y = textSize.height * (this.index + 1);
 
-		this.entity.broadcast(PositionInitialization.class, 
+		this.entity.broadcast(
 				new PositionInitialization(offset, HorizontalAlignment.CENTER, VerticalAlignment.TOP));
 
 	}

@@ -14,7 +14,7 @@ public final class Bus {
 		this.handlerRegistry = new HashMap<Class<? extends Message>, Collection<Handler>>();
 	}
 	
-	public <T extends Message> void register(Class<T> messageClass, Handler handler) {
+	public <T extends Message> void register(Class<T> messageClass, Handler<T> handler) {
 		Collection<Handler> handlers = this.handlerRegistry.get(messageClass);
 		if(handlers == null) {
 			handlers = new LinkedList<Handler>();
@@ -23,7 +23,7 @@ public final class Bus {
 		handlers.add(handler);
 	}
 	
-	public <T extends Message> void deregister(Class<T> messageClass, Handler handler) {
+	public <T extends Message> void deregister(Class<T> messageClass, Handler<T> handler) {
 		Collection<Handler> handlers = this.handlerRegistry.get(messageClass);
 		if(handlers == null) {
 			return;
@@ -31,14 +31,13 @@ public final class Bus {
 		handlers.remove(handler);
 	}
 
-	@SuppressWarnings("unchecked")
-	public <T> void broadcast(Class<T> messageClass, Message message) {
+	public <T extends Message> void broadcast(T message) {
 
-		Collection<Handler> handlers = this.handlerRegistry.get(messageClass);
+		Collection<Handler> handlers = this.handlerRegistry.get(message.getClass());
 		if(handlers == null) {
 			return;
 		}
-		for(Handler handler : handlers) {
+		for(Handler<T> handler : handlers) {
 			handler.handle(message);
 		}
 

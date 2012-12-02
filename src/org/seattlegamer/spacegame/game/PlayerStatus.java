@@ -14,7 +14,7 @@ public class PlayerStatus extends Component {
 		super(entity);
 		this.health = START_HEALTH;
 		this.entity.register(PlayerStatusChange.class, this.getPlayerStatusChangeHandler());
-		this.entity.broadcast(PlayerStatusReport.class, createPlayerStatusReport());
+		this.entity.broadcast(createPlayerStatusReport());
 	}
 	
 	private Handler<PlayerStatusChange> getPlayerStatusChangeHandler() {
@@ -23,7 +23,7 @@ public class PlayerStatus extends Component {
 			public void handle(PlayerStatusChange message) {
 				int healthOffset = message.getHealthOffset();
 				health += healthOffset;
-				entity.broadcast(PlayerStatusReport.class, createPlayerStatusReport());
+				entity.broadcast(createPlayerStatusReport());
 			}
 		};
 	}

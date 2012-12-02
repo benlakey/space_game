@@ -77,7 +77,7 @@ public class HeadsUpDisplay extends Component {
 		Point offset = new Point();
 		offset.y = this.playerNumber * (0 - textSize.height);
 
-		this.entity.broadcast(PositionInitialization.class, 
+		this.entity.broadcast(
 				new PositionInitialization(offset, HorizontalAlignment.LEFT, VerticalAlignment.BOTTOM));
 
 	}

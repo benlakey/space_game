@@ -15,7 +15,7 @@ public class PositionRetriever {
 		
 		PositionQuery query = new PositionQuery(screenSize);
 		
-		this.entity.broadcast(PositionQuery.class, query);
+		this.entity.broadcast(query);
 		
 		Point reply = query.getReply();
 		if(reply == null) {

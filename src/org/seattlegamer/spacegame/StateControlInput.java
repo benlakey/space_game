@@ -16,20 +16,15 @@ public class StateControlInput extends Component {
 
 	@Override
 	public void update(Input input, long elapsedMillis) {
-		checkThrottledInput(input, KeyEvent.VK_ESCAPE, elapsedMillis, exitStateThrottle, ExitStateCommand.class, new ExitStateCommand());
-	}
-	
-	//TODO: this was duplicated in part from MenuInput. Need to encapsulate this somewhere.
-	private void checkThrottledInput(Input input, int inputCode, long elapsedMillis, Throttle throttle, Class<?> messageClass, Message message) {
-		if(input.isKeyInputActive(inputCode)) {
-			throttle.tick(elapsedMillis);
-			long remaining = throttle.timeRemaining();
+		if(input.isKeyInputActive(KeyEvent.VK_ESCAPE)) {
+			exitStateThrottle.tick(elapsedMillis);
+			long remaining = exitStateThrottle.timeRemaining();
 			if(remaining == 0) {
-				this.entity.broadcast(messageClass, message);
-				throttle.throttle();
+				this.entity.broadcast(new ExitStateCommand());
+				exitStateThrottle.throttle();
 			}
 		} else {
-			throttle.unthrottle();
+			exitStateThrottle.unthrottle();
 		}
 	}
 	

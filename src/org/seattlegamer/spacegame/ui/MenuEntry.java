@@ -35,7 +35,7 @@ public class MenuEntry extends Component {
 			@Override
 			public void handle(MenuEntryExecution message) {
 				if(selected) {
-					entity.broadcast(executionMessage.getClass(), executionMessage);
+					entity.broadcast(executionMessage);
 				}
 			}
 		};

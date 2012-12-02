@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-@SuppressWarnings("rawtypes")
 public final class Entity {
 
 	private final Collection<Component> components;
@@ -16,11 +15,11 @@ public final class Entity {
 		this.bus = new Bus();
 	}
 	
-	public <T extends Message> void register(Class<T> messageClass, Handler handler) {
+	public <T extends Message> void register(Class<T> messageClass, Handler<T> handler) {
 		this.bus.register(messageClass, handler);
 	}
 	
-	public <T extends Message> void deregister(Class<T> messageClass, Handler handler) {
+	public <T extends Message> void deregister(Class<T> messageClass, Handler<T> handler) {
 		this.bus.deregister(messageClass, handler);
 	}
 	
@@ -32,8 +31,8 @@ public final class Entity {
 		this.components.remove(component);
 	}
 
-	public <T> void broadcast(Class<T> messageClass, Message message) {
-		this.bus.broadcast(messageClass, message);
+	public <T extends Message> void broadcast(T message) {
+		this.bus.broadcast(message);
 	}
 
 	public void update(Input input, long elapsedMillis) {
