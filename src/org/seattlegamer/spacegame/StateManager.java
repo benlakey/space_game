@@ -1,12 +1,20 @@
 package org.seattlegamer.spacegame;
 
+import java.io.IOException;
 import java.util.Stack;
+
+import org.apache.log4j.Logger;
+import org.seattlegamer.spacegame.resources.ResourceCache;
 
 public class StateManager {
 
+	private static Logger logger = Logger.getLogger(StateManager.class);
+	
+	private final ResourceCache resourceCache;
 	private final Stack<State> states;
 	
-	public StateManager(State initialState) {
+	public StateManager(ResourceCache resourceCache, State initialState) {
+		this.resourceCache = resourceCache;
 		this.states = new Stack<State>();
 		this.loadState(initialState);
 	}
@@ -17,7 +25,12 @@ public class StateManager {
 	}
 	
 	public void loadState(State state) {
-		state.load();
+		try {
+			state.load(this.resourceCache);
+		} catch (IOException e) {
+			logger.fatal("State failed to load.", e);
+			System.exit(-1);
+		}
 		state.applyGlobalHandler(LoadStateCommand.class, this.getLoadStateCommandHandler());
 		state.applyGlobalHandler(ExitStateCommand.class, this.getExitStateCommandHandler());
 		this.states.push(state);

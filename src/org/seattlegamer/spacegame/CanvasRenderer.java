@@ -3,7 +3,6 @@ package org.seattlegamer.spacegame;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.image.BufferStrategy;
 import java.util.Iterator;
@@ -11,11 +10,9 @@ import java.util.Iterator;
 public class CanvasRenderer implements Renderer {
 	
 	private final Canvas canvas;
-	private final Rectangle cachedScreenSize;
 
 	public CanvasRenderer(Canvas canvas) {
 		this.canvas = canvas;
-		this.cachedScreenSize = new Rectangle();
 	}
 
 	@Override
@@ -25,17 +22,7 @@ public class CanvasRenderer implements Renderer {
 		Graphics2D graphics = (Graphics2D)bufferStrategy.getDrawGraphics();
 		
 		try {
-			
-			Rectangle screenSize = graphics.getDeviceConfiguration().getBounds();
-			
-			boolean screenSizeChanged = false;
-			
-			if(screenSize.width != this.cachedScreenSize.width || screenSize.height != this.cachedScreenSize.height) {
-				screenSizeChanged = true;
-				this.cachedScreenSize.width = screenSize.width;
-				this.cachedScreenSize.height = screenSize.height;
-			}
-			
+
 			graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			this.clearScreen(graphics);
 			
@@ -43,7 +30,7 @@ public class CanvasRenderer implements Renderer {
 			Iterator<Entity> entityIterator = entities.iterator();
 			while (entityIterator.hasNext()) {
 				Entity entity = entityIterator.next();
-				entity.render(graphics, screenSizeChanged);
+				entity.render(graphics);
 			}
 
 			bufferStrategy.show();

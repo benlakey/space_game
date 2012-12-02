@@ -66,12 +66,12 @@ public final class Entity {
 		}
 	}
 	
-	public void render(Graphics2D graphics, boolean screenSizeChanged) {
+	public void render(Graphics2D graphics) {
 		Iterator<Component> iterator = this.components.iterator();
 		while (iterator.hasNext()) {
 			Component component = iterator.next();
 			if(component.isEnabled()) {
-				component.render(graphics, screenSizeChanged);
+				component.render(graphics);
 			}
 		}
 	}

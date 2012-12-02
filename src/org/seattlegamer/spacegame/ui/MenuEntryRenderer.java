@@ -14,7 +14,7 @@ import org.seattlegamer.spacegame.Handler;
 import org.seattlegamer.spacegame.Position.HorizontalAlignment;
 import org.seattlegamer.spacegame.Position.VerticalAlignment;
 import org.seattlegamer.spacegame.PositionInitialization;
-import org.seattlegamer.spacegame.PositionQuery;
+import org.seattlegamer.spacegame.PositionRetriever;
 import org.seattlegamer.spacegame.config.GameSettings;
 import org.seattlegamer.spacegame.utils.GraphicsUtils;
 
@@ -29,13 +29,15 @@ public class MenuEntryRenderer extends Component {
 	private final int index;
 	private final String text;
 	private Font font;
+	private final PositionRetriever positionRetriever;
 	private boolean needsPositionInitialization;
 
-	public MenuEntryRenderer(Entity owner, int index, String text) {
-		super(owner);
+	public MenuEntryRenderer(Entity entity, int index, String text) {
+		super(entity);
 		this.index = index;
 		this.text = text;
 		this.font = MENU_FONT;
+		this.positionRetriever = new PositionRetriever(entity);
 		this.needsPositionInitialization = true;
 		this.entity.register(MenuEntryChange.class, this.getMenuEntryChangeHandler());
 	}
@@ -54,18 +56,15 @@ public class MenuEntryRenderer extends Component {
 	}
 
 	@Override
-	public void render(Graphics2D graphics, boolean screenSizeChanged) {
-
-		if(screenSizeChanged) {
-			this.needsPositionInitialization = true;
-		}
+	public void render(Graphics2D graphics) {
 
 		if(this.needsPositionInitialization) {
 			this.initializePosition(graphics.getFontMetrics(this.font), this.text);
+			this.needsPositionInitialization = false;
 		}
 
 		Rectangle screenSize = graphics.getDeviceConfiguration().getBounds();
-		Point currentPosition = this.getCurrentPosition(screenSize);
+		Point currentPosition = this.positionRetriever.getCurrentPosition(screenSize);
 
 		graphics.setFont(this.font);
 		graphics.setColor(MENU_COLOR);
@@ -87,20 +86,7 @@ public class MenuEntryRenderer extends Component {
 
 	}
 
-	private Point getCurrentPosition(Rectangle screenSize) {
-		
-		PositionQuery query = new PositionQuery(screenSize);
-		
-		this.entity.broadcast(PositionQuery.class, query);
-		
-		Point reply = query.getReply();
-		if(reply == null) {
-			reply = new Point();
-		}
-		
-		return reply;
-		
-	}
+	
 
 	
 

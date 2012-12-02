@@ -14,12 +14,12 @@ import org.seattlegamer.spacegame.Handler;
 import org.seattlegamer.spacegame.Position.HorizontalAlignment;
 import org.seattlegamer.spacegame.Position.VerticalAlignment;
 import org.seattlegamer.spacegame.PositionInitialization;
-import org.seattlegamer.spacegame.PositionQuery;
+import org.seattlegamer.spacegame.PositionRetriever;
 import org.seattlegamer.spacegame.config.GameSettings;
 import org.seattlegamer.spacegame.game.PlayerStatusReport;
 import org.seattlegamer.spacegame.utils.GraphicsUtils;
 
-public class HeadsUpDisplayEntryRenderer extends Component {
+public class HeadsUpDisplay extends Component {
 
 	private static final int FONT_SIZE = 32;
 	private static final String FONT_NAME = GameSettings.getFont();
@@ -29,13 +29,15 @@ public class HeadsUpDisplayEntryRenderer extends Component {
 	private final int playerNumber;
 	private final String name;
 	private int health;
+	private final PositionRetriever positionRetriever;
 	private boolean needsPositionInitialization;
 	
-	public HeadsUpDisplayEntryRenderer(Entity entity, int playerNumber, String name) {
+	public HeadsUpDisplay(Entity entity, int playerNumber, String name) {
 		super(entity);
 		this.playerNumber = playerNumber;
 		this.name = name;
 		this.health = 0;
+		this.positionRetriever = new PositionRetriever(entity);
 		this.needsPositionInitialization = true;
 		this.entity.register(PlayerStatusReport.class, this.getPlayerStatusReportHandler());
 	}
@@ -50,20 +52,17 @@ public class HeadsUpDisplayEntryRenderer extends Component {
 	}
 
 	@Override
-	public void render(Graphics2D graphics, boolean screenSizeChanged) {
+	public void render(Graphics2D graphics) {
 
 		String text = String.format("%s: %d HP", this.name, this.health);
 
-		if(screenSizeChanged) { 
-			this.needsPositionInitialization = true;
-		}
-		
 		if(this.needsPositionInitialization) {
 			this.initializePosition(graphics.getFontMetrics(HUD_FONT), text);
+			this.needsPositionInitialization = false;
 		}
 
 		Rectangle screenSize = graphics.getDeviceConfiguration().getBounds();
-		Point currentPosition = this.getCurrentPosition(screenSize);
+		Point currentPosition = this.positionRetriever.getCurrentPosition(screenSize);
 
 		graphics.setFont(HUD_FONT);
 		graphics.setColor(HUD_COLOR);
@@ -80,24 +79,7 @@ public class HeadsUpDisplayEntryRenderer extends Component {
 
 		this.entity.broadcast(PositionInitialization.class, 
 				new PositionInitialization(offset, HorizontalAlignment.LEFT, VerticalAlignment.BOTTOM));
-		
-		this.needsPositionInitialization = false;
 
-	}
-	
-	private Point getCurrentPosition(Rectangle screenSize) {
-		
-		PositionQuery query = new PositionQuery(screenSize);
-		
-		this.entity.broadcast(PositionQuery.class, query);
-		
-		Point reply = query.getReply();
-		if(reply == null) {
-			reply = new Point();
-		}
-		
-		return reply;
-		
 	}
 
 }

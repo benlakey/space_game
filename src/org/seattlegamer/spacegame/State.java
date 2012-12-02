@@ -1,7 +1,10 @@
 package org.seattlegamer.spacegame;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.LinkedList;
+
+import org.seattlegamer.spacegame.resources.ResourceCache;
 
 public abstract class State {
 
@@ -11,7 +14,7 @@ public abstract class State {
 		this.entities = new LinkedList<Entity>();
 	}
 
-	public abstract void load();
+	public abstract void load(ResourceCache resourceCache) throws IOException;
 	
 	public Iterable<Entity> getEntities() {
 		return this.entities;

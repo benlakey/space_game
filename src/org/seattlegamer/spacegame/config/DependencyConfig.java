@@ -47,7 +47,7 @@ public class DependencyConfig {
 	}
 	
 	public @Bean StateManager stateManager() {
-		return new StateManager(new MainMenuState());
+		return new StateManager(resourceCache(), new MainMenuState());
 	}
 	
 	public @Bean Throttle framerateThrottle() {

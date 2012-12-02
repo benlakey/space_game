@@ -38,8 +38,8 @@ public abstract class Component {
 	public void update(Input input, long elapsedMillis) {
 		
 	}
-	
-	public void render(Graphics2D graphics, boolean screenSizeChanged) {
+
+	public void render(Graphics2D graphics) {
 		
 	}
 
