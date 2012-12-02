@@ -1,7 +1,8 @@
 package org.seattlegamer.spacegame.utils;
 
+
 public final class NumberUtils {
-	
+
 	private NumberUtils() {}
 
 	public static <T extends Number & Comparable<T>> T clamp(T val, T min, T max) {
@@ -17,12 +18,13 @@ public final class NumberUtils {
 		return val;
 		
 	}
-	
-	public static int wrap(int index, int size) {
-		if(size == 0) {
+
+	public static int wrapIndex(int index, int maxIndex) {
+		if(maxIndex == 0) {
 			return 0;
 		}
-		return (index % size + size) % size;
+		maxIndex += 1;
+		return ((index % maxIndex) + maxIndex) % maxIndex;
 	}
 
 }

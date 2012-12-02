@@ -11,12 +11,14 @@ public class MainMenuState extends State {
 	@Override
 	public void load() {
 
-		Entity mainMenu = new MenuBuilder()
+		Iterable<Entity> mainMenu = new MenuBuilder(2)
 			.addEntry("New Game", new LoadStateCommand(new GameState()))
 			.addEntry("Exit", new ExitStateCommand())
 			.build();
 
-		this.registerEntity(mainMenu);
+		for(Entity entity : mainMenu) {
+			this.registerEntity(entity);
+		}
 
 	}
 

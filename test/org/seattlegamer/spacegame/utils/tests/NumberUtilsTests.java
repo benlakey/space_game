@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.seattlegamer.spacegame.utils.NumberUtils;
 
 public class NumberUtilsTests {
-
+	
 	@Test
 	public void clampRestrictsIntegerLowerBound() {
 		final int lowerBound = 45;
@@ -31,26 +31,34 @@ public class NumberUtilsTests {
 	}
 	
 	@Test
+	public void wrapFoo() {
+		assertEquals(0, NumberUtils.wrapIndex(0, 2));
+		assertEquals(1, NumberUtils.wrapIndex(1, 2));
+		assertEquals(2, NumberUtils.wrapIndex(2, 2));
+		assertEquals(0, NumberUtils.wrapIndex(3, 2));
+	}
+	
+	@Test
 	public void canWrapNothingByNothing() {
-		int wrapped = NumberUtils.wrap(0, 0);
+		int wrapped = NumberUtils.wrapIndex(0, 0);
 		assertEquals(0, wrapped);
 	}
 	
 	@Test
 	public void canWrapSomethingByNothing() {
-		int wrapped = NumberUtils.wrap(2, 0);
+		int wrapped = NumberUtils.wrapIndex(2, 0);
 		assertEquals(0, wrapped);
 	}
 	
 	@Test
 	public void canWrapSomethingBySomething() {
-		int wrapped = NumberUtils.wrap(3, 2);
-		assertEquals(1, wrapped);
+		int wrapped = NumberUtils.wrapIndex(3, 2);
+		assertEquals(0, wrapped);
 	}
 	
 	@Test
 	public void numberSmallerThanWrapIsNotWrapped() {
-		int wrapped = NumberUtils.wrap(2, 3);
+		int wrapped = NumberUtils.wrapIndex(2, 3);
 		assertEquals(2, wrapped);
 	}
 	

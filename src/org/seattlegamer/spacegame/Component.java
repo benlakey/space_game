@@ -39,7 +39,7 @@ public abstract class Component {
 		
 	}
 	
-	public void render(Graphics2D graphics) {
+	public void render(Graphics2D graphics, boolean screenSizeChanged) {
 		
 	}
 

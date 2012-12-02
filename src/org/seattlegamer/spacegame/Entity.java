@@ -45,6 +45,7 @@ public final class Entity {
 
 	@SuppressWarnings("unchecked")
 	public <T> void broadcast(Class<T> messageClass, Message message) {
+
 		Collection<Handler> handlers = this.handlerRegistry.get(messageClass);
 		if(handlers == null) {
 			return;
@@ -52,6 +53,7 @@ public final class Entity {
 		for(Handler handler : handlers) {
 			handler.handle(message);
 		}
+
 	}
 
 	public void update(Input input, long elapsedMillis) {
@@ -64,12 +66,12 @@ public final class Entity {
 		}
 	}
 	
-	public void render(Graphics2D graphics) {
+	public void render(Graphics2D graphics, boolean screenSizeChanged) {
 		Iterator<Component> iterator = this.components.iterator();
 		while (iterator.hasNext()) {
 			Component component = iterator.next();
 			if(component.isEnabled()) {
-				component.render(graphics);
+				component.render(graphics, screenSizeChanged);
 			}
 		}
 	}

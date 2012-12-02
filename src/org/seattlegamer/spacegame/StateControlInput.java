@@ -10,8 +10,8 @@ public class StateControlInput extends Component {
 
 	private static final Throttle exitStateThrottle = new Throttle(KEY_DELAY);
 	
-	public StateControlInput(Entity owner) {
-		super(owner);
+	public StateControlInput(Entity entity) {
+		super(entity);
 	}
 
 	@Override

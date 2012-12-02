@@ -9,19 +9,19 @@ import org.seattlegamer.spacegame.Input;
 import org.seattlegamer.spacegame.utils.NumberUtils;
 import org.seattlegamer.spacegame.utils.Throttle;
 
-public class MenuInput extends Component {
+public class MenuEntryInput extends Component {
 
 	private static final long KEY_DELAY = 300;
 	
 	private int selectionIndex;
-	private final int size;
+	private final int maxIndex;
 	private final Throttle downThrottle;
 	private final Throttle upThrottle;
 
-	public MenuInput(Entity owner, int selectionIndex, int size) {
+	public MenuEntryInput(Entity owner, int selectionIndex, int maxIndex) {
 		super(owner);
 		this.selectionIndex = selectionIndex;
-		this.size = size;
+		this.maxIndex = maxIndex;
 		this.setGroupMembership(ComponentGroup.MENU, true);
 		this.downThrottle = new Throttle(KEY_DELAY);
 		this.upThrottle = new Throttle(KEY_DELAY);
@@ -32,7 +32,7 @@ public class MenuInput extends Component {
 
 		checkThrottledInput(input, KeyEvent.VK_UP, elapsedMillis, this.upThrottle, -1);
 		checkThrottledInput(input, KeyEvent.VK_DOWN, elapsedMillis, this.downThrottle, 1);
-		
+
 		if(input.isKeyInputActive(KeyEvent.VK_ENTER)) {
 			this.entity.broadcast(MenuEntryExecution.class, new MenuEntryExecution(this.selectionIndex));
 		}
@@ -45,7 +45,7 @@ public class MenuInput extends Component {
 			throttle.tick(elapsedMillis);
 			long remaining = throttle.timeRemaining();
 			if(remaining == 0) {
-				this.selectionIndex = NumberUtils.wrap(this.selectionIndex + change, this.size - 1);
+				this.selectionIndex = NumberUtils.wrapIndex(this.selectionIndex + change, this.maxIndex);
 				this.entity.broadcast(MenuEntryChange.class, new MenuEntryChange(this.selectionIndex));
 				throttle.throttle();
 			}

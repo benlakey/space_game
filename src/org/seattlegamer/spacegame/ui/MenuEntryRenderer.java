@@ -5,11 +5,16 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
 
 import org.seattlegamer.spacegame.Component;
 import org.seattlegamer.spacegame.Entity;
 import org.seattlegamer.spacegame.Handler;
+import org.seattlegamer.spacegame.Position.HorizontalAlignment;
+import org.seattlegamer.spacegame.Position.VerticalAlignment;
+import org.seattlegamer.spacegame.PositionInitialization;
+import org.seattlegamer.spacegame.PositionQuery;
 import org.seattlegamer.spacegame.config.GameSettings;
 import org.seattlegamer.spacegame.utils.GraphicsUtils;
 
@@ -24,12 +29,14 @@ public class MenuEntryRenderer extends Component {
 	private final int index;
 	private final String text;
 	private Font font;
+	private boolean needsPositionInitialization;
 
 	public MenuEntryRenderer(Entity owner, int index, String text) {
 		super(owner);
 		this.index = index;
 		this.text = text;
 		this.font = MENU_FONT;
+		this.needsPositionInitialization = true;
 		this.entity.register(MenuEntryChange.class, this.getMenuEntryChangeHandler());
 	}
 
@@ -47,21 +54,52 @@ public class MenuEntryRenderer extends Component {
 	}
 
 	@Override
-	public void render(Graphics2D graphics) {
+	public void render(Graphics2D graphics, boolean screenSizeChanged) {
 
-		FontMetrics fontMetrics = graphics.getFontMetrics(this.font);
-		Dimension textSize = GraphicsUtils.measureTextPixels(fontMetrics, this.font, this.text);
+		if(screenSizeChanged) {
+			this.needsPositionInitialization = true;
+		}
+
+		if(this.needsPositionInitialization) {
+			this.initializePosition(graphics.getFontMetrics(this.font), this.text);
+		}
 
 		Rectangle screenSize = graphics.getDeviceConfiguration().getBounds();
-
-		int centerScreenX = screenSize.width / 2;
-		int drawPositionX = centerScreenX - (textSize.width / 2);
-		int drawPositionY = textSize.height * (this.index + 1);
+		Point currentPosition = this.getCurrentPosition(screenSize);
 
 		graphics.setFont(this.font);
 		graphics.setColor(MENU_COLOR);
-		graphics.drawString(this.text, drawPositionX, drawPositionY);
+		graphics.drawString(text, currentPosition.x, currentPosition.y);
 
+	}
+	
+	private void initializePosition(FontMetrics fontMetrics, String text) {
+		
+		Dimension textSize = GraphicsUtils.measureTextPixels(fontMetrics, this.font, text);
+
+		Point offset = new Point();
+
+		offset.x = 0 - (textSize.width / 2);
+		offset.y = textSize.height * (this.index + 1);
+
+		this.entity.broadcast(PositionInitialization.class, 
+				new PositionInitialization(offset, HorizontalAlignment.CENTER, VerticalAlignment.TOP));
+
+	}
+
+	private Point getCurrentPosition(Rectangle screenSize) {
+		
+		PositionQuery query = new PositionQuery(screenSize);
+		
+		this.entity.broadcast(PositionQuery.class, query);
+		
+		Point reply = query.getReply();
+		if(reply == null) {
+			reply = new Point();
+		}
+		
+		return reply;
+		
 	}
 
 	

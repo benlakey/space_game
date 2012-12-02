@@ -11,16 +11,11 @@ public class MenuEntry extends Component {
 	private final int index;
 	private final Message executionMessage;
 	private boolean selected;
-	
-	public MenuEntry(Entity owner, int index, Message message) {
-		this(owner, index, message, false);
-	}
-	
-	public MenuEntry(Entity owner, int index, Message message, boolean selected) {
-		super(owner);
+
+	public MenuEntry(Entity entity, int index, Message message) {
+		super(entity);
 		this.index = index;
 		this.executionMessage = message;
-		this.selected = selected;
 		this.setGroupMembership(ComponentGroup.MENU, true);
 		this.entity.register(MenuEntryChange.class, this.getMenuEntryChangeHandler());
 		this.entity.register(MenuEntryExecution.class, this.getMenuEntryExecutionHandler());
