@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 
 public class InMemoryResourceCache implements ResourceCache {
 
-	private static Logger logger = Logger.getLogger(InMemoryResourceCache.class);
+	private static final Logger logger = Logger.getLogger(InMemoryResourceCache.class);
 
 	private ResourceLoader<Image> imageResourceLoader;
 	private ConcurrentHashMap<String, Object> cache;
