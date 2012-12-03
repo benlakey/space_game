@@ -7,13 +7,9 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
 
-import org.seattlegamer.spacegame.config.GameSettings;
-
 public final class GameCanvas extends Canvas {
 
 	private static final long serialVersionUID = 1L;
-	
-	private static final Dimension HARD_CODED_WINDOW_SIZE = new Dimension(800, 600);
 	private static final int BUFFER_COUNT = 2;
 	
 	private final Frame frame;
@@ -23,13 +19,14 @@ public final class GameCanvas extends Canvas {
 		this.frame = new Frame(title);
 		this.frame.add(this);
 		
+		this.frame.setUndecorated(true);
+		this.frame.setResizable(false);
 		this.setScreenSize();
 
 		this.setIgnoreRepaint(true);
-
 		this.frame.setIgnoreRepaint(true);
+
 		this.frame.pack();
-		this.frame.setResizable(false);
 		this.frame.setVisible(true);
 
 		this.createBufferStrategy(BUFFER_COUNT);
@@ -38,6 +35,10 @@ public final class GameCanvas extends Canvas {
 	}
 
 	private void setScreenSize() {
+		
+		//TODO: set display modes instead of just running with the current default
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		this.setBounds(0, 0, screenSize.width, screenSize.height);
 
 		GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		GraphicsDevice graphicsDevice = graphicsEnvironment.getDefaultScreenDevice();
@@ -46,18 +47,7 @@ public final class GameCanvas extends Canvas {
             throw new RuntimeException("Full screen mode not supported.");
         }
 		
-		//TODO: full screen exclusive mode
-		//TODO: set display modes instead of just running with the current default
-		
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		
-		if(GameSettings.useFullscreen()) {
-			this.setBounds(0, 0, screenSize.width, screenSize.height);
-		} else {
-			this.setBounds(0, 0, HARD_CODED_WINDOW_SIZE.width, HARD_CODED_WINDOW_SIZE.height);
-		}
-
-		//this.frame.setUndecorated(true);
+		graphicsDevice.setFullScreenWindow(this.frame);
 
 	}
 
