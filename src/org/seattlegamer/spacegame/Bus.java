@@ -25,9 +25,13 @@ public class Bus {
 		handlersForMessageType.add(handler);
 		
 	}
-	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+
 	public <T extends Message> void broadcast(T message) {
+		this.send(message, null);
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public <T extends Message> void send(T message, UUID destinationEntityId) {
 		
 		Collection<Handler<? extends Message>> handlersForMessageType = this.handlers.get(message.getClass());
 		if(handlersForMessageType == null) {
@@ -35,14 +39,17 @@ public class Bus {
 		}
 		
 		for(Handler handler : handlersForMessageType) {
-			UUID sourceEntityId = message.getSourceEntityId();
-			if(handler.canHandleFrom(sourceEntityId)) {
-				handler.handle(message);
+			
+			UUID entityId = handler.getEntityIdHandlingFor();
+			
+			if(destinationEntityId != null && !destinationEntityId.equals(entityId)) {
+				continue;
 			}
+
+			handler.handle(message);
+
 		}
 		
 	}
-
-
 	
 }

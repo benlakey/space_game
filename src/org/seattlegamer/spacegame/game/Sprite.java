@@ -34,9 +34,9 @@ public class Sprite extends Component {
 	//TODO: this is duplicated in several places. consolidate.
 	private Point getCurrentPosition(Rectangle screenSize) {
 		
-		PositionQuery query = new PositionQuery(this.entityId, screenSize);
+		PositionQuery query = new PositionQuery(screenSize);
 		
-		this.bus.broadcast(query);
+		this.bus.send(query, this.entityId);
 		
 		Point reply = query.getReply();
 		if(reply == null) {

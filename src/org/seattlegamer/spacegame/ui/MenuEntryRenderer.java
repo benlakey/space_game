@@ -54,8 +54,8 @@ public class MenuEntryRenderer extends Component {
 			}
 
 			@Override
-			public boolean canHandleFrom(UUID sourceEntityId) {
-				return entityId == sourceEntityId;
+			public UUID getEntityIdHandlingFor() {
+				return entityId;
 			}
 
 		};
@@ -87,17 +87,16 @@ public class MenuEntryRenderer extends Component {
 		offset.x = 0 - (textSize.width / 2);
 		offset.y = textSize.height * (this.index + 1);
 
-		this.bus.broadcast(
-				new PositionInitialization(entityId, offset, HorizontalAlignment.CENTER, VerticalAlignment.TOP));
+		this.bus.send(new PositionInitialization(offset, HorizontalAlignment.CENTER, VerticalAlignment.TOP), this.entityId);
 
 	}
 
 	//TODO: this is duplicated in several places. consolidate.
 	private Point getCurrentPosition(Rectangle screenSize) {
 		
-		PositionQuery query = new PositionQuery(entityId, screenSize);
+		PositionQuery query = new PositionQuery(screenSize);
 		
-		this.bus.broadcast(query);
+		this.bus.send(query, this.entityId);
 		
 		Point reply = query.getReply();
 		if(reply == null) {

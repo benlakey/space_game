@@ -66,8 +66,8 @@ public class StateManager {
 			}
 
 			@Override
-			public boolean canHandleFrom(UUID sourceEntityId) {
-				return true;
+			public UUID getEntityIdHandlingFor() {
+				return null;
 			}
 
 		};
@@ -82,8 +82,8 @@ public class StateManager {
 			}
 
 			@Override
-			public boolean canHandleFrom(UUID sourceEntityId) {
-				return true;
+			public UUID getEntityIdHandlingFor() {
+				return null;
 			}
 
 		};

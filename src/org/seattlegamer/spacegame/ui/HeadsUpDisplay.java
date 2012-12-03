@@ -20,6 +20,7 @@ import org.seattlegamer.spacegame.config.GameSettings;
 import org.seattlegamer.spacegame.game.PlayerStatusReport;
 import org.seattlegamer.spacegame.utils.GraphicsUtils;
 
+//TODO: rename to HeadsUpDisplayEntry
 public class HeadsUpDisplay extends Component {
 
 	private static final int FONT_SIZE = 32;
@@ -48,12 +49,14 @@ public class HeadsUpDisplay extends Component {
 
 			@Override
 			public void handle(PlayerStatusReport message) {
-				health = message.getHealth();
+				if(playerEntityId.equals(message.getPlayerEntityId())) {
+					health = message.getHealth();
+				}
 			}
 
 			@Override
-			public boolean canHandleFrom(UUID sourceEntityId) {
-				return playerEntityId == sourceEntityId;
+			public UUID getEntityIdHandlingFor() {
+				return entityId;
 			}
 
 		};
@@ -85,17 +88,16 @@ public class HeadsUpDisplay extends Component {
 		Point offset = new Point();
 		offset.y = this.playerNumber * (0 - textSize.height);
 
-		this.bus.broadcast(
-				new PositionInitialization(entityId, offset, HorizontalAlignment.LEFT, VerticalAlignment.BOTTOM));
+		this.bus.send(new PositionInitialization(offset, HorizontalAlignment.LEFT, VerticalAlignment.BOTTOM), this.entityId);
 
 	}
 	
 	//TODO: this is duplicated in several places. consolidate.
 	private Point getCurrentPosition(Rectangle screenSize) {
 		
-		PositionQuery query = new PositionQuery(this.entityId, screenSize);
+		PositionQuery query = new PositionQuery(screenSize);
 		
-		this.bus.broadcast(query);
+		this.bus.send(query, this.entityId);
 		
 		Point reply = query.getReply();
 		if(reply == null) {

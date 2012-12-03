@@ -35,10 +35,10 @@ public class Position extends Component {
 			}
 			
 			@Override
-			public boolean canHandleFrom(UUID sourceEntityId) {
-				return entityId == sourceEntityId;
+			public UUID getEntityIdHandlingFor() {
+				return entityId;
 			}
-			
+
 			private int getX(Rectangle screenSize) {
 				if(horizontalAlignment == HorizontalAlignment.CENTER) {
 					return (screenSize.width / 2) + offset.x;
@@ -70,8 +70,8 @@ public class Position extends Component {
 			}
 
 			@Override
-			public boolean canHandleFrom(UUID sourceEntityId) {
-				return entityId == sourceEntityId;
+			public UUID getEntityIdHandlingFor() {
+				return entityId;
 			}
 
 		};
@@ -89,8 +89,8 @@ public class Position extends Component {
 			}
 
 			@Override
-			public boolean canHandleFrom(UUID sourceEntityId) {
-				return entityId == sourceEntityId;
+			public UUID getEntityIdHandlingFor() {
+				return entityId;
 			}
 
 		};

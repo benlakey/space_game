@@ -4,20 +4,22 @@ import java.util.UUID;
 
 import org.seattlegamer.spacegame.Message;
 
-public class PlayerStatusReport extends Message {
+public class PlayerStatusReport implements Message {
 
-	private int health;
+	private final UUID playerEntityId;
+	private final int health;
 	
-	protected PlayerStatusReport(UUID sourceEntityId) {
-		super(sourceEntityId);
+	protected PlayerStatusReport(UUID playerEntityId, int health) {
+		this.playerEntityId = playerEntityId;
+		this.health = health;
+	}
+	
+	public UUID getPlayerEntityId() {
+		return playerEntityId;
 	}
 
 	public int getHealth() {
 		return health;
 	}
 
-	public void setHealth(int health) {
-		this.health = health;
-	}
-	
 }

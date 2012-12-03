@@ -21,7 +21,7 @@ public class StateControlInput extends Component {
 			exitStateThrottle.tick(elapsedMillis);
 			long remaining = exitStateThrottle.timeRemaining();
 			if(remaining == 0) {
-				this.bus.broadcast(new ExitStateCommand(this.entityId));
+				this.bus.broadcast(new ExitStateCommand());
 				exitStateThrottle.throttle();
 			}
 		} else {

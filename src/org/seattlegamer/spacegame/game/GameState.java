@@ -37,8 +37,7 @@ public class GameState extends State {
 		this.components.add(new Position(bus, playerId));
 		this.components.add(new Sprite(bus, playerId, resourceCache.getImage("assets/mars.png")));
 
-		bus.broadcast(
-				new PositionInitialization(playerId, new Point(0, 0), HorizontalAlignment.CENTER, VerticalAlignment.MIDDLE));
+		bus.send(new PositionInitialization(new Point(0, 0), HorizontalAlignment.CENTER, VerticalAlignment.MIDDLE), playerId);
 		
 	}
 

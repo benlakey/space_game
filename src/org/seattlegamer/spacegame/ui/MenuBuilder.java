@@ -31,13 +31,13 @@ public class MenuBuilder {
 
 	public MenuBuilder addStateLoadEntry(String text, State state) {
 		UUID entityId = UUID.randomUUID();
-		this.addMenuEntry(entityId, text, new LoadStateCommand(entityId, state));
+		this.addMenuEntry(entityId, text, new LoadStateCommand(state));
 		return this;
 	}
 	
 	public MenuBuilder addStateExitEntry(String text) {
 		UUID entityId = UUID.randomUUID();
-		this.addMenuEntry(entityId, text, new ExitStateCommand(entityId));
+		this.addMenuEntry(entityId, text, new ExitStateCommand());
 		return this;
 	}
 	
@@ -70,7 +70,7 @@ public class MenuBuilder {
 		for(UUID entityId : this.entityComponents.keySet()) {
 			MenuEntryInput menuEntryInput = new MenuEntryInput(this.bus, entityId, 0, this.currentIndex);
 			this.addMenuComponent(entityId, menuEntryInput);
-			this.bus.broadcast(new MenuEntryChange(entityId, 0));
+			this.bus.broadcast(new MenuEntryChange(0));
 		}
 
 		return this.components;

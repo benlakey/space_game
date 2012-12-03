@@ -30,8 +30,8 @@ public class MenuEntry extends Component {
 			}
 
 			@Override
-			public boolean canHandleFrom(UUID sourceEntityId) {
-				return entityId == sourceEntityId;
+			public UUID getEntityIdHandlingFor() {
+				return entityId;
 			}
 
 		};
@@ -48,8 +48,8 @@ public class MenuEntry extends Component {
 			}
 
 			@Override
-			public boolean canHandleFrom(UUID sourceEntityId) {
-				return entityId == sourceEntityId;
+			public UUID getEntityIdHandlingFor() {
+				return entityId;
 			}
 
 		};

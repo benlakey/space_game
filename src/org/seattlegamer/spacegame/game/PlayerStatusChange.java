@@ -1,15 +1,12 @@
 package org.seattlegamer.spacegame.game;
 
-import java.util.UUID;
-
 import org.seattlegamer.spacegame.Message;
 
-public class PlayerStatusChange extends Message {
+public class PlayerStatusChange implements Message {
 
 	private final int healthOffset;
 	
-	public PlayerStatusChange(UUID sourceEntityId, int healthOffset) {
-		super(sourceEntityId);
+	public PlayerStatusChange(int healthOffset) {
 		this.healthOffset = healthOffset;
 	}
 

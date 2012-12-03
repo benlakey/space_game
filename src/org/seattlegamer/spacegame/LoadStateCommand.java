@@ -1,13 +1,10 @@
 package org.seattlegamer.spacegame;
 
-import java.util.UUID;
-
-public class LoadStateCommand extends Message {
+public class LoadStateCommand implements Message {
 
 	private final State stateToLoad;
 	
-	public LoadStateCommand(UUID sourceEntityId, State stateToLoad) {
-		super(sourceEntityId);
+	public LoadStateCommand(State stateToLoad) {
 		this.stateToLoad = stateToLoad;
 	}
 

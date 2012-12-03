@@ -16,7 +16,7 @@ public class PlayerStatus extends Component {
 		super(bus, entityId);
 		this.health = START_HEALTH;
 		this.bus.register(PlayerStatusChange.class, this.getPlayerStatusChangeHandler());
-		this.bus.broadcast(createPlayerStatusReport());
+		this.bus.broadcast(new PlayerStatusReport(this.entityId, this.health));
 	}
 	
 	private Handler<PlayerStatusChange> getPlayerStatusChangeHandler() {
@@ -26,21 +26,15 @@ public class PlayerStatus extends Component {
 			public void handle(PlayerStatusChange message) {
 				int healthOffset = message.getHealthOffset();
 				health += healthOffset;
-				bus.broadcast(createPlayerStatusReport());
+				bus.broadcast(new PlayerStatusReport(entityId, health));
 			}
 
 			@Override
-			public boolean canHandleFrom(UUID sourceEntityId) {
-				return entityId == sourceEntityId;
+			public UUID getEntityIdHandlingFor() {
+				return entityId;
 			}
 
 		};
-	}
-	
-	private PlayerStatusReport createPlayerStatusReport() {
-		PlayerStatusReport playerStatusReport = new PlayerStatusReport(this.entityId);
-		playerStatusReport.setHealth(this.health);
-		return playerStatusReport;
 	}
 
 }
