@@ -68,7 +68,7 @@ public class MenuBuilder {
 	public Iterable<Component> build() {
 		
 		for(UUID entityId : this.entityComponents.keySet()) {
-			MenuEntryInput menuEntryInput = new MenuEntryInput(this.bus, entityId, 0, this.currentIndex);
+			MenuEntryInput menuEntryInput = new MenuEntryInput(this.bus, entityId, 0, this.currentIndex - 1);
 			this.addMenuComponent(entityId, menuEntryInput);
 			this.bus.broadcast(new MenuEntryChange(0));
 		}
