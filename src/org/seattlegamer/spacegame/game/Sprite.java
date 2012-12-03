@@ -13,14 +13,11 @@ import org.seattlegamer.spacegame.PositionQuery;
 public class Sprite extends Component {
 
 	private Image image;
-	//TODO: scale and rotation
-	//private float scale;
 	//private float rotation;
 	
 	public Sprite(Bus bus, UUID entityId, Image image) {
 		super(bus, entityId);
 		this.image = image;
-		//this.scale = 1.0f;
 		//this.rotation = 0;
 	}
 	

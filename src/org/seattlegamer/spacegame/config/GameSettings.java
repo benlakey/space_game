@@ -51,5 +51,11 @@ public class GameSettings {
 	public int getDisplayModeRefreshRate() {
 		return this.propertiesAccessor.getInteger("displaymode.refresh_rate", 60);
 	}
+	
+	public int getScale() {
+		int displayModeWidth = this.getDisplayModeWidth();
+		int scaleValue = this.propertiesAccessor.getInteger("scale", 40);
+		return displayModeWidth / scaleValue;
+    }
 
 }

@@ -8,6 +8,7 @@ import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 
+import org.seattlegamer.spacegame.config.GameSettings;
 import org.seattlegamer.spacegame.utils.GraphicsUtils;
 
 public class ImageResourceLoader implements ResourceLoader<Image> {
@@ -22,8 +23,9 @@ public class ImageResourceLoader implements ResourceLoader<Image> {
 		}
 		
 		BufferedImage bufferedImage = ImageIO.read(stream);
+		BufferedImage scaledImage = GraphicsUtils.getScaledImage(bufferedImage, GameSettings.current().getScale());
 
-		return GraphicsUtils.bufferedImageToAcceleratedImage(bufferedImage);
+		return GraphicsUtils.bufferedImageToAcceleratedImage(scaledImage);
 
 	}
 

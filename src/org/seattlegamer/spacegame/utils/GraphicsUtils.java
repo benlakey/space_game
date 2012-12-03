@@ -4,9 +4,11 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
+import java.awt.RenderingHints;
 import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 
@@ -36,5 +38,25 @@ public class GraphicsUtils {
 		return acceleratedImage;
 	
 	}
+	
+	public static BufferedImage getScaledImage(BufferedImage original, int scale) {
+
+		int aspectRatio = original.getWidth() / original.getHeight();
+		int targetWidth = scale;
+		int targetHeight = scale / aspectRatio;
+        
+		BufferedImage newImage = new BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D graphics = null;
+        try {
+			graphics = newImage.createGraphics();
+	        graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+	        graphics.drawImage(original, 0, 0, targetWidth, targetHeight, null);
+        } finally {
+        	graphics.dispose();
+        }
+        
+        return newImage;
+
+    }
 
 }
