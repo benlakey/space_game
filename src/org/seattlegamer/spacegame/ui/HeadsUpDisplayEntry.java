@@ -20,11 +20,10 @@ import org.seattlegamer.spacegame.config.GameSettings;
 import org.seattlegamer.spacegame.game.PlayerStatusReport;
 import org.seattlegamer.spacegame.utils.GraphicsUtils;
 
-//TODO: rename to HeadsUpDisplayEntry
-public class HeadsUpDisplay extends Component {
+public class HeadsUpDisplayEntry extends Component {
 
 	private static final int FONT_SIZE = 32;
-	private static final String FONT_NAME = GameSettings.getFont();
+	private static final String FONT_NAME = GameSettings.current().getFont();
 	private static final Font HUD_FONT = new Font(FONT_NAME, Font.PLAIN, FONT_SIZE);
 	private static final Color HUD_COLOR = Color.WHITE;
 
@@ -34,7 +33,7 @@ public class HeadsUpDisplay extends Component {
 	private int health;
 	private boolean needsPositionInitialization;
 	
-	public HeadsUpDisplay(Bus bus, UUID entityId, UUID playerEntityId, int playerNumber, String name) {
+	public HeadsUpDisplayEntry(Bus bus, UUID entityId, UUID playerEntityId, int playerNumber, String name) {
 		super(bus, entityId);
 		this.playerEntityId = playerEntityId;
 		this.playerNumber = playerNumber;

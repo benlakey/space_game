@@ -21,22 +21,22 @@ import org.seattlegamer.spacegame.utils.GraphicsUtils;
 
 public class MenuEntryRenderer extends Component {
 
-	private static final int FONT_SIZE = 32;
-	private static final String FONT_NAME = GameSettings.getFont();
-	private static final Font MENU_FONT = new Font(FONT_NAME, Font.PLAIN, FONT_SIZE);
-	private static final Font MENU_FONT_SELECTED = new Font(FONT_NAME, Font.BOLD, FONT_SIZE);
+	private static final int FONT_SIZE = 64;
+	private static final String FONT_NAME = GameSettings.current().getFont();
+	private static final Font MENU_FONT = new Font(FONT_NAME, Font.BOLD, FONT_SIZE);
 	private static final Color MENU_COLOR = Color.WHITE;
+	private static final Color MENU_COLOR_SELECTED = Color.RED;
 
 	private final int index;
 	private final String text;
-	private Font font;
+	private Color color;
 	private boolean needsPositionInitialization;
 
 	public MenuEntryRenderer(Bus bus, UUID entityId, int index, String text) {
 		super(bus, entityId);
 		this.index = index;
 		this.text = text;
-		this.font = MENU_FONT;
+		this.color = MENU_COLOR;
 		this.needsPositionInitialization = true;
 		this.bus.register(MenuEntryChange.class, this.getMenuEntryChangeHandler());
 	}
@@ -47,9 +47,9 @@ public class MenuEntryRenderer extends Component {
 			@Override
 			public void handle(MenuEntryChange message) {
 				if(index == message.getIndex()) {
-					font = MENU_FONT_SELECTED;
+					color = MENU_COLOR_SELECTED;
 				} else {
-					font = MENU_FONT;
+					color = MENU_COLOR;
 				}
 			}
 
@@ -65,22 +65,23 @@ public class MenuEntryRenderer extends Component {
 	public void render(Graphics2D graphics) {
 
 		if(this.needsPositionInitialization) {
-			this.initializePosition(graphics.getFontMetrics(this.font), this.text);
+			this.initializePosition(graphics, this.text);
 			this.needsPositionInitialization = false;
 		}
 
 		Rectangle screenSize = graphics.getDeviceConfiguration().getBounds();
 		Point currentPosition = this.getCurrentPosition(screenSize);
 
-		graphics.setFont(this.font);
-		graphics.setColor(MENU_COLOR);
+		graphics.setFont(MENU_FONT);
+		graphics.setColor(this.color);
 		graphics.drawString(text, currentPosition.x, currentPosition.y);
 
 	}
 	
-	private void initializePosition(FontMetrics fontMetrics, String text) {
+	private void initializePosition(Graphics2D graphics, String text) {
 		
-		Dimension textSize = GraphicsUtils.measureTextPixels(fontMetrics, this.font, text);
+		FontMetrics fontMetrics = graphics.getFontMetrics(MENU_FONT);
+		Dimension textSize = GraphicsUtils.measureTextPixels(fontMetrics, MENU_FONT, text);
 
 		Point offset = new Point();
 

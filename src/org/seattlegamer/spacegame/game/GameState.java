@@ -12,7 +12,7 @@ import org.seattlegamer.spacegame.PositionInitialization;
 import org.seattlegamer.spacegame.State;
 import org.seattlegamer.spacegame.StateControlInput;
 import org.seattlegamer.spacegame.resources.ResourceCache;
-import org.seattlegamer.spacegame.ui.HeadsUpDisplay;
+import org.seattlegamer.spacegame.ui.HeadsUpDisplayEntry;
 
 public class GameState extends State {
 
@@ -29,7 +29,7 @@ public class GameState extends State {
 		UUID playerId = UUID.randomUUID();
 		UUID hudId = UUID.randomUUID();
 
-		this.components.add(new HeadsUpDisplay(bus, hudId, playerId, playerNumber, name));
+		this.components.add(new HeadsUpDisplayEntry(bus, hudId, playerId, playerNumber, name));
 		this.components.add(new Position(bus, hudId));
 
 		this.components.add(new PlayerStatus(bus, playerId));

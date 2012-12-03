@@ -1,6 +1,7 @@
 package org.seattlegamer.spacegame.config;
 
 import java.awt.Canvas;
+import java.awt.DisplayMode;
 import java.awt.Image;
 
 import org.seattlegamer.spacegame.Bus;
@@ -30,13 +31,15 @@ import org.springframework.context.annotation.Configuration;
 public class DependencyConfig {
 
 	public @Bean Canvas canvas() {
-		String title = GameSettings.getTitle();
-		GameCanvas screen = new GameCanvas(title);
-		Input input = input();
-		screen.addKeyListener(input.getKeyListener());
-		screen.addMouseListener(input.getMouseListener());
-		screen.addMouseMotionListener(input.getMouseMotionListener());
-		return screen;
+
+		DisplayMode displayMode = new DisplayMode(
+				GameSettings.current().getDisplayModeWidth(),
+				GameSettings.current().getDisplayModeHeight(),
+				GameSettings.current().getDisplayModeBitDepth(),
+				GameSettings.current().getDisplayModeRefreshRate());
+
+		return new GameCanvas(input(), GameSettings.current().getTitle(), displayMode);
+
 	}
 
 	public @Bean Engine engine() {
@@ -56,8 +59,7 @@ public class DependencyConfig {
 	}
 	
 	public @Bean Throttle framerateThrottle() {
-		int targetFramerate = GameSettings.getTargetFramerate();
-		return new Throttle(1000 / targetFramerate);
+		return new Throttle(1000 / GameSettings.current().getTargetFramerate());
 	}
 
 	public @Bean Input input() {

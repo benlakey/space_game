@@ -1,42 +1,55 @@
 package org.seattlegamer.spacegame.config;
 
+import java.util.Properties;
+
+import org.seattlegamer.spacegame.PropertiesLoader;
 import org.seattlegamer.spacegame.utils.PropertiesAccessor;
 
 public class GameSettings {
 
-	private static final String KEY_TITLE = "title";
-	private static final String KEY_TARGET_FRAMERATE = "target_framerate";
-	private static final String KEY_FONT = "font";
+	private static final String PROPERTIES_FILE_PATH = "/spacegame.properties";
+
+	private static GameSettings instance;
 	
-	private static final String DEFAULT_TITLE = "Space Game!";
-	private static final int DEFAULT_TARGET_FRAMERATE = 100;
-	private static final String DEFAULT_FONT = "Courier";
-
-	private static PropertiesAccessor propertiesAccessor;
-	
-	public static void initialize(PropertiesAccessor accessor) {
-		propertiesAccessor = accessor;
-	}
-
-	public static String getTitle() {
-		ensureInitialized();
-		return propertiesAccessor.getString(KEY_TITLE, DEFAULT_TITLE);
-	}
-
-	public static int getTargetFramerate() {
-		ensureInitialized();
-		return propertiesAccessor.getInteger(KEY_TARGET_FRAMERATE, DEFAULT_TARGET_FRAMERATE);
-	}
-
-	public static String getFont() {
-		ensureInitialized();
-		return propertiesAccessor.getString(KEY_FONT, DEFAULT_FONT);
-	}
-	
-	private static void ensureInitialized() {
-		if(propertiesAccessor == null) {
-			throw new IllegalStateException("In order to use GameSettings, you must first call initialize.");
+	public static GameSettings current() {
+		if(instance == null) {
+			instance = new GameSettings(PropertiesLoader.loadProperties(PROPERTIES_FILE_PATH));
 		}
+		return instance;
+	}
+
+	private final PropertiesAccessor propertiesAccessor;
+
+	public GameSettings(Properties properties) {
+		this.propertiesAccessor = new PropertiesAccessor(properties);
+	}
+
+	public String getTitle() {
+		return this.propertiesAccessor.getString("title", "Space Game!");
+	}
+
+	public int getTargetFramerate() {
+		return this.propertiesAccessor.getInteger("target_framerate", 100);
+	}
+
+	public String getFont() {
+		return this.propertiesAccessor.getString("font", "Courier");
+	}
+
+	public int getDisplayModeWidth() {
+		return this.propertiesAccessor.getInteger("displaymode.width", 800);
+	}
+
+	public int getDisplayModeHeight() {
+		return this.propertiesAccessor.getInteger("displaymode.height", 600);
+	}
+
+	public int getDisplayModeBitDepth() {
+		return this.propertiesAccessor.getInteger("displaymode.bit_depth", 16);
+	}
+
+	public int getDisplayModeRefreshRate() {
+		return this.propertiesAccessor.getInteger("displaymode.refresh_rate", 60);
 	}
 
 }
