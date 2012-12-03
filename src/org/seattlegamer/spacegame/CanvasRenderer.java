@@ -16,7 +16,7 @@ public class CanvasRenderer implements Renderer {
 	}
 
 	@Override
-	public void render(Iterable<Entity> entities) {
+	public void render(Iterable<Component> components) {
 
 		BufferStrategy bufferStrategy = this.canvas.getBufferStrategy();
 		Graphics2D graphics = (Graphics2D)bufferStrategy.getDrawGraphics();
@@ -27,10 +27,10 @@ public class CanvasRenderer implements Renderer {
 			this.clearScreen(graphics);
 			
 			//warning! dont change this to a for(:) style loop, because we are modifying this collection inside the game as we iterate!
-			Iterator<Entity> entityIterator = entities.iterator();
-			while (entityIterator.hasNext()) {
-				Entity entity = entityIterator.next();
-				entity.render(graphics);
+			Iterator<Component> componentIterator = components.iterator();
+			while (componentIterator.hasNext()) {
+				Component component = componentIterator.next();
+				component.render(graphics);
 			}
 
 			bufferStrategy.show();

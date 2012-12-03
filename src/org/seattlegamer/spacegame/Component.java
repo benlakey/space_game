@@ -1,30 +1,22 @@
 package org.seattlegamer.spacegame;
 
 import java.awt.Graphics2D;
-import java.util.EnumSet;
+import java.util.UUID;
 
 public abstract class Component {
 
-	protected final Entity entity;
+	protected Bus bus;
+	protected UUID entityId;
 	private boolean enabled;
-	private final EnumSet<ComponentGroup> groupBitMask;
 
-	public Component(Entity entity) {
-		this.entity = entity;
+	public Component(Bus bus, UUID entityId) {
+		this.bus = bus;
+		this.entityId = entityId;
 		this.enabled = true;
-		this.groupBitMask = EnumSet.noneOf(ComponentGroup.class);
 	}
-
-	public void setGroupMembership(ComponentGroup group, boolean isMember) {
-		if(isMember) {
-			this.groupBitMask.add(group);
-		} else {
-			this.groupBitMask.remove(group);
-		}
-    }
-
-	public boolean isMember(ComponentGroup group) {
-		return this.groupBitMask.contains(group);
+	
+	public UUID getEntityId() {
+		return this.entityId;
 	}
 
 	public boolean isEnabled() {

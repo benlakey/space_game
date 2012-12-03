@@ -4,43 +4,45 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.UUID;
 
-@SuppressWarnings("rawtypes")
-public final class Bus {
+public class Bus {
 
-	private final Map<Class<? extends Message>, Collection<Handler>> handlerRegistry;
-
+	private final Map<Class<? extends Message>, Collection<Handler<? extends Message>>> handlers;
+	
 	public Bus() {
-		this.handlerRegistry = new HashMap<Class<? extends Message>, Collection<Handler>>();
+		this.handlers = new HashMap<>();
 	}
 	
 	public <T extends Message> void register(Class<T> messageClass, Handler<T> handler) {
-		Collection<Handler> handlers = this.handlerRegistry.get(messageClass);
-		if(handlers == null) {
-			handlers = new LinkedList<Handler>();
-			this.handlerRegistry.put(messageClass, handlers);
+
+		Collection<Handler<? extends Message>> handlersForMessageType = this.handlers.get(messageClass);
+		if(handlersForMessageType == null) {
+			handlersForMessageType = new LinkedList<>();
+			this.handlers.put(messageClass, handlersForMessageType);
 		}
-		handlers.add(handler);
+
+		handlersForMessageType.add(handler);
+		
 	}
 	
-	public <T extends Message> void deregister(Class<T> messageClass, Handler<T> handler) {
-		Collection<Handler> handlers = this.handlerRegistry.get(messageClass);
-		if(handlers == null) {
-			return;
-		}
-		handlers.remove(handler);
-	}
-
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public <T extends Message> void broadcast(T message) {
-
-		Collection<Handler> handlers = this.handlerRegistry.get(message.getClass());
-		if(handlers == null) {
+		
+		Collection<Handler<? extends Message>> handlersForMessageType = this.handlers.get(message.getClass());
+		if(handlersForMessageType == null) {
 			return;
 		}
-		for(Handler<T> handler : handlers) {
-			handler.handle(message);
+		
+		for(Handler handler : handlersForMessageType) {
+			UUID sourceEntityId = message.getSourceEntityId();
+			if(handler.canHandleFrom(sourceEntityId)) {
+				handler.handle(message);
+			}
 		}
-
+		
 	}
 
+
+	
 }

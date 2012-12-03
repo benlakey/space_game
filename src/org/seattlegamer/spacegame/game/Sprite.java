@@ -4,10 +4,11 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.UUID;
 
+import org.seattlegamer.spacegame.Bus;
 import org.seattlegamer.spacegame.Component;
-import org.seattlegamer.spacegame.Entity;
-import org.seattlegamer.spacegame.PositionRetriever;
+import org.seattlegamer.spacegame.PositionQuery;
 
 public class Sprite extends Component {
 
@@ -15,21 +16,35 @@ public class Sprite extends Component {
 	//TODO: scale and rotation
 	//private float scale;
 	//private float rotation;
-	private final PositionRetriever positionRetriever;
 	
-	public Sprite(Entity entity, Image image) {
-		super(entity);
+	public Sprite(Bus bus, UUID entityId, Image image) {
+		super(bus, entityId);
 		this.image = image;
 		//this.scale = 1.0f;
 		//this.rotation = 0;
-		this.positionRetriever = new PositionRetriever(entity);
 	}
 	
 	@Override
 	public void render(Graphics2D graphics) {
 		Rectangle screenSize = graphics.getDeviceConfiguration().getBounds();
-		Point currentPosition = this.positionRetriever.getCurrentPosition(screenSize);
+		Point currentPosition = this.getCurrentPosition(screenSize);
 		graphics.drawImage(this.image, currentPosition.x, currentPosition.y, null);
+	}
+	
+	//TODO: this is duplicated in several places. consolidate.
+	private Point getCurrentPosition(Rectangle screenSize) {
+		
+		PositionQuery query = new PositionQuery(this.entityId, screenSize);
+		
+		this.bus.broadcast(query);
+		
+		Point reply = query.getReply();
+		if(reply == null) {
+			reply = new Point();
+		}
+		
+		return reply;
+
 	}
 
 }

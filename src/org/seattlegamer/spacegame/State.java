@@ -8,26 +8,16 @@ import org.seattlegamer.spacegame.resources.ResourceCache;
 
 public abstract class State {
 
-	protected final Collection<Entity> entities;
+	protected final Collection<Component> components;
 
 	public State() {
-		this.entities = new LinkedList<Entity>();
+		this.components = new LinkedList<Component>();
 	}
 
-	public abstract void load(ResourceCache resourceCache) throws IOException;
-	
-	public Iterable<Entity> getEntities() {
-		return this.entities;
-	}
+	public abstract void load(Bus bus, ResourceCache resourceCache) throws IOException;
 
-	public <T extends Message> void applyGlobalHandler(Class<T> messageClass, Handler<T> handler) {
-		for(Entity entity : this.entities) {
-			entity.register(messageClass, handler);
-		}
-	}
-	
-	protected void registerEntity(Entity entity) {
-		this.entities.add(entity);
+	public Iterable<Component> getComponents() {
+		return this.components;
 	}
 
 }

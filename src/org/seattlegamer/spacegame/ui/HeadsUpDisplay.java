@@ -7,14 +7,15 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.UUID;
 
+import org.seattlegamer.spacegame.Bus;
 import org.seattlegamer.spacegame.Component;
-import org.seattlegamer.spacegame.Entity;
 import org.seattlegamer.spacegame.Handler;
 import org.seattlegamer.spacegame.Position.HorizontalAlignment;
 import org.seattlegamer.spacegame.Position.VerticalAlignment;
 import org.seattlegamer.spacegame.PositionInitialization;
-import org.seattlegamer.spacegame.PositionRetriever;
+import org.seattlegamer.spacegame.PositionQuery;
 import org.seattlegamer.spacegame.config.GameSettings;
 import org.seattlegamer.spacegame.game.PlayerStatusReport;
 import org.seattlegamer.spacegame.utils.GraphicsUtils;
@@ -26,28 +27,35 @@ public class HeadsUpDisplay extends Component {
 	private static final Font HUD_FONT = new Font(FONT_NAME, Font.PLAIN, FONT_SIZE);
 	private static final Color HUD_COLOR = Color.WHITE;
 
+	private final UUID playerEntityId;
 	private final int playerNumber;
 	private final String name;
 	private int health;
-	private final PositionRetriever positionRetriever;
 	private boolean needsPositionInitialization;
 	
-	public HeadsUpDisplay(Entity entity, int playerNumber, String name) {
-		super(entity);
+	public HeadsUpDisplay(Bus bus, UUID entityId, UUID playerEntityId, int playerNumber, String name) {
+		super(bus, entityId);
+		this.playerEntityId = playerEntityId;
 		this.playerNumber = playerNumber;
 		this.name = name;
 		this.health = 0;
-		this.positionRetriever = new PositionRetriever(entity);
 		this.needsPositionInitialization = true;
-		this.entity.register(PlayerStatusReport.class, this.getPlayerStatusReportHandler());
+		this.bus.register(PlayerStatusReport.class, this.getPlayerStatusReportHandler());
 	}
 
 	private Handler<PlayerStatusReport> getPlayerStatusReportHandler() {
 		return new Handler<PlayerStatusReport>() {
+
 			@Override
 			public void handle(PlayerStatusReport message) {
 				health = message.getHealth();
 			}
+
+			@Override
+			public boolean canHandleFrom(UUID sourceEntityId) {
+				return playerEntityId == sourceEntityId;
+			}
+
 		};
 	}
 
@@ -62,7 +70,7 @@ public class HeadsUpDisplay extends Component {
 		}
 
 		Rectangle screenSize = graphics.getDeviceConfiguration().getBounds();
-		Point currentPosition = this.positionRetriever.getCurrentPosition(screenSize);
+		Point currentPosition = this.getCurrentPosition(screenSize);
 
 		graphics.setFont(HUD_FONT);
 		graphics.setColor(HUD_COLOR);
@@ -77,8 +85,24 @@ public class HeadsUpDisplay extends Component {
 		Point offset = new Point();
 		offset.y = this.playerNumber * (0 - textSize.height);
 
-		this.entity.broadcast(
-				new PositionInitialization(offset, HorizontalAlignment.LEFT, VerticalAlignment.BOTTOM));
+		this.bus.broadcast(
+				new PositionInitialization(entityId, offset, HorizontalAlignment.LEFT, VerticalAlignment.BOTTOM));
+
+	}
+	
+	//TODO: this is duplicated in several places. consolidate.
+	private Point getCurrentPosition(Rectangle screenSize) {
+		
+		PositionQuery query = new PositionQuery(this.entityId, screenSize);
+		
+		this.bus.broadcast(query);
+		
+		Point reply = query.getReply();
+		if(reply == null) {
+			reply = new Point();
+		}
+		
+		return reply;
 
 	}
 

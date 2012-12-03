@@ -1,5 +1,17 @@
 package org.seattlegamer.spacegame;
 
-public interface Message {
+import java.util.UUID;
+
+public abstract class Message {
+	
+	private final UUID sourceEntityId;
+
+	protected Message(UUID sourceEntityId) {
+		this.sourceEntityId = sourceEntityId;
+	}
+	
+	public UUID getSourceEntityId() {
+		return this.sourceEntityId;
+	}
 
 }

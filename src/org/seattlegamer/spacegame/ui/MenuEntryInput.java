@@ -1,10 +1,10 @@
 package org.seattlegamer.spacegame.ui;
 
 import java.awt.event.KeyEvent;
+import java.util.UUID;
 
+import org.seattlegamer.spacegame.Bus;
 import org.seattlegamer.spacegame.Component;
-import org.seattlegamer.spacegame.ComponentGroup;
-import org.seattlegamer.spacegame.Entity;
 import org.seattlegamer.spacegame.Input;
 import org.seattlegamer.spacegame.utils.NumberUtils;
 import org.seattlegamer.spacegame.utils.Throttle;
@@ -18,11 +18,10 @@ public class MenuEntryInput extends Component {
 	private final Throttle downThrottle;
 	private final Throttle upThrottle;
 
-	public MenuEntryInput(Entity owner, int selectionIndex, int maxIndex) {
-		super(owner);
+	public MenuEntryInput(Bus bus, UUID entityId, int selectionIndex, int maxIndex) {
+		super(bus, entityId);
 		this.selectionIndex = selectionIndex;
 		this.maxIndex = maxIndex;
-		this.setGroupMembership(ComponentGroup.MENU, true);
 		this.downThrottle = new Throttle(KEY_DELAY);
 		this.upThrottle = new Throttle(KEY_DELAY);
 	}
@@ -34,7 +33,7 @@ public class MenuEntryInput extends Component {
 		checkThrottledInput(input, KeyEvent.VK_DOWN, elapsedMillis, this.downThrottle, 1);
 
 		if(input.isKeyInputActive(KeyEvent.VK_ENTER)) {
-			this.entity.broadcast(new MenuEntryExecution(this.selectionIndex));
+			this.bus.broadcast(new MenuEntryExecution(entityId, this.selectionIndex));
 		}
 
 	}
@@ -46,7 +45,7 @@ public class MenuEntryInput extends Component {
 			long remaining = throttle.timeRemaining();
 			if(remaining == 0) {
 				this.selectionIndex = NumberUtils.wrapIndex(this.selectionIndex + change, this.maxIndex);
-				this.entity.broadcast(new MenuEntryChange(this.selectionIndex));
+				this.bus.broadcast(new MenuEntryChange(entityId, this.selectionIndex));
 				throttle.throttle();
 			}
 		} else {

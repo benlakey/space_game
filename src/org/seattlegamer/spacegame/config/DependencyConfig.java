@@ -3,6 +3,7 @@ package org.seattlegamer.spacegame.config;
 import java.awt.Canvas;
 import java.awt.Image;
 
+import org.seattlegamer.spacegame.Bus;
 import org.seattlegamer.spacegame.CanvasRenderer;
 import org.seattlegamer.spacegame.Engine;
 import org.seattlegamer.spacegame.GameCanvas;
@@ -13,7 +14,7 @@ import org.seattlegamer.spacegame.resources.ImageResourceLoader;
 import org.seattlegamer.spacegame.resources.InMemoryResourceCache;
 import org.seattlegamer.spacegame.resources.ResourceCache;
 import org.seattlegamer.spacegame.resources.ResourceLoader;
-import org.seattlegamer.spacegame.ui.MainMenuState;
+import org.seattlegamer.spacegame.ui.MenuState;
 import org.seattlegamer.spacegame.utils.Throttle;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -46,8 +47,12 @@ public class DependencyConfig {
 		return new CanvasRenderer(canvas());
 	}
 	
+	public @Bean Bus bus() {
+		return new Bus();
+	}
+	
 	public @Bean StateManager stateManager() {
-		return new StateManager(resourceCache(), new MainMenuState());
+		return new StateManager(bus(), resourceCache(), new MenuState());
 	}
 	
 	public @Bean Throttle framerateThrottle() {

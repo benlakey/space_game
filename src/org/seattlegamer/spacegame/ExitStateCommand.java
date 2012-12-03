@@ -1,5 +1,11 @@
 package org.seattlegamer.spacegame;
 
-public class ExitStateCommand implements Message {
+import java.util.UUID;
+
+public class ExitStateCommand extends Message {
+
+	public ExitStateCommand(UUID sourceEntityId) {
+		super(sourceEntityId);
+	}
 
 }

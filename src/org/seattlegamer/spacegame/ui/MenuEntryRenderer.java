@@ -7,14 +7,15 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.UUID;
 
+import org.seattlegamer.spacegame.Bus;
 import org.seattlegamer.spacegame.Component;
-import org.seattlegamer.spacegame.Entity;
 import org.seattlegamer.spacegame.Handler;
 import org.seattlegamer.spacegame.Position.HorizontalAlignment;
 import org.seattlegamer.spacegame.Position.VerticalAlignment;
 import org.seattlegamer.spacegame.PositionInitialization;
-import org.seattlegamer.spacegame.PositionRetriever;
+import org.seattlegamer.spacegame.PositionQuery;
 import org.seattlegamer.spacegame.config.GameSettings;
 import org.seattlegamer.spacegame.utils.GraphicsUtils;
 
@@ -29,21 +30,20 @@ public class MenuEntryRenderer extends Component {
 	private final int index;
 	private final String text;
 	private Font font;
-	private final PositionRetriever positionRetriever;
 	private boolean needsPositionInitialization;
 
-	public MenuEntryRenderer(Entity entity, int index, String text) {
-		super(entity);
+	public MenuEntryRenderer(Bus bus, UUID entityId, int index, String text) {
+		super(bus, entityId);
 		this.index = index;
 		this.text = text;
 		this.font = MENU_FONT;
-		this.positionRetriever = new PositionRetriever(entity);
 		this.needsPositionInitialization = true;
-		this.entity.register(MenuEntryChange.class, this.getMenuEntryChangeHandler());
+		this.bus.register(MenuEntryChange.class, this.getMenuEntryChangeHandler());
 	}
 
 	private Handler<MenuEntryChange> getMenuEntryChangeHandler() {
 		return new Handler<MenuEntryChange>() {
+
 			@Override
 			public void handle(MenuEntryChange message) {
 				if(index == message.getIndex()) {
@@ -52,6 +52,12 @@ public class MenuEntryRenderer extends Component {
 					font = MENU_FONT;
 				}
 			}
+
+			@Override
+			public boolean canHandleFrom(UUID sourceEntityId) {
+				return entityId == sourceEntityId;
+			}
+
 		};
 	}
 
@@ -64,7 +70,7 @@ public class MenuEntryRenderer extends Component {
 		}
 
 		Rectangle screenSize = graphics.getDeviceConfiguration().getBounds();
-		Point currentPosition = this.positionRetriever.getCurrentPosition(screenSize);
+		Point currentPosition = this.getCurrentPosition(screenSize);
 
 		graphics.setFont(this.font);
 		graphics.setColor(MENU_COLOR);
@@ -81,13 +87,26 @@ public class MenuEntryRenderer extends Component {
 		offset.x = 0 - (textSize.width / 2);
 		offset.y = textSize.height * (this.index + 1);
 
-		this.entity.broadcast(
-				new PositionInitialization(offset, HorizontalAlignment.CENTER, VerticalAlignment.TOP));
+		this.bus.broadcast(
+				new PositionInitialization(entityId, offset, HorizontalAlignment.CENTER, VerticalAlignment.TOP));
 
 	}
 
-	
+	//TODO: this is duplicated in several places. consolidate.
+	private Point getCurrentPosition(Rectangle screenSize) {
+		
+		PositionQuery query = new PositionQuery(entityId, screenSize);
+		
+		this.bus.broadcast(query);
+		
+		Point reply = query.getReply();
+		if(reply == null) {
+			reply = new Point();
+		}
+		
+		return reply;
 
+	}
 	
 
 }

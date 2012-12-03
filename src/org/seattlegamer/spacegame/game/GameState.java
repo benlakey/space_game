@@ -2,8 +2,9 @@ package org.seattlegamer.spacegame.game;
 
 import java.awt.Point;
 import java.io.IOException;
+import java.util.UUID;
 
-import org.seattlegamer.spacegame.Entity;
+import org.seattlegamer.spacegame.Bus;
 import org.seattlegamer.spacegame.Position;
 import org.seattlegamer.spacegame.Position.HorizontalAlignment;
 import org.seattlegamer.spacegame.Position.VerticalAlignment;
@@ -11,36 +12,34 @@ import org.seattlegamer.spacegame.PositionInitialization;
 import org.seattlegamer.spacegame.State;
 import org.seattlegamer.spacegame.StateControlInput;
 import org.seattlegamer.spacegame.resources.ResourceCache;
+import org.seattlegamer.spacegame.ui.HeadsUpDisplay;
 
 public class GameState extends State {
 
 	@Override
-	public void load(ResourceCache resourceCache) throws IOException {
+	public void load(Bus bus, ResourceCache resourceCache) throws IOException {
 
-		Entity player1 = new Entity();
-		//player1.register(new HeadsUpDisplay(player1, 1, "John Doe"));
-		player1.register(new PlayerStatus(player1));
-		player1.register(new StateControlInput(player1));
-		player1.register(new Position(player1));
-		player1.register(new Sprite(player1, resourceCache.getImage("assets/mars.png")));
+		this.addPlayer(bus, resourceCache, 1, "John Doe");
+		this.addPlayer(bus, resourceCache, 2, "Bob Smith");
+
+	}
+	
+	private void addPlayer(Bus bus, ResourceCache resourceCache, int playerNumber, String name) throws IOException {
 		
-		player1.broadcast(
-				new PositionInitialization(new Point(0, 0), HorizontalAlignment.CENTER, VerticalAlignment.MIDDLE));
+		UUID playerId = UUID.randomUUID();
+		UUID hudId = UUID.randomUUID();
 
-		this.registerEntity(player1);
+		this.components.add(new HeadsUpDisplay(bus, hudId, playerId, playerNumber, name));
+		this.components.add(new Position(bus, hudId));
+
+		this.components.add(new PlayerStatus(bus, playerId));
+		this.components.add(new StateControlInput(bus, playerId));
+		this.components.add(new Position(bus, playerId));
+		this.components.add(new Sprite(bus, playerId, resourceCache.getImage("assets/mars.png")));
+
+		bus.broadcast(
+				new PositionInitialization(playerId, new Point(0, 0), HorizontalAlignment.CENTER, VerticalAlignment.MIDDLE));
 		
-		Entity player2 = new Entity();
-		//player2.register(new HeadsUpDisplay(player2, 2, "Bob Smith"));
-		player2.register(new PlayerStatus(player2));
-		player2.register(new StateControlInput(player2));
-		player2.register(new Position(player2));
-		player2.register(new Sprite(player2, resourceCache.getImage("assets/mars.png")));
-		
-		player2.broadcast(
-				new PositionInitialization(new Point(0, 0), HorizontalAlignment.LEFT, VerticalAlignment.TOP));
-
-		this.registerEntity(player2);
-
 	}
 
 }

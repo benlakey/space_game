@@ -2,13 +2,15 @@ package org.seattlegamer.spacegame;
 
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.UUID;
 
-public class PositionQuery implements Message {
+public class PositionQuery extends Message {
 
 	private final Rectangle screenSize;
 	private Point reply;
 	
-	public PositionQuery(Rectangle screenSize) {
+	public PositionQuery(UUID sourceEntityId, Rectangle screenSize) {
+		super(sourceEntityId);
 		this.screenSize = screenSize;
 	}
 	

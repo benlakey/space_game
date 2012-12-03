@@ -1,12 +1,15 @@
 package org.seattlegamer.spacegame.ui;
 
+import java.util.UUID;
+
 import org.seattlegamer.spacegame.Message;
 
-public class MenuEntryExecution implements Message {
+public class MenuEntryExecution extends Message {
 	
 	private final int selectionIndex;
 	
-	public MenuEntryExecution(int selectionIndex) {
+	public MenuEntryExecution(UUID sourceEntityId, int selectionIndex) {
+		super(sourceEntityId);
 		this.selectionIndex = selectionIndex;
 	}
 	
