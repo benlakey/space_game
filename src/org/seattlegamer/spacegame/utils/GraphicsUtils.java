@@ -13,7 +13,7 @@ import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 
 public class GraphicsUtils {
-	
+
 	public static Dimension measureTextPixels(FontMetrics metrics, Font font, String text) {
 		int width = metrics.stringWidth(text);
 		int height = metrics.getHeight();
@@ -41,9 +41,9 @@ public class GraphicsUtils {
 	
 	public static BufferedImage getScaledImage(BufferedImage original, int scale) {
 
-		int aspectRatio = original.getWidth() / original.getHeight();
-		int targetWidth = scale;
-		int targetHeight = scale / aspectRatio;
+		int aspectRatio = original.getWidth() / original.getHeight(); //1.5
+		int targetWidth = scale * aspectRatio; //100
+		int targetHeight = scale;
         
 		BufferedImage newImage = new BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D graphics = null;

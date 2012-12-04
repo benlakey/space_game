@@ -54,7 +54,7 @@ public class GameSettings {
 	
 	public int getScale() {
 		int displayModeWidth = this.getDisplayModeWidth();
-		int scaleValue = this.propertiesAccessor.getInteger("scale", 40);
+		int scaleValue = this.propertiesAccessor.getInteger("scale", 8);
 		return displayModeWidth / scaleValue;
     }
 

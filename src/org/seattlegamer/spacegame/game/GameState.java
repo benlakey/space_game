@@ -21,6 +21,8 @@ public class GameState extends State {
 
 		this.addPlayer(bus, resourceCache, 1, "John Doe");
 		this.addPlayer(bus, resourceCache, 2, "Bob Smith");
+		
+		this.addExplosion(bus, resourceCache);
 
 	}
 	
@@ -38,6 +40,19 @@ public class GameState extends State {
 		this.components.add(new Sprite(bus, playerId, resourceCache.getImage("assets/mars.png")));
 
 		bus.send(new PositionInitialization(new Point(0, 0), HorizontalAlignment.CENTER, VerticalAlignment.MIDDLE), playerId);
+		bus.send(new AnimationInitiation(), playerId);
+		
+	}
+	
+	private void addExplosion(Bus bus, ResourceCache resourceCache) throws IOException {
+		
+		UUID explosionId = UUID.randomUUID();
+
+		this.components.add(new Position(bus, explosionId));
+		this.components.add(new Animation(bus, explosionId, resourceCache.getImage("assets/explosion.png")));
+
+		bus.send(new PositionInitialization(new Point(0, 0), HorizontalAlignment.LEFT, VerticalAlignment.MIDDLE), explosionId);
+		bus.send(new AnimationInitiation(), explosionId);
 		
 	}
 
