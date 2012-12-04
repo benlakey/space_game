@@ -11,18 +11,21 @@ import java.util.UUID;
 import org.seattlegamer.spacegame.Bus;
 import org.seattlegamer.spacegame.Component;
 import org.seattlegamer.spacegame.Handler;
+import org.seattlegamer.spacegame.Input;
 import org.seattlegamer.spacegame.PositionQuery;
 
 public class Animation extends Component {
 	
 	private static final int FRAME_COUNT = 8;
+	private static final int SAMPLE_DELAY_MILLIS = 70;
 
 	private Image[] frames;
+	private int millisSinceLastSample;
 	private int currentFrameIndex;
-	private boolean renderedLastTime;
-	
+
 	public Animation(Bus bus, UUID entityId, Image image) {
 		super(bus, entityId);
+		this.frames = new Image[FRAME_COUNT];
 		this.storeFrames(image);
 		this.currentFrameIndex = -1;
 		this.bus.register(AnimationInitiation.class, this.getAnimationInitiationHandler());
@@ -45,9 +48,7 @@ public class Animation extends Component {
 	}
 	
 	private void storeFrames(Image image) {
-		
-		this.frames = new Image[FRAME_COUNT];
-		
+
 		int frameWidth = image.getWidth(null) / FRAME_COUNT;
 		int frameHeight = image.getHeight(null);
 
@@ -73,6 +74,11 @@ public class Animation extends Component {
         this.frames[index] = frame;
 		
 	}
+	
+	@Override
+	public void update(Input input, long elapsedMillis) {
+		this.millisSinceLastSample += elapsedMillis;
+	}
 
 	@Override
 	public void render(Graphics2D graphics) {
@@ -81,26 +87,19 @@ public class Animation extends Component {
 			return;
 		}
 
-		if(this.renderedLastTime) {
-			this.renderedLastTime = false;
-			return;
-		}
-		
 		Image image = this.frames[this.currentFrameIndex];
 		
 		Rectangle screenSize = graphics.getDeviceConfiguration().getBounds();
 		Point currentPosition = this.getCurrentPosition(screenSize);
 		graphics.drawImage(image, currentPosition.x, currentPosition.y, null);
-		
-		this.renderedLastTime = true;
-		
+
 		if(this.isAtEndOfAnimation()) {
-			//TODO: temporary just so I could see the animation continuously for testing
-			//this.completeAnimationCycle();
-			this.currentFrameIndex = 0;
+			this.completeAnimationCycle();
 		} else {
-			
-			this.currentFrameIndex++;
+			if(this.millisSinceLastSample > SAMPLE_DELAY_MILLIS) {
+				this.currentFrameIndex++;
+				this.millisSinceLastSample = 0;
+			}
 		}
 
 	}
@@ -117,9 +116,9 @@ public class Animation extends Component {
 		return this.currentFrameIndex == FRAME_COUNT - 1;
 	}
 
-//	private void completeAnimationCycle() {
-//		this.currentFrameIndex = -1;
-//	}
+	private void completeAnimationCycle() {
+		this.currentFrameIndex = -1;
+	}
 	
 	//TODO: this is duplicated in several places. consolidate.
 	private Point getCurrentPosition(Rectangle screenSize) {

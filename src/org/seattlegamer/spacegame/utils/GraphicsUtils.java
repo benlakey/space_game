@@ -41,8 +41,8 @@ public class GraphicsUtils {
 	
 	public static BufferedImage getScaledImage(BufferedImage original, int scale) {
 
-		int aspectRatio = original.getWidth() / original.getHeight(); //1.5
-		int targetWidth = scale * aspectRatio; //100
+		int aspectRatio = original.getWidth() / original.getHeight();
+		int targetWidth = scale * aspectRatio;
 		int targetHeight = scale;
         
 		BufferedImage newImage = new BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_ARGB);
