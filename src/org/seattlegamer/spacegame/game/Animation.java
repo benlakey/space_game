@@ -91,6 +91,9 @@ public class Animation extends Component {
 		
 		Rectangle screenSize = graphics.getDeviceConfiguration().getBounds();
 		Point currentPosition = this.getCurrentPosition(screenSize);
+		if(currentPosition == null) {
+			currentPosition = new Point();
+		}
 		graphics.drawImage(image, currentPosition.x, currentPosition.y, null);
 
 		if(this.isAtEndOfAnimation()) {
@@ -120,20 +123,10 @@ public class Animation extends Component {
 		this.currentFrameIndex = -1;
 	}
 	
-	//TODO: this is duplicated in several places. consolidate.
 	private Point getCurrentPosition(Rectangle screenSize) {
-		
 		PositionQuery query = new PositionQuery(screenSize);
-		
-		this.bus.send(query, this.entityId);
-		
-		Point reply = query.getReply();
-		if(reply == null) {
-			reply = new Point();
-		}
-		
-		return reply;
-
+		this.bus.send(query, this.entityId);		
+		return query.getReply();
 	}
 
 }

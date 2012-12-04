@@ -25,23 +25,16 @@ public class Sprite extends Component {
 	public void render(Graphics2D graphics) {
 		Rectangle screenSize = graphics.getDeviceConfiguration().getBounds();
 		Point currentPosition = this.getCurrentPosition(screenSize);
+		if(currentPosition == null) {
+			currentPosition = new Point();
+		}
 		graphics.drawImage(this.image, currentPosition.x, currentPosition.y, null);
 	}
-	
-	//TODO: this is duplicated in several places. consolidate.
-	private Point getCurrentPosition(Rectangle screenSize) {
-		
-		PositionQuery query = new PositionQuery(screenSize);
-		
-		this.bus.send(query, this.entityId);
-		
-		Point reply = query.getReply();
-		if(reply == null) {
-			reply = new Point();
-		}
-		
-		return reply;
 
+	private Point getCurrentPosition(Rectangle screenSize) {
+		PositionQuery query = new PositionQuery(screenSize);
+		this.bus.send(query, this.entityId);		
+		return query.getReply();
 	}
 
 }

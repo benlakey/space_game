@@ -71,11 +71,14 @@ public class HeadsUpDisplayEntry extends Component {
 			this.needsPositionInitialization = false;
 		}
 
-		Rectangle screenSize = graphics.getDeviceConfiguration().getBounds();
-		Point currentPosition = this.getCurrentPosition(screenSize);
-
 		graphics.setFont(HUD_FONT);
 		graphics.setColor(HUD_COLOR);
+		
+		Rectangle screenSize = graphics.getDeviceConfiguration().getBounds();
+		Point currentPosition = this.getCurrentPosition(screenSize);
+		if(currentPosition == null) {
+			currentPosition = new Point();
+		}
 		graphics.drawString(text, currentPosition.x, currentPosition.y);
 
 	}
@@ -90,21 +93,11 @@ public class HeadsUpDisplayEntry extends Component {
 		this.bus.send(new PositionInitialization(offset, HorizontalAlignment.LEFT, VerticalAlignment.BOTTOM), this.entityId);
 
 	}
-	
-	//TODO: this is duplicated in several places. consolidate.
-	private Point getCurrentPosition(Rectangle screenSize) {
-		
-		PositionQuery query = new PositionQuery(screenSize);
-		
-		this.bus.send(query, this.entityId);
-		
-		Point reply = query.getReply();
-		if(reply == null) {
-			reply = new Point();
-		}
-		
-		return reply;
 
+	private Point getCurrentPosition(Rectangle screenSize) {
+		PositionQuery query = new PositionQuery(screenSize);
+		this.bus.send(query, this.entityId);
+		return query.getReply();
 	}
 
 }

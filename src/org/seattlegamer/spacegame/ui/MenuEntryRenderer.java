@@ -69,11 +69,14 @@ public class MenuEntryRenderer extends Component {
 			this.needsPositionInitialization = false;
 		}
 
-		Rectangle screenSize = graphics.getDeviceConfiguration().getBounds();
-		Point currentPosition = this.getCurrentPosition(screenSize);
-
 		graphics.setFont(MENU_FONT);
 		graphics.setColor(this.color);
+		
+		Rectangle screenSize = graphics.getDeviceConfiguration().getBounds();
+		Point currentPosition = this.getCurrentPosition(screenSize);
+		if(currentPosition == null) {
+			currentPosition = new Point();
+		}
 		graphics.drawString(text, currentPosition.x, currentPosition.y);
 
 	}
@@ -92,21 +95,10 @@ public class MenuEntryRenderer extends Component {
 
 	}
 
-	//TODO: this is duplicated in several places. consolidate.
 	private Point getCurrentPosition(Rectangle screenSize) {
-		
 		PositionQuery query = new PositionQuery(screenSize);
-		
 		this.bus.send(query, this.entityId);
-		
-		Point reply = query.getReply();
-		if(reply == null) {
-			reply = new Point();
-		}
-		
-		return reply;
-
+		return query.getReply();
 	}
-	
 
 }
