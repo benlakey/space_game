@@ -14,6 +14,7 @@ public class StateManager {
 	private final Bus bus;
 	private final ResourceCache resourceCache;
 	private final Stack<State> states;
+	private State currentState;
 	
 	public StateManager(Bus bus, ResourceCache resourceCache, State initialState) {
 
@@ -23,14 +24,14 @@ public class StateManager {
 		
 		this.bus.register(LoadStateCommand.class, this.getLoadStateCommandHandler());
 		this.bus.register(ExitStateCommand.class, this.getExitStateCommandHandler());
-		
+		this.bus.register(ExitGameCommand.class, this.getExitGameCommandHandler());
+
 		this.loadState(initialState);
 
 	}
 	
 	public Iterable<Component> getComponents() {
-		State currentState = this.states.peek();
-		return currentState.getComponents();
+		return this.currentState.getComponents();
 	}
 	
 	public void loadState(State state) {
@@ -43,16 +44,24 @@ public class StateManager {
 		}
 		
 		this.states.push(state);
+		this.currentState = state;
 
 	}
 	
 	public void exitState() {
-
-		if(this.states.size() <= 1) {
-			System.exit(0);
+		
+		if(this.states.size() == 1) {
+			return;
 		}
-
-		this.states.pop();
+		
+		if(this.states.size() == 2) {
+			State two = this.states.pop();
+			this.states.insertElementAt(two, 0);
+		} else {
+			this.states.pop();
+		}
+		
+		this.currentState = this.states.peek();
 
 	}
 
@@ -79,6 +88,22 @@ public class StateManager {
 			@Override
 			public void handle(ExitStateCommand message) {
 				StateManager.this.exitState();
+			}
+
+			@Override
+			public UUID getEntityIdHandlingFor() {
+				return null;
+			}
+
+		};
+	}
+	
+	private Handler<ExitGameCommand> getExitGameCommandHandler() {
+		return new Handler<ExitGameCommand>() {
+
+			@Override
+			public void handle(ExitGameCommand message) {
+				System.exit(0);
 			}
 
 			@Override

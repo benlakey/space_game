@@ -2,6 +2,7 @@ package org.seattlegamer.spacegame.game;
 
 import java.awt.Point;
 import java.io.IOException;
+import java.util.Random;
 import java.util.UUID;
 
 import org.seattlegamer.spacegame.Bus;
@@ -22,7 +23,11 @@ public class GameState extends State {
 		this.addPlayer(bus, resourceCache, 1, "John Doe");
 		this.addPlayer(bus, resourceCache, 2, "Bob Smith");
 		
-		this.addExplosion(bus, resourceCache);
+		this.addExplosion(bus, resourceCache, new Random().nextInt(800), new Random().nextInt(600));
+		this.addExplosion(bus, resourceCache, new Random().nextInt(800), new Random().nextInt(600));
+		this.addExplosion(bus, resourceCache, new Random().nextInt(800), new Random().nextInt(600));
+		this.addExplosion(bus, resourceCache, new Random().nextInt(800), new Random().nextInt(600));
+		this.addExplosion(bus, resourceCache, new Random().nextInt(800), new Random().nextInt(600));
 
 	}
 	
@@ -43,14 +48,14 @@ public class GameState extends State {
 		
 	}
 	
-	private void addExplosion(Bus bus, ResourceCache resourceCache) throws IOException {
+	private void addExplosion(Bus bus, ResourceCache resourceCache, int x, int y) throws IOException {
 		
 		UUID explosionId = UUID.randomUUID();
 
 		this.components.add(new Position(bus, explosionId));
 		this.components.add(new Animation(bus, explosionId, resourceCache.getImage("assets/explosion.png")));
 
-		bus.send(new PositionInitialization(new Point(0, 0), HorizontalAlignment.LEFT, VerticalAlignment.MIDDLE), explosionId);
+		bus.send(new PositionInitialization(new Point(x, y), HorizontalAlignment.LEFT, VerticalAlignment.TOP), explosionId);
 		bus.send(new AnimationInitiation(), explosionId);
 		
 	}

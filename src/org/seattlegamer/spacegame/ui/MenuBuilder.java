@@ -8,7 +8,7 @@ import java.util.UUID;
 
 import org.seattlegamer.spacegame.Bus;
 import org.seattlegamer.spacegame.Component;
-import org.seattlegamer.spacegame.ExitStateCommand;
+import org.seattlegamer.spacegame.ExitGameCommand;
 import org.seattlegamer.spacegame.LoadStateCommand;
 import org.seattlegamer.spacegame.Message;
 import org.seattlegamer.spacegame.Position;
@@ -37,7 +37,7 @@ public class MenuBuilder {
 	
 	public MenuBuilder addStateExitEntry(String text) {
 		UUID entityId = UUID.randomUUID();
-		this.addMenuEntry(entityId, text, new ExitStateCommand());
+		this.addMenuEntry(entityId, text, new ExitGameCommand());
 		return this;
 	}
 	
