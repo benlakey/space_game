@@ -8,12 +8,8 @@ import java.util.UUID;
 
 import org.seattlegamer.spacegame.Bus;
 import org.seattlegamer.spacegame.Component;
-import org.seattlegamer.spacegame.ExitGameCommand;
-import org.seattlegamer.spacegame.LoadStateCommand;
 import org.seattlegamer.spacegame.Message;
 import org.seattlegamer.spacegame.Position;
-import org.seattlegamer.spacegame.State;
-import org.seattlegamer.spacegame.StateControlInput;
 
 public class MenuBuilder {
 
@@ -29,15 +25,9 @@ public class MenuBuilder {
 		this.bus = bus;
 	}
 
-	public MenuBuilder addStateLoadEntry(String text, State state) {
+	public MenuBuilder addEntry(String text, Message message) {
 		UUID entityId = UUID.randomUUID();
-		this.addMenuEntry(entityId, text, new LoadStateCommand(state));
-		return this;
-	}
-	
-	public MenuBuilder addStateExitEntry(String text) {
-		UUID entityId = UUID.randomUUID();
-		this.addMenuEntry(entityId, text, new ExitGameCommand());
+		this.addMenuEntry(entityId, text, message);
 		return this;
 	}
 	
@@ -45,7 +35,6 @@ public class MenuBuilder {
 		
 		this.addMenuComponent(entityId, new MenuEntry(this.bus, entityId, this.currentIndex, message));
 		this.addMenuComponent(entityId, new MenuEntryRenderer(this.bus, entityId, this.currentIndex, text));
-		this.addMenuComponent(entityId, new StateControlInput(this.bus, entityId));
 		this.addMenuComponent(entityId, new Position(this.bus, entityId));
 
 		this.currentIndex++;

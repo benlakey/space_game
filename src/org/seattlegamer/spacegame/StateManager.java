@@ -1,11 +1,16 @@
 package org.seattlegamer.spacegame;
 
 import java.io.IOException;
-import java.util.Stack;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 import org.apache.log4j.Logger;
+import org.seattlegamer.spacegame.game.GameState;
+import org.seattlegamer.spacegame.game.NewGameManifest;
 import org.seattlegamer.spacegame.resources.ResourceCache;
+import org.seattlegamer.spacegame.ui.MenuState;
+import org.seattlegamer.spacegame.ui.MenuType;
 
 public class StateManager {
 
@@ -13,20 +18,23 @@ public class StateManager {
 	
 	private final Bus bus;
 	private final ResourceCache resourceCache;
-	private final Stack<State> states;
+	private Map<StateSwitch, State> states;
 	private State currentState;
 	
-	public StateManager(Bus bus, ResourceCache resourceCache, State initialState) {
+	public StateManager(Bus bus, ResourceCache resourceCache) {
 
 		this.bus = bus;
 		this.resourceCache = resourceCache;
-		this.states = new Stack<State>();
-		
-		this.bus.register(LoadStateCommand.class, this.getLoadStateCommandHandler());
-		this.bus.register(ExitStateCommand.class, this.getExitStateCommandHandler());
+		this.states = new HashMap<StateSwitch, State>();
+
+		this.bus.register(StateSwitch.class, this.getStateSwitchHandler());
+		this.bus.register(NewGameManifest.class, this.getNewGameManifestHandler());
 		this.bus.register(ExitGameCommand.class, this.getExitGameCommandHandler());
 
-		this.loadState(initialState);
+		this.states.put(StateSwitch.MAIN_MENU, new MenuState(bus, MenuType.MAIN_MENU));
+		this.states.put(StateSwitch.MAIN_MENU_WITH_RESUME, new MenuState(bus, MenuType.MAIN_MENU_WITH_RESUME_GAME));
+
+		this.bus.broadcast(StateSwitch.MAIN_MENU);
 
 	}
 	
@@ -34,46 +42,19 @@ public class StateManager {
 		return this.currentState.getComponents();
 	}
 	
-	public void loadState(State state) {
+	private Handler<StateSwitch> getStateSwitchHandler() {
 
-		try {
-			state.load(this.bus, this.resourceCache);
-		} catch (IOException e) {
-			logger.fatal("State failed to load.", e);
-			System.exit(-1);
-		}
-		
-		this.states.push(state);
-		this.currentState = state;
-
-	}
-	
-	public void exitState() {
-		
-		if(this.states.size() == 1) {
-			return;
-		}
-		
-		if(this.states.size() == 2) {
-			State two = this.states.pop();
-			this.states.insertElementAt(two, 0);
-		} else {
-			this.states.pop();
-		}
-		
-		this.currentState = this.states.peek();
-
-	}
-
-	private Handler<LoadStateCommand> getLoadStateCommandHandler() {
-		return new Handler<LoadStateCommand>() {
-
+		return new Handler<StateSwitch>() {
+			
 			@Override
-			public void handle(LoadStateCommand message) {
-				State stateToLoad = message.getStateToLoad();
-				StateManager.this.loadState(stateToLoad);
-			}
+			public void handle(StateSwitch message) {
 
+				if(states.containsKey(message)) {
+					currentState = states.get(message);
+				}
+
+			}
+			
 			@Override
 			public UUID getEntityIdHandlingFor() {
 				return null;
@@ -81,15 +62,27 @@ public class StateManager {
 
 		};
 	}
-	
-	private Handler<ExitStateCommand> getExitStateCommandHandler() {
-		return new Handler<ExitStateCommand>() {
 
+	private Handler<NewGameManifest> getNewGameManifestHandler() {
+
+		return new Handler<NewGameManifest>() {
+			
 			@Override
-			public void handle(ExitStateCommand message) {
-				StateManager.this.exitState();
-			}
+			public void handle(NewGameManifest message) {
 
+				GameState gameState = new GameState(bus, message);
+				try {
+					gameState.load(resourceCache);
+				} catch (IOException e) {
+					logger.fatal("Game failed to load.", e);
+					System.exit(-1);
+				}
+				states.put(StateSwitch.GAME, gameState);
+				
+				bus.broadcast(StateSwitch.GAME);
+
+			}
+			
 			@Override
 			public UUID getEntityIdHandlingFor() {
 				return null;
@@ -97,7 +90,7 @@ public class StateManager {
 
 		};
 	}
-	
+
 	private Handler<ExitGameCommand> getExitGameCommandHandler() {
 		return new Handler<ExitGameCommand>() {
 

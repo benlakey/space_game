@@ -1,4 +1,4 @@
-package org.seattlegamer.spacegame.game;
+package org.seattlegamer.spacegame;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -8,11 +8,6 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.util.UUID;
 
-import org.seattlegamer.spacegame.Bus;
-import org.seattlegamer.spacegame.Component;
-import org.seattlegamer.spacegame.Handler;
-import org.seattlegamer.spacegame.Input;
-import org.seattlegamer.spacegame.PositionQuery;
 
 public class Animation extends Component {
 	

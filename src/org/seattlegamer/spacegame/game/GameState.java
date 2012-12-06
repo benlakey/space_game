@@ -5,30 +5,37 @@ import java.io.IOException;
 import java.util.Random;
 import java.util.UUID;
 
+import org.seattlegamer.spacegame.Animation;
+import org.seattlegamer.spacegame.AnimationInitiation;
 import org.seattlegamer.spacegame.Bus;
 import org.seattlegamer.spacegame.Position;
 import org.seattlegamer.spacegame.Position.HorizontalAlignment;
 import org.seattlegamer.spacegame.Position.VerticalAlignment;
 import org.seattlegamer.spacegame.PositionInitialization;
 import org.seattlegamer.spacegame.State;
-import org.seattlegamer.spacegame.StateControlInput;
 import org.seattlegamer.spacegame.resources.ResourceCache;
 import org.seattlegamer.spacegame.ui.HeadsUpDisplayEntry;
 
 public class GameState extends State {
 
-	@Override
-	public void load(Bus bus, ResourceCache resourceCache) throws IOException {
+	private final NewGameManifest gameManifest;
+	
+	public GameState(Bus bus, NewGameManifest gameManifest) {
+		super(bus);
+		this.gameManifest = gameManifest;
+	}
 
-		this.addPlayer(bus, resourceCache, 1, "John Doe");
-		this.addPlayer(bus, resourceCache, 2, "Bob Smith");
+	public void load(ResourceCache resourceCache) throws IOException {
+		
+		this.addPlayer(bus, resourceCache, 1, this.gameManifest.getPlayer1Name());
+		this.addPlayer(bus, resourceCache, 2, this.gameManifest.getPlayer2Name());
 		
 		this.addExplosion(bus, resourceCache, new Random().nextInt(800), new Random().nextInt(600));
 		this.addExplosion(bus, resourceCache, new Random().nextInt(800), new Random().nextInt(600));
 		this.addExplosion(bus, resourceCache, new Random().nextInt(800), new Random().nextInt(600));
 		this.addExplosion(bus, resourceCache, new Random().nextInt(800), new Random().nextInt(600));
 		this.addExplosion(bus, resourceCache, new Random().nextInt(800), new Random().nextInt(600));
-
+		
 	}
 	
 	private void addPlayer(Bus bus, ResourceCache resourceCache, int playerNumber, String name) throws IOException {
@@ -40,9 +47,9 @@ public class GameState extends State {
 		this.components.add(new Position(bus, hudId));
 
 		this.components.add(new PlayerStatus(bus, playerId));
-		this.components.add(new StateControlInput(bus, playerId));
 		this.components.add(new Position(bus, playerId));
 		this.components.add(new Sprite(bus, playerId, resourceCache.getImage("assets/mars.png")));
+		this.components.add(new PlayerInput(bus, playerId));
 
 		bus.send(new PositionInitialization(new Point(0, 0), HorizontalAlignment.CENTER, VerticalAlignment.MIDDLE), playerId);
 		
