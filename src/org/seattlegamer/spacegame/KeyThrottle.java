@@ -6,7 +6,7 @@ import java.util.Map;
 import org.seattlegamer.spacegame.utils.Throttle;
 
 public class KeyThrottle {
-	
+
 	private static final long KEY_DELAY = 300;
 	private static final Map<Integer, Throttle> throttles;
 
@@ -27,6 +27,7 @@ public class KeyThrottle {
 
 			throttle.tick(elapsedMillis);
 			long remaining = throttle.timeRemaining();
+
 			if(remaining == 0) {
 				throttle.throttle();
 				return true;

@@ -1,9 +1,7 @@
 package org.seattlegamer.spacegame.ui;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Map;
 import java.util.UUID;
 
 import org.seattlegamer.spacegame.Bus;
@@ -14,13 +12,11 @@ import org.seattlegamer.spacegame.Position;
 public class MenuBuilder {
 
 	private final Collection<Component> components;
-	private final Map<UUID, Collection<Component>> entityComponents;
 	private int currentIndex;
 	private final Bus bus;
 
 	public MenuBuilder(Bus bus) {
 		this.components = new LinkedList<Component>();
-		this.entityComponents = new HashMap<UUID, Collection<Component>>();
 		this.currentIndex = 0;
 		this.bus = bus;
 	}
@@ -32,35 +28,20 @@ public class MenuBuilder {
 	}
 	
 	private void addMenuEntry(UUID entityId, String text, Message message) {
-		
-		this.addMenuComponent(entityId, new MenuEntry(this.bus, entityId, this.currentIndex, message));
-		this.addMenuComponent(entityId, new MenuEntryRenderer(this.bus, entityId, this.currentIndex, text));
-		this.addMenuComponent(entityId, new Position(this.bus, entityId));
+
+		this.components.add(new MenuEntry(this.bus, entityId, this.currentIndex, message));
+		this.components.add(new MenuEntryRenderer(this.bus, entityId, this.currentIndex, text));
+		this.components.add(new Position(this.bus, entityId));
 
 		this.currentIndex++;
 
 	}
-	
-	private void addMenuComponent(UUID entityId, Component component) {
 
-		Collection<Component> componentsForEntity = this.entityComponents.get(entityId);
-		if(componentsForEntity == null) {
-			componentsForEntity = new LinkedList<Component>();
-			this.entityComponents.put(entityId, componentsForEntity);
-		}
-
-		componentsForEntity.add(component);
-		this.components.add(component);
-
-	}
-	
 	public Iterable<Component> build() {
-		
-		for(UUID entityId : this.entityComponents.keySet()) {
-			MenuEntryInput menuEntryInput = new MenuEntryInput(this.bus, entityId, 0, this.currentIndex - 1);
-			this.addMenuComponent(entityId, menuEntryInput);
-			this.bus.broadcast(new MenuEntryChange(0));
-		}
+
+		MenuEntryInput menuEntryInput = new MenuEntryInput(this.bus, UUID.randomUUID(), 0, this.currentIndex - 1);
+		this.components.add(menuEntryInput);
+		this.bus.broadcast(new MenuEntryChange(0));
 
 		return this.components;
 

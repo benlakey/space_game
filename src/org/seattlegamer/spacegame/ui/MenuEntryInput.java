@@ -39,7 +39,7 @@ public class MenuEntryInput extends Component {
 		}
 
 		if(input.isKeyInputActive(KeyEvent.VK_ENTER)) {
-			this.bus.send(new MenuEntryExecution(this.selectionIndex), this.entityId);
+			this.bus.broadcast(new MenuEntryExecution(this.selectionIndex));
 		}
 
 	}

@@ -21,6 +21,8 @@ public class MenuState extends State {
 
 	private void loadMainMenu() {
 		
+		this.components.clear();
+		
 		Iterable<Component> components = new MenuBuilder(this.bus)
 			.addEntry("New Game", hardcodedNewGameManifest)
 			.addEntry("Exit", new ExitGameCommand())
@@ -33,6 +35,8 @@ public class MenuState extends State {
 	}
 	
 	private void loadResumeMainMenu() {
+		
+		this.components.clear();
 
 		Iterable<Component> components = new MenuBuilder(this.bus)
 			.addEntry("Resume Game", StateSwitch.GAME)
