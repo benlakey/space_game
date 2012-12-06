@@ -38,9 +38,9 @@ public class GameState extends State {
 		
 	}
 	
-	private void addPlayer(Bus bus, ResourceCache resourceCache, int playerNumber, String name) throws IOException {
+	private void addPlayer(final Bus bus, ResourceCache resourceCache, int playerNumber, String name) throws IOException {
 		
-		UUID playerId = UUID.randomUUID();
+		final UUID playerId = UUID.randomUUID();
 		UUID hudId = UUID.randomUUID();
 
 		this.components.add(new HeadsUpDisplayEntry(bus, hudId, playerId, playerNumber, name));
@@ -51,20 +51,36 @@ public class GameState extends State {
 		this.components.add(new Sprite(bus, playerId, resourceCache.getImage("assets/mars.png")));
 		this.components.add(new PlayerInput(bus, playerId));
 
-		bus.send(new PositionInitialization(new Point(0, 0), HorizontalAlignment.CENTER, VerticalAlignment.MIDDLE), playerId);
-		
+		this.activationCommands.add(new ActivationCommand() {
+			@Override
+			public void execute() {
+				bus.send(new PositionInitialization(new Point(0, 0), HorizontalAlignment.CENTER, VerticalAlignment.MIDDLE), playerId);
+			}
+		});
+
 	}
 	
-	private void addExplosion(Bus bus, ResourceCache resourceCache, int x, int y) throws IOException {
+	private void addExplosion(final Bus bus, ResourceCache resourceCache, final int x, final int y) throws IOException {
 		
-		UUID explosionId = UUID.randomUUID();
+		final UUID explosionId = UUID.randomUUID();
 
 		this.components.add(new Position(bus, explosionId));
 		this.components.add(new Animation(bus, explosionId, resourceCache.getImage("assets/explosion.png")));
 
-		bus.send(new PositionInitialization(new Point(x, y), HorizontalAlignment.LEFT, VerticalAlignment.TOP), explosionId);
-		bus.send(new AnimationInitiation(), explosionId);
+		this.activationCommands.add(new ActivationCommand() {
+			@Override
+			public void execute() {
+				bus.send(new PositionInitialization(new Point(x, y), HorizontalAlignment.LEFT, VerticalAlignment.TOP), explosionId);
+			}
+		});
 		
+		//TODO: this is just here for testing out explosions
+		this.activationCommands.add(new ActivationCommand() {
+			@Override
+			public void execute() {
+				bus.send(new AnimationInitiation(), explosionId);
+			}
+		});
 	}
 
 }

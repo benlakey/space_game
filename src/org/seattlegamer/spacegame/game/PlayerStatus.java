@@ -11,12 +11,23 @@ public class PlayerStatus extends Component {
 	private static final int START_HEALTH = 100;
 	
 	private int health;
+	private final Handler<PlayerStatusChange> playerStatusChangeHandler = this.getPlayerStatusChangeHandler();
 
 	public PlayerStatus(Bus bus, UUID entityId) {
 		super(bus, entityId);
 		this.health = START_HEALTH;
-		this.bus.register(PlayerStatusChange.class, this.getPlayerStatusChangeHandler());
+		
 		this.bus.broadcast(new PlayerStatusReport(this.entityId, this.health));
+	}
+	
+	@Override
+	public void registerHandlers() {
+		this.bus.register(PlayerStatusChange.class, playerStatusChangeHandler);
+	}
+	
+	@Override
+	public void deregisterHandlers() {
+		this.bus.deregister(PlayerStatusChange.class, playerStatusChangeHandler);
 	}
 	
 	private Handler<PlayerStatusChange> getPlayerStatusChangeHandler() {

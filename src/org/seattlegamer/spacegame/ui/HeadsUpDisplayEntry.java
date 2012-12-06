@@ -33,6 +33,8 @@ public class HeadsUpDisplayEntry extends Component {
 	private int health;
 	private boolean needsPositionInitialization;
 	
+	private final Handler<PlayerStatusReport> playerStatusReportHandler = this.getPlayerStatusReportHandler();
+	
 	public HeadsUpDisplayEntry(Bus bus, UUID entityId, UUID playerEntityId, int playerNumber, String name) {
 		super(bus, entityId);
 		this.playerEntityId = playerEntityId;
@@ -40,7 +42,17 @@ public class HeadsUpDisplayEntry extends Component {
 		this.name = name;
 		this.health = 0;
 		this.needsPositionInitialization = true;
-		this.bus.register(PlayerStatusReport.class, this.getPlayerStatusReportHandler());
+		
+	}
+	
+	@Override
+	public void registerHandlers() {
+		this.bus.register(PlayerStatusReport.class, playerStatusReportHandler);
+	}
+	
+	@Override
+	public void deregisterHandlers() {
+		this.bus.deregister(PlayerStatusReport.class, playerStatusReportHandler);
 	}
 
 	private Handler<PlayerStatusReport> getPlayerStatusReportHandler() {

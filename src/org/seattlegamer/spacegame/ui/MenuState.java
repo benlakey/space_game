@@ -8,15 +8,16 @@ import org.seattlegamer.spacegame.StateSwitch;
 import org.seattlegamer.spacegame.game.NewGameManifest;
 
 public class MenuState extends State {
-	
+
 	private static final NewGameManifest hardcodedNewGameManifest = new NewGameManifest("John Doe", "Bob Smith");
 
-	public MenuState(Bus bus, MenuType menuType) {
+	public MenuState(final Bus bus, MenuType menuType) {
 		super(bus);
 		switch(menuType) {
 			case MAIN_MENU: this.loadMainMenu(); break;
 			case MAIN_MENU_WITH_RESUME_GAME: this.loadResumeMainMenu(); break;
 		}
+
 	}
 
 	private void loadMainMenu() {
@@ -31,6 +32,13 @@ public class MenuState extends State {
 		for(Component component : components) {
 			this.components.add(component);
 		}
+		
+		this.activationCommands.add(new ActivationCommand() {
+			@Override
+			public void execute() {
+				bus.broadcast(new MenuEntryChange(0));
+			}
+		});
 
 	}
 	
@@ -47,6 +55,13 @@ public class MenuState extends State {
 		for(Component component : components) {
 			this.components.add(component);
 		}
+		
+		this.activationCommands.add(new ActivationCommand() {
+			@Override
+			public void execute() {
+				bus.broadcast(new MenuEntryChange(0));
+			}
+		});
 		
 	}
 

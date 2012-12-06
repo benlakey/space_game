@@ -31,6 +31,8 @@ public class MenuEntryRenderer extends Component {
 	private final String text;
 	private Color color;
 	private boolean needsPositionInitialization;
+	
+	private final Handler<MenuEntryChange> menuEntryChangeHandler = this.getMenuEntryChangeHandler();
 
 	public MenuEntryRenderer(Bus bus, UUID entityId, int index, String text) {
 		super(bus, entityId);
@@ -38,7 +40,16 @@ public class MenuEntryRenderer extends Component {
 		this.text = text;
 		this.color = MENU_COLOR;
 		this.needsPositionInitialization = true;
-		this.bus.register(MenuEntryChange.class, this.getMenuEntryChangeHandler());
+	}
+	
+	@Override
+	public void registerHandlers() {
+		this.bus.register(MenuEntryChange.class, menuEntryChangeHandler);
+	}
+	
+	@Override
+	public void deregisterHandlers() {
+		this.bus.deregister(MenuEntryChange.class, menuEntryChangeHandler);
 	}
 
 	private Handler<MenuEntryChange> getMenuEntryChangeHandler() {

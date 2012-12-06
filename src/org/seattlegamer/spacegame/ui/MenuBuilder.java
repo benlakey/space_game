@@ -41,7 +41,6 @@ public class MenuBuilder {
 
 		MenuEntryInput menuEntryInput = new MenuEntryInput(this.bus, UUID.randomUUID(), 0, this.currentIndex - 1);
 		this.components.add(menuEntryInput);
-		this.bus.broadcast(new MenuEntryChange(0));
 
 		return this.components;
 

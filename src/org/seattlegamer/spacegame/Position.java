@@ -10,12 +10,27 @@ public class Position extends Component {
 	private HorizontalAlignment horizontalAlignment;
 	private VerticalAlignment verticalAlignment;
 	
+	private final Handler<PositionChange> positionChangeHandler = this.getPositionChangeHandler();
+	private final Handler<PositionQuery> positionQueryHandler = this.getPositionQueryHandler();
+	private final Handler<PositionInitialization> positionInitializationHandler = this.getPositionInitializationHandler();
+	
 	public Position(Bus bus, UUID entityId) {
 		super(bus, entityId);
 		this.offset = new Point();
-		this.bus.register(PositionChange.class, this.getPositionChangeHandler());
-		this.bus.register(PositionQuery.class, this.getPositionQueryHandler());
-		this.bus.register(PositionInitialization.class, this.getPositionInitializationHandler());
+	}
+	
+	@Override
+	public void registerHandlers() {
+		this.bus.register(PositionChange.class, positionChangeHandler);
+		this.bus.register(PositionQuery.class, positionQueryHandler);
+		this.bus.register(PositionInitialization.class, positionInitializationHandler);
+	}
+	
+	@Override
+	public void deregisterHandlers() {
+		this.bus.deregister(PositionChange.class, positionChangeHandler);
+		this.bus.deregister(PositionQuery.class, positionQueryHandler);
+		this.bus.deregister(PositionInitialization.class, positionInitializationHandler);
 	}
 
 	private Handler<PositionQuery> getPositionQueryHandler() {

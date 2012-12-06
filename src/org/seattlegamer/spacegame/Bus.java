@@ -25,6 +25,17 @@ public class Bus {
 		handlersForMessageType.add(handler);
 		
 	}
+	
+	public <T extends Message> void deregister(Class<T> messageClass, Handler<T> handler) {
+		
+		Collection<Handler<? extends Message>> handlersForMessageType = this.handlers.get(messageClass);
+		if(handlersForMessageType == null) {
+			return;
+		}
+		
+		handlersForMessageType.remove(handler);
+		
+	}
 
 	public <T extends Message> void broadcast(T message) {
 		this.send(message, null);

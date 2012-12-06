@@ -38,9 +38,9 @@ public class Engine {
 			Iterable<Component> components = this.stateManager.getComponents();
 			
 			//warning! dont change this to a for(:) style loop, because we are modifying this collection inside the game as we iterate!
-			Iterator<Component> entityIterator = components.iterator();
-			while (entityIterator.hasNext()) {
-				Component component = entityIterator.next();
+			Iterator<Component> componentIterator = components.iterator();
+			while (componentIterator.hasNext()) {
+				Component component = componentIterator.next();
 				component.update(this.input, elapsedMillis);
 			}
 

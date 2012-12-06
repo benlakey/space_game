@@ -13,6 +13,8 @@ public class Animation extends Component {
 	
 	private static final int FRAME_COUNT = 8;
 	private static final int SAMPLE_DELAY_MILLIS = 70;
+	
+	private final Handler<AnimationInitiation> animationInitiationHandler;
 
 	private Image[] frames;
 	private int millisSinceLastSample;
@@ -23,7 +25,17 @@ public class Animation extends Component {
 		this.frames = new Image[FRAME_COUNT];
 		this.storeFrames(image);
 		this.currentFrameIndex = -1;
-		this.bus.register(AnimationInitiation.class, this.getAnimationInitiationHandler());
+		this.animationInitiationHandler = this.getAnimationInitiationHandler();
+	}
+	
+	@Override
+	public void registerHandlers() {
+		this.bus.register(AnimationInitiation.class, this.animationInitiationHandler);
+	}
+	
+	@Override
+	public void deregisterHandlers() {
+		this.bus.deregister(AnimationInitiation.class, this.animationInitiationHandler);
 	}
 	
 	private Handler<AnimationInitiation> getAnimationInitiationHandler() {

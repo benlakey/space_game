@@ -12,13 +12,27 @@ public class MenuEntry extends Component {
 	private final int index;
 	private final Message executionMessage;
 	private boolean selected;
+	
+	private final Handler<MenuEntryChange> menuEntryChangeHandler = this.getMenuEntryChangeHandler();
+	private final Handler<MenuEntryExecution> menuEntryExecution = this.getMenuEntryExecutionHandler();
 
 	public MenuEntry(Bus bus, UUID entityId, int index, Message message) {
 		super(bus, entityId);
 		this.index = index;
 		this.executionMessage = message;
-		this.bus.register(MenuEntryChange.class, this.getMenuEntryChangeHandler());
-		this.bus.register(MenuEntryExecution.class, this.getMenuEntryExecutionHandler());
+		
+	}
+	
+	@Override
+	public void registerHandlers() {
+		this.bus.register(MenuEntryChange.class, menuEntryChangeHandler);
+		this.bus.register(MenuEntryExecution.class, menuEntryExecution);
+	}
+	
+	@Override
+	public void deregisterHandlers() {
+		this.bus.deregister(MenuEntryChange.class, menuEntryChangeHandler);
+		this.bus.deregister(MenuEntryExecution.class, menuEntryExecution);
 	}
 
 	private Handler<MenuEntryChange> getMenuEntryChangeHandler() {

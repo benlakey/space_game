@@ -22,6 +22,14 @@ public class ComponentTests {
 			super(bus, entityId);
 		}
 
+		@Override
+		public void registerHandlers() {
+		}
+
+		@Override
+		public void deregisterHandlers() {
+		}
+
 	}
 	
 }

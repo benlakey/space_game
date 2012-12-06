@@ -23,5 +23,11 @@ public class PlayerInput extends Component {
 		}
 
 	}
+
+	@Override
+	public void registerHandlers() {}
+
+	@Override
+	public void deregisterHandlers() {}
 	
 }

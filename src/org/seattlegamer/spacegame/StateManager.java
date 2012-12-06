@@ -50,7 +50,14 @@ public class StateManager {
 			public void handle(StateSwitch message) {
 
 				if(states.containsKey(message)) {
+
+					if(currentState != null) {
+						currentState.deactivate();
+					}
+					
 					currentState = states.get(message);
+					currentState.activate();
+
 				}
 
 			}

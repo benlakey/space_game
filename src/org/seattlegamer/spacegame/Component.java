@@ -15,6 +15,9 @@ public abstract class Component {
 		this.enabled = true;
 	}
 	
+	public abstract void registerHandlers();
+	public abstract void deregisterHandlers();
+	
 	public UUID getEntityId() {
 		return this.entityId;
 	}

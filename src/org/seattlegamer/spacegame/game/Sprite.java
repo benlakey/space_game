@@ -37,4 +37,10 @@ public class Sprite extends Component {
 		return query.getReply();
 	}
 
+	@Override
+	public void registerHandlers() {}
+
+	@Override
+	public void deregisterHandlers() {}
+
 }
