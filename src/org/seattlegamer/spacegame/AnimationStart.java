@@ -1,5 +1,5 @@
 package org.seattlegamer.spacegame;
 
-public interface Message {
+public class AnimationStart {
 
 }

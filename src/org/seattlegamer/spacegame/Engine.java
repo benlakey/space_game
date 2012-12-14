@@ -1,7 +1,5 @@
 package org.seattlegamer.spacegame;
 
-import java.util.Iterator;
-
 import org.seattlegamer.spacegame.utils.Throttle;
 
 public class Engine {
@@ -34,17 +32,9 @@ public class Engine {
 			} else {
 				throttle.throttle();
 			}
-			
-			Iterable<Component> components = this.stateManager.getComponents();
-			
-			//warning! dont change this to a for(:) style loop, because we are modifying this collection inside the game as we iterate!
-			Iterator<Component> componentIterator = components.iterator();
-			while (componentIterator.hasNext()) {
-				Component component = componentIterator.next();
-				component.update(this.input, elapsedMillis);
-			}
 
-			this.renderer.render(components);
+			this.stateManager.update(this.input, elapsedMillis);
+			this.stateManager.render(this.renderer);
 
 		}
 

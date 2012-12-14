@@ -1,68 +1,88 @@
 package org.seattlegamer.spacegame.ui;
 
-import org.seattlegamer.spacegame.Bus;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.UUID;
+
+import org.apache.log4j.Logger;
 import org.seattlegamer.spacegame.Component;
-import org.seattlegamer.spacegame.ExitGameCommand;
+import org.seattlegamer.spacegame.ComponentBus;
+import org.seattlegamer.spacegame.GameState;
+import org.seattlegamer.spacegame.Input;
+import org.seattlegamer.spacegame.NewGameManifest;
+import org.seattlegamer.spacegame.Renderer;
 import org.seattlegamer.spacegame.State;
-import org.seattlegamer.spacegame.StateSwitch;
-import org.seattlegamer.spacegame.game.NewGameManifest;
+import org.seattlegamer.spacegame.StateManager;
+import org.seattlegamer.spacegame.resources.ResourceCache;
 
-public class MenuState extends State {
+public class MenuState implements State {
+	
+	private static final Logger logger = Logger.getLogger(MenuState.class);
 
-	private static final NewGameManifest hardcodedNewGameManifest = new NewGameManifest("John Doe", "Bob Smith");
+	private final Collection<Component> components;
+	private final UUID menuEntityId = UUID.randomUUID();
 
-	public MenuState(final Bus bus, MenuType menuType) {
-		super(bus);
-		switch(menuType) {
-			case MAIN_MENU: this.loadMainMenu(); break;
-			case MAIN_MENU_WITH_RESUME_GAME: this.loadResumeMainMenu(); break;
-		}
-
-	}
-
-	private void loadMainMenu() {
-		
-		this.components.clear();
-		
-		Iterable<Component> components = new MenuBuilder(this.bus)
-			.addEntry("New Game", hardcodedNewGameManifest)
-			.addEntry("Exit", new ExitGameCommand())
-			.build();
-
-		for(Component component : components) {
-			this.components.add(component);
-		}
-		
-		this.activationCommands.add(new ActivationCommand() {
-			@Override
-			public void execute() {
-				bus.broadcast(new MenuEntryChange(0));
-			}
-		});
-
+	public MenuState() {
+		this.components = new LinkedList<Component>();
 	}
 	
-	private void loadResumeMainMenu() {
+	@Override
+	public void load(ComponentBus bus, ResourceCache resourceCache) {
 		
 		this.components.clear();
 
-		Iterable<Component> components = new MenuBuilder(this.bus)
-			.addEntry("Resume Game", StateSwitch.GAME)
-			.addEntry("New Game", hardcodedNewGameManifest)
-			.addEntry("Exit", new ExitGameCommand())
-			.build();
-
-		for(Component component : components) {
+		Iterable<Component> menuComponents = new MenuBuilder(bus)
+			.addMenuEntry("New Game", this.getHardcodedNewGameMenuAction())
+			.addMenuEntry("Exit", this.getExitGameMenuAction())
+			.build(this.menuEntityId);
+		
+		for(Component component : menuComponents) {
 			this.components.add(component);
 		}
+	
+		bus.send(new MenuSelectionChanged(0), this.menuEntityId);
 		
-		this.activationCommands.add(new ActivationCommand() {
+	}
+
+	private MenuAction getHardcodedNewGameMenuAction() {
+		
+		return new MenuAction() {
 			@Override
-			public void execute() {
-				bus.broadcast(new MenuEntryChange(0));
+			public void execute(ComponentBus bus) {
+				
+				NewGameManifest manifest = new NewGameManifest();
+				manifest.getPlayers().add("Bob");
+				manifest.getPlayers().add("Joe");
+				
+				StateManager.setState(GameState.newGame(manifest));
+
 			}
-		});
+		};
 		
+	}
+	
+	private MenuAction getExitGameMenuAction() {
+		
+		return new MenuAction() {
+			@Override
+			public void execute(ComponentBus bus) {
+				logger.info("exiting game");
+				System.exit(0);
+			}
+		};
+		
+	}
+
+	@Override
+	public void update(Input input, long elapsedMillis) {
+		for(Component component : this.components) {
+			component.update(input, elapsedMillis);
+		}
+	}
+
+	@Override
+	public void render(Renderer renderer) {
+		renderer.render(this.components);
 	}
 
 }

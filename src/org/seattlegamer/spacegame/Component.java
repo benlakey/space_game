@@ -5,19 +5,16 @@ import java.util.UUID;
 
 public abstract class Component {
 
-	protected Bus bus;
-	protected UUID entityId;
+	protected final ComponentBus bus;
+	private final UUID entityId;
 	private boolean enabled;
 
-	public Component(Bus bus, UUID entityId) {
+	public Component(ComponentBus bus, UUID entityId) {
 		this.bus = bus;
 		this.entityId = entityId;
-		this.enabled = true;
+		this.setEnabled(true);
 	}
-	
-	public abstract void registerHandlers();
-	public abstract void deregisterHandlers();
-	
+
 	public UUID getEntityId() {
 		return this.entityId;
 	}
@@ -28,6 +25,11 @@ public abstract class Component {
 
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
+		if(enabled) {
+			this.bus.register(this);
+		} else {
+			this.bus.deregister(this);
+		}
 	}
 
 	public void update(Input input, long elapsedMillis) {

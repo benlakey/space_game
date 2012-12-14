@@ -1,48 +1,44 @@
 package org.seattlegamer.spacegame.ui;
 
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.UUID;
 
-import org.seattlegamer.spacegame.Bus;
 import org.seattlegamer.spacegame.Component;
-import org.seattlegamer.spacegame.Message;
-import org.seattlegamer.spacegame.Position;
+import org.seattlegamer.spacegame.ComponentBus;
 
 public class MenuBuilder {
 
-	private final Collection<Component> components;
-	private int currentIndex;
-	private final Bus bus;
+	private final ComponentBus bus;
+	private final Map<String, MenuAction> entries;
 
-	public MenuBuilder(Bus bus) {
-		this.components = new LinkedList<Component>();
-		this.currentIndex = 0;
+	public MenuBuilder(ComponentBus bus) {
 		this.bus = bus;
+		this.entries = new LinkedHashMap<String, MenuAction>();
 	}
 
-	public MenuBuilder addEntry(String text, Message message) {
-		UUID entityId = UUID.randomUUID();
-		this.addMenuEntry(entityId, text, message);
+	public MenuBuilder addMenuEntry(String text, MenuAction action) {
+		this.entries.put(text, action);
 		return this;
 	}
-	
-	private void addMenuEntry(UUID entityId, String text, Message message) {
 
-		this.components.add(new MenuEntry(this.bus, entityId, this.currentIndex, message));
-		this.components.add(new MenuEntryRenderer(this.bus, entityId, this.currentIndex, text));
-		this.components.add(new Position(this.bus, entityId));
+	public Iterable<Component> build(UUID entityId) {
 
-		this.currentIndex++;
+		Collection<Component> components = new LinkedList<Component>();
+		
+		int currentIndex = 0;
+		
+		for(Map.Entry<String, MenuAction> entry : entries.entrySet()) {
+			components.add(new MenuEntryRenderer(this.bus, entityId, currentIndex, entry.getKey()));
+			components.add(new MenuEntry(this.bus, entityId, currentIndex, entry.getValue()));
+			currentIndex++;
+		}
+		
+		components.add(new MenuInput(this.bus, entityId, currentIndex));
 
-	}
-
-	public Iterable<Component> build() {
-
-		MenuEntryInput menuEntryInput = new MenuEntryInput(this.bus, UUID.randomUUID(), 0, this.currentIndex - 1);
-		this.components.add(menuEntryInput);
-
-		return this.components;
+		return components;
 
 	}
 

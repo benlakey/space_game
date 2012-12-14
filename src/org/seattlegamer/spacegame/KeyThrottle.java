@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.seattlegamer.spacegame.utils.Throttle;
 
-public class KeyThrottle {
+public final class KeyThrottle {
 
 	private static final long KEY_DELAY = 300;
 	private static final Map<Integer, Throttle> throttles;
@@ -14,14 +14,15 @@ public class KeyThrottle {
 		throttles = new HashMap<Integer, Throttle>();
 	}
 	
-	public static boolean canExecute(Input input, int inputCode, long elapsedMillis) {
-		
-		if(!throttles.containsKey(inputCode)) {
-			throttles.put(inputCode, new Throttle(KEY_DELAY));
-			return true;
-		}
+	private KeyThrottle() {}
+	
+	public static boolean executable(Input input, int inputCode, long elapsedMillis) {
 		
 		Throttle throttle = throttles.get(inputCode);
+		if(throttle == null) {
+			throttle = new Throttle(KEY_DELAY);
+			throttles.put(inputCode, throttle);
+		}
 		
 		if(input.isKeyInputActive(inputCode)) {
 

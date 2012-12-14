@@ -34,6 +34,7 @@ public class CanvasRenderer implements Renderer {
 			}
 
 			bufferStrategy.show();
+
 		} finally {
 			graphics.dispose();
 		}
