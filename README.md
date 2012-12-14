@@ -27,4 +27,4 @@ To run:
 * basic sounds
 * a HUD of some sort showing both players health, angle of fire, thrust of projectile
 * players are on planets;  other planets exist and are obstacles/gravity-objects
-* blackholes with high gravity could consome projectiles
+* blackholes with high gravity could consume projectiles
