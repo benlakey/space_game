@@ -1,5 +1,6 @@
 package org.seattlegamer.spacegame;
 
+import java.awt.Color;
 import java.awt.Image;
 import java.awt.Point;
 import java.io.IOException;
@@ -8,11 +9,16 @@ import java.util.LinkedList;
 import java.util.Random;
 import java.util.UUID;
 
+import org.seattlegamer.spacegame.config.GameSettings;
 import org.seattlegamer.spacegame.resources.ResourceCache;
 import org.seattlegamer.spacegame.ui.HeadsUpDisplayEntryRenderer;
+import org.seattlegamer.spacegame.utils.GraphicsUtils;
 
 public class GameState implements State {
 
+	//TODO: move to a component that handles player health, when such a component exists.
+	private static final int STARTING_HEALTH = 100;
+	
 	private static GameState currentGameState;
 	
 	public static GameState newGame(NewGameManifest manifest) {
@@ -47,12 +53,17 @@ public class GameState implements State {
 			playerNumber++;
 		}
 		
+		int maxX = GameSettings.current().getDisplayModeWidth();
+		int maxY = GameSettings.current().getDisplayModeHeight();
+		
+		Random random = new Random();
 
-		this.addExplosion(bus, resourceCache, new Random().nextInt(800), new Random().nextInt(600));
-		this.addExplosion(bus, resourceCache, new Random().nextInt(800), new Random().nextInt(600));
-		this.addExplosion(bus, resourceCache, new Random().nextInt(800), new Random().nextInt(600));
-		this.addExplosion(bus, resourceCache, new Random().nextInt(800), new Random().nextInt(600));
-		this.addExplosion(bus, resourceCache, new Random().nextInt(800), new Random().nextInt(600));
+		//TODO: this stuff is just here for testing.
+		this.addExplosion(bus, resourceCache, random.nextInt(maxX), random.nextInt(maxY));
+		this.addExplosion(bus, resourceCache, random.nextInt(maxX), random.nextInt(maxY));
+		this.addExplosion(bus, resourceCache, random.nextInt(maxX), random.nextInt(maxY));
+		this.addExplosion(bus, resourceCache, random.nextInt(maxX), random.nextInt(maxY));
+		this.addExplosion(bus, resourceCache, random.nextInt(maxX), random.nextInt(maxY));
 		
 		this.loaded = true;
 		
@@ -62,13 +73,20 @@ public class GameState implements State {
 
 		UUID playerEntityId = UUID.randomUUID();
 		UUID hudEntityId = UUID.randomUUID();
+		
+		Image player = TestImageCreator.buildPlayer(Color.BLUE);
+		Image scaledPlayer = GraphicsUtils.getScaledImage(player, GameSettings.current().getScale());
 
 		this.components.add(new HeadsUpDisplayEntryRenderer(bus, hudEntityId, playerEntityId, playerNumber));
-		this.components.add(new Sprite(bus, playerEntityId, resourceCache.getImage("assets/mars.png")));
-		this.components.add(new PlayerInput(bus, playerEntityId));
+		this.components.add(new Sprite(bus, playerEntityId, scaledPlayer));
 		
-		bus.send(new PlayerStatsReport(playerEntityId, name, 100), hudEntityId);
-		bus.send(new SpritePositioning(new Point(200, 200)), playerEntityId);
+		//TODO: hack for testing. input will be assigned turn-based.
+		if(playerNumber == 1) {
+			this.components.add(new PlayerInput(bus, playerEntityId));
+		}
+		
+		bus.send(new PlayerStatsReport(playerEntityId, name, STARTING_HEALTH), hudEntityId);
+		bus.send(new SpritePositioning(new Point(new Random().nextInt(800), new Random().nextInt(800))), playerEntityId);
 
 	}
 

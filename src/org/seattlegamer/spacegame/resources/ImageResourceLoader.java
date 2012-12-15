@@ -23,9 +23,9 @@ public class ImageResourceLoader implements ResourceLoader<Image> {
 		}
 		
 		BufferedImage bufferedImage = ImageIO.read(stream);
-		BufferedImage scaledImage = GraphicsUtils.getScaledImage(bufferedImage, GameSettings.current().getScale());
+		Image scaledImage = GraphicsUtils.getScaledImage(bufferedImage, GameSettings.current().getScale());
 
-		return GraphicsUtils.bufferedImageToAcceleratedImage(scaledImage);
+		return GraphicsUtils.toAcceleratedImage(scaledImage);
 
 	}
 

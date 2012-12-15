@@ -20,35 +20,34 @@ public class GraphicsUtils {
 		return new Dimension(width, height);
 	}
 
-	public static Image bufferedImageToAcceleratedImage(BufferedImage bufferedImage) {
+	public static Image toAcceleratedImage(Image image) {
 		
 		GraphicsConfiguration graphicsConfiguration = GraphicsEnvironment
 				.getLocalGraphicsEnvironment()
 				.getDefaultScreenDevice()
 				.getDefaultConfiguration();
 			
-		Image acceleratedImage = graphicsConfiguration.createCompatibleImage(
-				bufferedImage.getWidth(), 
-				bufferedImage.getHeight(),
+		BufferedImage acceleratedImage = graphicsConfiguration.createCompatibleImage(
+				image.getWidth(null), 
+				image.getHeight(null),
 				Transparency.BITMASK);
 		
 		Graphics graphicsForAcceleratedImage = acceleratedImage.getGraphics();
-		graphicsForAcceleratedImage.drawImage(bufferedImage, 0, 0, null);
+		graphicsForAcceleratedImage.drawImage(image, 0, 0, null);
 		
 		return acceleratedImage;
 	
 	}
 	
-	public static BufferedImage getScaledImage(BufferedImage original, int scale) {
+	public static Image getScaledImage(Image original, int scale) {
 
-		int aspectRatio = original.getWidth() / original.getHeight();
+		int aspectRatio = original.getWidth(null) / original.getHeight(null);
 		int targetWidth = scale * aspectRatio;
 		int targetHeight = scale;
         
 		BufferedImage newImage = new BufferedImage(targetWidth, targetHeight, BufferedImage.TYPE_INT_ARGB);
-		Graphics2D graphics = null;
+		Graphics2D graphics = newImage.createGraphics();
         try {
-			graphics = newImage.createGraphics();
 	        graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 	        graphics.drawImage(original, 0, 0, targetWidth, targetHeight, null);
         } finally {
