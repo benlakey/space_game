@@ -32,13 +32,9 @@ public abstract class Component {
 		}
 	}
 
-	public void update(Input input, long elapsedMillis) {
-		
-	}
+	public void update(Input input, long elapsedMillis) {}
 
-	public void render(Graphics2D graphics) {
-		
-	}
+	public void render(Graphics2D graphics) {}
 
 	@Override
 	public String toString() {

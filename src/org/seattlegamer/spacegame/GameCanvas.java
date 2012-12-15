@@ -14,22 +14,19 @@ public final class GameCanvas extends Canvas {
 	private static final int BUFFER_COUNT = 2;
 	
 	private final Frame frame;
-	private final DisplayMode displayMode;
 
 	public GameCanvas(Input input, String title, DisplayMode displayMode) {
 
-		this.displayMode = displayMode;
-
 		this.frame = new Frame(title);
 		this.frame.add(this);
-		
+
 		this.frame.setUndecorated(true);
 		this.frame.setResizable(false);
-		this.setScreenSize();
-
+		this.setScreenSize(displayMode);
+		
 		this.setIgnoreRepaint(true);
 		this.frame.setIgnoreRepaint(true);
-
+		
 		this.frame.pack();
 		this.frame.setVisible(true);
 
@@ -42,7 +39,7 @@ public final class GameCanvas extends Canvas {
 
 	}
 
-	private void setScreenSize() {
+	private void setScreenSize(DisplayMode displayMode) {
 
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setBounds(0, 0, screenSize.width, screenSize.height);
@@ -57,7 +54,7 @@ public final class GameCanvas extends Canvas {
 		graphicsDevice.setFullScreenWindow(this.frame);
 
 		if(graphicsDevice.isDisplayChangeSupported()) {
-			graphicsDevice.setDisplayMode(this.displayMode);
+			graphicsDevice.setDisplayMode(displayMode);
 		}
 
 	}

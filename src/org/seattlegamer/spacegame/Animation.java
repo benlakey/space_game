@@ -64,11 +64,12 @@ public class Animation extends Component {
 
 		if(this.isAtEndOfAnimation()) {
 			this.completeAnimationCycle();
-		} else {
-			if(this.millisSinceLastSample > SAMPLE_DELAY_MILLIS) {
-				this.currentFrameIndex++;
-				this.millisSinceLastSample = 0;
-			}
+			return;
+		}
+		
+		if(this.millisSinceLastSample > SAMPLE_DELAY_MILLIS) {
+			this.currentFrameIndex++;
+			this.millisSinceLastSample = 0;
 		}
 
 	}

@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferStrategy;
-import java.util.Iterator;
 
 public class CanvasRenderer implements Renderer {
 	
@@ -26,10 +25,7 @@ public class CanvasRenderer implements Renderer {
 			graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			this.clearScreen(graphics);
 			
-			//warning! dont change this to a for(:) style loop, because we are modifying this collection inside the game as we iterate!
-			Iterator<Component> componentIterator = components.iterator();
-			while (componentIterator.hasNext()) {
-				Component component = componentIterator.next();
+			for(Component component : components) {
 				component.render(graphics);
 			}
 

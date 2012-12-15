@@ -16,7 +16,7 @@ import org.seattlegamer.spacegame.utils.GraphicsUtils;
 
 public class GameState implements State {
 
-	//TODO: move to a component that handles player health, when such a component exists.
+	//TODO: move to a component that handles player health, when such a component exists (will be the component that takes damage and reports health to HUD)
 	private static final int STARTING_HEALTH = 100;
 	
 	private static GameState currentGameState;
