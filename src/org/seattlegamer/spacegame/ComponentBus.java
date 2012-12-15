@@ -97,9 +97,9 @@ public class ComponentBus {
 	public void send(Object event, UUID entityId) {
 		
 		if(entityId == null) {
-			logger.info("broadcasting " + event);
+			logger.debug("broadcasting " + event);
 		} else { 
-			logger.info("sending " + event + " to " + entityId);
+			logger.debug("sending " + event + " to " + entityId);
 		}
 
 		Collection<Handler> handlers = this.handlers.get(event.getClass());
