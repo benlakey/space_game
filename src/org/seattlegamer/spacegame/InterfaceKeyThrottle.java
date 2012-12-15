@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.seattlegamer.spacegame.utils.Throttle;
 
-public final class KeyThrottle {
+public final class InterfaceKeyThrottle {
 
 	private static final long KEY_DELAY = 300;
 	private static final Map<Integer, Throttle> throttles;
@@ -14,7 +14,7 @@ public final class KeyThrottle {
 		throttles = new HashMap<Integer, Throttle>();
 	}
 	
-	private KeyThrottle() {}
+	private InterfaceKeyThrottle() {}
 	
 	public static boolean executable(Input input, int inputCode, long elapsedMillis) {
 		
