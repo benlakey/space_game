@@ -96,6 +96,12 @@ public class ComponentBus {
 
 	public void send(Object event, UUID entityId) {
 		
+		if(entityId == null) {
+			logger.info("broadcasting " + event);
+		} else { 
+			logger.info("sending " + event + " to " + entityId);
+		}
+
 		Collection<Handler> handlers = this.handlers.get(event.getClass());
 		if(handlers == null) {
 			return;
@@ -113,7 +119,7 @@ public class ComponentBus {
 				logger.error("The handler doesn't accept the parameter: " + event);
 				continue;
 			} catch (ReflectiveOperationException e) {
-				logger.error(String.format("Executing the handler '%s' failed for the event '%s'.", handler, event));
+				logger.error(String.format("Executing the handler '%s' failed for the event '%s'.", handler, event), e);
 				continue;
 			}
 		}
