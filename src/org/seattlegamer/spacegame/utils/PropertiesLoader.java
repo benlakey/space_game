@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
-import org.seattlegamer.spacegame.Game;
 
 public class PropertiesLoader {
 	
@@ -13,7 +12,7 @@ public class PropertiesLoader {
 
 	public static Properties loadProperties(String path) {
 		
-		InputStream in = Game.class.getResourceAsStream(path);
+		InputStream in = PropertiesLoader.class.getResourceAsStream(path);
 
 		try {
 			Properties properties = new Properties();

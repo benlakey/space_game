@@ -55,7 +55,8 @@ public class Physics extends Component {
 
 		AffineTransform transform = new AffineTransform();
 		
-		double radians = NumberUtils.toRadians(this.angleDegrees);
+		this.angleDegrees %= 359;
+		double radians = Math.toRadians(this.angleDegrees);
 		
 		double diffX = Math.sin(radians) * this.speed * elapsedMillis;
 		double diffY = 0 - Math.cos(radians) * this.speed * elapsedMillis;

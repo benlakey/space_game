@@ -5,11 +5,6 @@ public final class NumberUtils {
 
 	private NumberUtils() {}
 
-	public static double toRadians(double degrees) {
-		degrees %= 359;
-		return Math.toRadians(degrees);
-	}
-	
 	public static <T extends Number & Comparable<T>> T clamp(T val, T min, T max) {
 		
 		if(val.compareTo(min) < 0) {
