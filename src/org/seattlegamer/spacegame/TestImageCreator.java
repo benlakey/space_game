@@ -10,12 +10,12 @@ import java.awt.image.BufferedImage;
 //Can probably replace with whatever our planet generation strategy is.
 public final class TestImageCreator {
 	
-	private static final int BUFFER_DIVISOR = 6;
+	private static final int PIXEL_PADDING_DIVISOR = 6;
 	
 	public static BufferedImage buildPlayer(Color color) {
 
 		int size = 400;
-		int buffer = size / BUFFER_DIVISOR;
+		int buffer = size / PIXEL_PADDING_DIVISOR;
 		
 		int planetCircumference = size - (2 * buffer);
 		int planetWidth = planetCircumference;

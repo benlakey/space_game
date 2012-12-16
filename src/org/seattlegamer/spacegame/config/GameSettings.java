@@ -2,8 +2,8 @@ package org.seattlegamer.spacegame.config;
 
 import java.util.Properties;
 
-import org.seattlegamer.spacegame.PropertiesLoader;
 import org.seattlegamer.spacegame.utils.PropertiesAccessor;
+import org.seattlegamer.spacegame.utils.PropertiesLoader;
 
 public class GameSettings {
 

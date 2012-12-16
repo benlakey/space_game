@@ -3,6 +3,7 @@ package org.seattlegamer.spacegame;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
 import org.seattlegamer.spacegame.config.DependencyConfig;
+import org.seattlegamer.spacegame.utils.PropertiesLoader;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class Game {

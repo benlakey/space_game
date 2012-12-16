@@ -1,10 +1,11 @@
-package org.seattlegamer.spacegame;
+package org.seattlegamer.spacegame.utils;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
+import org.seattlegamer.spacegame.Game;
 
 public class PropertiesLoader {
 	
