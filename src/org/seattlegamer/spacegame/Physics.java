@@ -14,6 +14,11 @@ public class Physics extends Component {
 	private int height;
 	private double speed;
 	
+	public Physics(ComponentBus bus, UUID entityId) {
+		super(bus, entityId);
+		this.position = new Point();
+	}
+	
 	public Physics(ComponentBus bus, UUID entityId, Point position, double angleDegrees, int width, int height) {
 		super(bus, entityId);
 		this.position = position;
@@ -23,6 +28,32 @@ public class Physics extends Component {
 		
 		AffineTransform transform = this.createTransform(0);
 		this.bus.send(transform, this.getEntityId());
+	}
+	
+	public void setWidth(int width) {
+		this.width = width;
+	}
+	
+	public void setHeight(int height) {
+		this.height = height;
+	}
+
+	@Subscription
+	public void cloneSelf(PhysicsCloning cloning) {
+		
+		UUID entityIdFrom = cloning.getEntityIdFrom();
+		if(!this.getEntityId().equals(entityIdFrom)) {
+			return;
+		}
+		
+		Physics clone = cloning.getToCloneTo();
+		
+		clone.position.x = this.position.x;
+		clone.position.y = this.position.y;
+		clone.angleDegrees = this.angleDegrees;
+		clone.width = this.width;
+		clone.height = this.height;
+
 	}
 
 	@Subscription

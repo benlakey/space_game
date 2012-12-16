@@ -1,6 +1,8 @@
 package org.seattlegamer.spacegame;
 
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.Queue;
 
 import org.apache.log4j.Logger;
 import org.seattlegamer.spacegame.resources.ResourceCache;
@@ -16,12 +18,17 @@ public class StateManager {
 	private final ResourceCache resourceCache;
 	private State currentState;
 	private final Throttle stateToggleThrottle;
+	
+	private final Queue<Component> componentsToAdd;
+	private final Queue<Component> componentsToRemove;
 
 	public StateManager(ComponentBus bus, ResourceCache resourceCache, State initialState) {
 		this.bus = bus;
 		this.resourceCache = resourceCache;
 		this.changeState(initialState);
 		this.stateToggleThrottle = new Throttle(STATE_TOGGLE_DELAY_MILLIS);
+		this.componentsToAdd = new LinkedList<>();
+		this.componentsToRemove = new LinkedList<>();
 	}
 
 	public void changeState(State state) {
@@ -39,9 +46,25 @@ public class StateManager {
 		}
 		this.currentState = state;
 	}
+	
+	public void addComponent(Component component) {
+		this.componentsToAdd.offer(component);
+	}
+	
+	public void removeComponent(Component component) {
+		this.componentsToRemove.offer(component);
+	}
 
 	public void update(Input input, long elapsedMillis) {
 		currentState.update(input, elapsedMillis);
+		while(!this.componentsToAdd.isEmpty()) {
+			Component newComponent = this.componentsToAdd.poll();
+			this.currentState.addComponent(newComponent);
+		}
+		while(!this.componentsToRemove.isEmpty()) {
+			Component componentToRemove = this.componentsToRemove.poll();
+			this.currentState.removeComponent(componentToRemove);
+		}
 	}
 	
 	public void render(Renderer renderer) {

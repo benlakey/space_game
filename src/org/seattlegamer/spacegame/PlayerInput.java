@@ -7,7 +7,7 @@ import org.seattlegamer.spacegame.ui.MenuState;
 import org.seattlegamer.spacegame.utils.Throttle;
 
 public class PlayerInput extends Component {
-	
+
 	private static final int ROTATION_DELAY_MILLIS = 10;
 	private static final double ROTATION_INCREMENT_DEGREES = 5;
 
@@ -48,15 +48,9 @@ public class PlayerInput extends Component {
 		}
 		
 		if(input.isKeyInputActive(KeyEvent.VK_SPACE)) {
-			this.shootProjectile();
+			this.bus.send(new ProjectileLaunch(), this.getEntityId());
 		}
 
-	}
-	
-	private void shootProjectile() {
-		
-		//TODO: create components for a projectile and add them to the current state 
-		
 	}
 	
 }

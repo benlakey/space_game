@@ -77,6 +77,11 @@ public class MenuState implements State {
 	public void addComponent(Component component) {
 		this.components.add(component);
 	}
+	
+	@Override
+	public void removeComponent(Component component) {
+		this.components.remove(component);
+	}
 
 	@Override
 	public void update(Input input, long elapsedMillis) {

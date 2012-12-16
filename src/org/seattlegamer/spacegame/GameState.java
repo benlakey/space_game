@@ -87,6 +87,7 @@ public class GameState implements State {
 		this.components.add(new HeadsUpDisplayEntryRenderer(bus, hudEntityId, playerEntityId, playerNumber));
 		this.components.add(new Sprite(bus, playerEntityId, scaledPlayer));
 		this.components.add(new Physics(bus, playerEntityId, position, 0, scaledPlayer.getWidth(null), scaledPlayer.getHeight(null)));
+		this.components.add(new ProjectileLauncher(bus, playerEntityId, resourceCache, stateManager));
 		
 		//TODO: hack for testing. input will be assigned turn-based.
 		if(playerNumber == 1) {
@@ -97,11 +98,15 @@ public class GameState implements State {
 
 	}
 
+	//TODO: just here for testing
 	private void addExplosion(ComponentBus bus, ResourceCache resourceCache, int x, int y) throws IOException {
 
 		final UUID explosionEntityId = UUID.randomUUID();
+		
+		Image explosionImage = resourceCache.getImage("assets/explosion.png");
+		Image scaledExplosionImage = GraphicsUtils.getScaledImage(explosionImage, GameSettings.current().getScale());
 
-		AnimationLoader animationLoader = new AnimationLoader(resourceCache.getImage("assets/explosion.png"));
+		AnimationLoader animationLoader = new AnimationLoader(scaledExplosionImage);
 		Image[] frames = animationLoader.getFrames();
 
 		this.components.add(new Animation(bus, explosionEntityId, frames, new Point(x, y)));
@@ -116,6 +121,11 @@ public class GameState implements State {
 	}
 	
 	@Override
+	public void removeComponent(Component component) {
+		this.components.remove(component);
+	}
+	
+	@Override
 	public void update(Input input, long elapsedMillis) {
 		for(Component component : this.components) {
 			component.update(input, elapsedMillis);
@@ -126,7 +136,5 @@ public class GameState implements State {
 	public void render(Renderer renderer) {
 		renderer.render(components);
 	}
-
-
 
 }
