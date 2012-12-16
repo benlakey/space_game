@@ -14,10 +14,14 @@ import org.seattlegamer.spacegame.Renderer;
 import org.seattlegamer.spacegame.State;
 import org.seattlegamer.spacegame.StateManager;
 import org.seattlegamer.spacegame.resources.ResourceCache;
+import org.seattlegamer.spacegame.utils.Throttle;
 
 public class MenuState implements State {
 	
 	private static final Logger logger = Logger.getLogger(MenuState.class);
+	
+	private static final int MENU_TOGGLE_DELAY_MILLIS = 300;
+	public static final Throttle menuToggleThrottle = new Throttle(MENU_TOGGLE_DELAY_MILLIS);
 
 	private final Collection<Component> components;
 	private final UUID menuEntityId = UUID.randomUUID();
@@ -52,7 +56,6 @@ public class MenuState implements State {
 				
 				NewGameManifest manifest = new NewGameManifest();
 				manifest.getPlayers().add("Bob");
-				manifest.getPlayers().add("Joe");
 				
 				StateManager.setState(GameState.newGame(manifest));
 

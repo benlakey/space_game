@@ -26,11 +26,10 @@ public class Engine {
 			this.lastMillis = nowMillis;
 			
 			throttle.tick(elapsedMillis);
-			long remaining = throttle.timeRemaining();
-			if(remaining != 0) {
-				Thread.sleep(remaining);
-			} else {
-				throttle.throttle();
+			long millisUntilExecution = throttle.getMillisUntilExecution();
+			if(millisUntilExecution != 0) {
+				Thread.sleep(millisUntilExecution);
+				throttle.unthrottle();
 			}
 
 			this.stateManager.update(this.input, elapsedMillis);

@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.seattlegamer.spacegame.utils.NumberUtils;
 
 public class NumberUtilsTests {
-	
+
 	@Test
 	public void clampRestrictsIntegerLowerBound() {
 		final int lowerBound = 45;

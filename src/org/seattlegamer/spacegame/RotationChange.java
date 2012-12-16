@@ -2,13 +2,13 @@ package org.seattlegamer.spacegame;
 
 public class RotationChange {
 
-	private final int rotationDegreeDiff;
+	private final double rotationDegreeDiff;
 	
-	public RotationChange(int rotationDegreeDiff) {
+	public RotationChange(double rotationDegreeDiff) {
 		this.rotationDegreeDiff = rotationDegreeDiff;
 	}
 
-	public int getRotationDegreeDiff() {
+	public double getRotationDegreeDiff() {
 		return this.rotationDegreeDiff;
 	}
 	

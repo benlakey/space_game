@@ -3,6 +3,7 @@ package org.seattlegamer.spacegame;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.geom.AffineTransform;
 import java.util.UUID;
 
 public class Animation extends Component {
@@ -10,21 +11,30 @@ public class Animation extends Component {
 	private static final int SAMPLE_DELAY_MILLIS = 70;
 
 	private Image[] frames;
-	private Point position;
+	private final AffineTransform transform;
 	private int millisSinceLastSample;
 	private int currentFrameIndex;
 
-	public Animation(ComponentBus bus, UUID entityId, Image[] frames) {
+	public Animation(ComponentBus bus, UUID entityId, Image[] frames, Point position) {
 		super(bus, entityId);
 		this.frames = frames;
-		this.position = new Point();
+		this.transform = new AffineTransform();
+		this.transform.setToTranslation(position.x, position.y);
+		this.transform.rotate(0, this.frames[0].getWidth(null) / 2, this.frames[0].getHeight(null) / 2);
 		this.currentFrameIndex = -1;
 	}
-	
+
 	@Subscription
-	public void setPosition(SpritePositioning positioning) {
-		this.position.x = positioning.getPosition().x;
-		this.position.y = positioning.getPosition().y;
+	public void updatePosition(PositionChange change) {
+
+		double translateX = this.transform.getTranslateX();
+		double translateY = this.transform.getTranslateY();
+		
+		translateX += change.getPositionDiffX();
+		translateY += change.getPositionDiffY();
+
+		this.transform.setToTranslation(translateX, translateY);
+
 	}
 
 	@Subscription
@@ -60,7 +70,7 @@ public class Animation extends Component {
 
 		Image image = this.frames[this.currentFrameIndex];
 
-		graphics.drawImage(image, this.position.x, this.position.y, null);
+		graphics.drawImage(image, this.transform, null);
 
 		if(this.isAtEndOfAnimation()) {
 			this.completeAnimationCycle();

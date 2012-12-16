@@ -12,7 +12,7 @@ public class ThrottleTests {
 		Throttle throttle = new Throttle(500);
 		throttle.throttle();
 		throttle.tick(499);
-		long timeRemaining = throttle.timeRemaining();
+		long timeRemaining = throttle.getMillisUntilExecution();
 		assertEquals(1, timeRemaining);
 	}
 	
@@ -21,7 +21,7 @@ public class ThrottleTests {
 		Throttle throttle = new Throttle(500);
 		throttle.throttle();
 		throttle.tick(500);
-		long timeRemaining = throttle.timeRemaining();
+		long timeRemaining = throttle.getMillisUntilExecution();
 		assertEquals(0, timeRemaining);
 	}
 	

@@ -77,8 +77,14 @@ public class GameState implements State {
 		Image player = TestImageCreator.buildPlayer(Color.BLUE);
 		Image scaledPlayer = GraphicsUtils.getScaledImage(player, GameSettings.current().getScale());
 
+		int maxX = GameSettings.current().getDisplayModeWidth();
+		int maxY = GameSettings.current().getDisplayModeHeight();
+		
+		Point position = new Point(new Random().nextInt(maxX), new Random().nextInt(maxY));
+		
 		this.components.add(new HeadsUpDisplayEntryRenderer(bus, hudEntityId, playerEntityId, playerNumber));
 		this.components.add(new Sprite(bus, playerEntityId, scaledPlayer));
+		this.components.add(new Physics(bus, playerEntityId, position, 0, scaledPlayer.getWidth(null), scaledPlayer.getHeight(null)));
 		
 		//TODO: hack for testing. input will be assigned turn-based.
 		if(playerNumber == 1) {
@@ -86,7 +92,6 @@ public class GameState implements State {
 		}
 		
 		bus.send(new PlayerStatsReport(playerEntityId, name, STARTING_HEALTH), hudEntityId);
-		bus.send(new SpritePositioning(new Point(new Random().nextInt(800), new Random().nextInt(800))), playerEntityId);
 
 	}
 
@@ -97,9 +102,8 @@ public class GameState implements State {
 		AnimationLoader animationLoader = new AnimationLoader(resourceCache.getImage("assets/explosion.png"));
 		Image[] frames = animationLoader.getFrames();
 
-		this.components.add(new Animation(bus, explosionEntityId, frames));
+		this.components.add(new Animation(bus, explosionEntityId, frames, new Point(x, y)));
 
-		bus.send(new SpritePositioning(new Point(x, y)), explosionEntityId);
 		bus.send(new AnimationStart(), explosionEntityId);
 
 	}
