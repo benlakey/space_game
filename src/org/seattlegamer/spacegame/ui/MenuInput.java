@@ -60,12 +60,14 @@ public class MenuInput extends Component {
 			this.executeThrottle.unthrottle();
 		}
 		
+		Throttle stateToggleThrottle = this.stateManager.getStateToggleThrottle();
+		
 		if(input.isKeyInputActive(KeyEvent.VK_ESCAPE)) {
-			if(MenuState.menuToggleThrottle.getMillisUntilExecution() == 0) {
+			if(stateToggleThrottle.getMillisUntilExecution() == 0) {
 				this.stateManager.changeState(GameState.getCurrentGame());
 			}
 		} else {
-			MenuState.menuToggleThrottle.unthrottle();
+			stateToggleThrottle.unthrottle();
 		}
 
 	}

@@ -4,19 +4,24 @@ import java.io.IOException;
 
 import org.apache.log4j.Logger;
 import org.seattlegamer.spacegame.resources.ResourceCache;
+import org.seattlegamer.spacegame.utils.Throttle;
 
 public class StateManager {
 	
+	private static final int STATE_TOGGLE_DELAY_MILLIS = 300;
+
 	private static final Logger logger = Logger.getLogger(StateManager.class);
 
 	private final ComponentBus bus;
 	private final ResourceCache resourceCache;
 	private State currentState;
+	private final Throttle stateToggleThrottle;
 
 	public StateManager(ComponentBus bus, ResourceCache resourceCache, State initialState) {
 		this.bus = bus;
 		this.resourceCache = resourceCache;
 		this.changeState(initialState);
+		this.stateToggleThrottle = new Throttle(STATE_TOGGLE_DELAY_MILLIS);
 	}
 
 	public void changeState(State state) {
@@ -41,6 +46,10 @@ public class StateManager {
 	
 	public void render(Renderer renderer) {
 		currentState.render(renderer);
+	}
+
+	public Throttle getStateToggleThrottle() {
+		return this.stateToggleThrottle;
 	}
 	
 }

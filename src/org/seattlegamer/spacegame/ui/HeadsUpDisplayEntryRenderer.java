@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.UUID;
 
 import org.seattlegamer.spacegame.Component;
@@ -51,8 +52,12 @@ public class HeadsUpDisplayEntryRenderer extends Component {
 
 		if(this.position == null) {
 			FontMetrics fontMetrics = graphics.getFontMetrics(HUD_FONT);
+			Rectangle screenSize = graphics.getDeviceConfiguration().getBounds();
 			Dimension textSize = GraphicsUtils.measureTextPixels(fontMetrics, HUD_FONT, text);
-			this.position = new Point(0, this.playerNumber * (0 - textSize.height));
+			
+			int positionY = screenSize.height - (this.playerNumber * textSize.height);
+			
+			this.position = new Point(0,  positionY);
 		}
 		
 		graphics.setFont(HUD_FONT);

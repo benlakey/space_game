@@ -25,12 +25,14 @@ public class PlayerInput extends Component {
 
 		this.rotationThrottle.tick(elapsedMillis);
 		
+		Throttle stateToggleThrottle = this.stateManager.getStateToggleThrottle();
+		
 		if(input.isKeyInputActive(KeyEvent.VK_ESCAPE)) {
-			if(MenuState.menuToggleThrottle.getMillisUntilExecution() == 0) {
+			if(stateToggleThrottle.getMillisUntilExecution() == 0) {
 				this.stateManager.changeState(new MenuState());
 			}
 		} else {
-			MenuState.menuToggleThrottle.unthrottle();
+			stateToggleThrottle.unthrottle();
 		}
 
 		if(input.isKeyInputActive(KeyEvent.VK_LEFT)) {
