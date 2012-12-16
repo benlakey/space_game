@@ -43,7 +43,7 @@ public class DependencyConfig {
 	}
 	
 	public @Bean StateManager stateManager() {
-		return StateManager.from(componentBus(), resourceCache(), new MenuState());
+		return new StateManager(componentBus(), resourceCache(), new MenuState());
 	}
 
 	public @Bean Engine engine() {

@@ -8,6 +8,7 @@ import java.util.UUID;
 
 import org.seattlegamer.spacegame.Component;
 import org.seattlegamer.spacegame.ComponentBus;
+import org.seattlegamer.spacegame.StateManager;
 
 public class MenuBuilder {
 
@@ -24,7 +25,7 @@ public class MenuBuilder {
 		return this;
 	}
 
-	public Iterable<Component> build(UUID entityId) {
+	public Iterable<Component> build(UUID entityId, StateManager stateManager) {
 
 		Collection<Component> components = new LinkedList<Component>();
 		
@@ -36,7 +37,7 @@ public class MenuBuilder {
 			currentIndex++;
 		}
 		
-		components.add(new MenuInput(this.bus, entityId, currentIndex));
+		components.add(new MenuInput(this.bus, entityId, stateManager, currentIndex));
 
 		return components;
 

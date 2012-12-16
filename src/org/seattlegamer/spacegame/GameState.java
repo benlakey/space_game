@@ -15,32 +15,27 @@ import org.seattlegamer.spacegame.ui.HeadsUpDisplayEntryRenderer;
 import org.seattlegamer.spacegame.utils.GraphicsUtils;
 
 public class GameState implements State {
+	
+	private static GameState currentGame;
+	
+	public static GameState getCurrentGame() {
+		return currentGame; //can be null
+	}
 
 	//TODO: move to a component that handles player health, when such a component exists (will be the component that takes damage and reports health to HUD)
 	private static final int STARTING_HEALTH = 100;
-	
-	private static GameState currentGameState;
-	
-	public static GameState newGame(NewGameManifest manifest) {
-		currentGameState = new GameState(manifest);
-		return currentGameState;
-	}
-	
-	public static GameState getCurrent() {
-		return currentGameState;
-	}
-	
+
 	private final NewGameManifest manifest;
 	private final Collection<Component> components;
 	private boolean loaded;
 
-	private GameState(NewGameManifest manifest) {
+	public GameState(NewGameManifest manifest) {
 		this.manifest = manifest;
 		this.components = new LinkedList<Component>();
 	}
 
 	@Override
-	public void load(ComponentBus bus, ResourceCache resourceCache) throws IOException {
+	public void load(ComponentBus bus, ResourceCache resourceCache, StateManager stateManager) throws IOException {
 		
 		if(this.loaded) {
 			return;
@@ -49,7 +44,7 @@ public class GameState implements State {
 		int playerNumber = 1;
 		
 		for(String player : manifest.getPlayers()) {
-			this.addPlayer(bus, resourceCache, playerNumber, player);
+			this.addPlayer(bus, resourceCache, stateManager, playerNumber, player);
 			playerNumber++;
 		}
 		
@@ -65,11 +60,18 @@ public class GameState implements State {
 		this.addExplosion(bus, resourceCache, random.nextInt(maxX), random.nextInt(maxY));
 		this.addExplosion(bus, resourceCache, random.nextInt(maxX), random.nextInt(maxY));
 		
+		currentGame = this;
+		
 		this.loaded = true;
 		
 	}
 
-	private void addPlayer(ComponentBus bus, ResourceCache resourceCache, int playerNumber, String name) throws IOException {
+	private void addPlayer(
+			ComponentBus bus, 
+			ResourceCache resourceCache, 
+			StateManager stateManager, 
+			int playerNumber, 
+			String name) throws IOException {
 
 		UUID playerEntityId = UUID.randomUUID();
 		UUID hudEntityId = UUID.randomUUID();
@@ -88,7 +90,7 @@ public class GameState implements State {
 		
 		//TODO: hack for testing. input will be assigned turn-based.
 		if(playerNumber == 1) {
-			this.components.add(new PlayerInput(bus, playerEntityId));
+			this.components.add(new PlayerInput(bus, playerEntityId, stateManager));
 		}
 		
 		bus.send(new PlayerStatsReport(playerEntityId, name, STARTING_HEALTH), hudEntityId);
@@ -109,6 +111,11 @@ public class GameState implements State {
 	}
 
 	@Override
+	public void addComponent(Component component) {
+		this.components.add(component);
+	}
+	
+	@Override
 	public void update(Input input, long elapsedMillis) {
 		for(Component component : this.components) {
 			component.update(input, elapsedMillis);
@@ -119,5 +126,7 @@ public class GameState implements State {
 	public void render(Renderer renderer) {
 		renderer.render(components);
 	}
+
+
 
 }

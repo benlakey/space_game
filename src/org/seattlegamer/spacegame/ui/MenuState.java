@@ -31,14 +31,14 @@ public class MenuState implements State {
 	}
 	
 	@Override
-	public void load(ComponentBus bus, ResourceCache resourceCache) {
+	public void load(ComponentBus bus, ResourceCache resourceCache, StateManager stateManager) {
 		
 		this.components.clear();
 
 		Iterable<Component> menuComponents = new MenuBuilder(bus)
-			.addMenuEntry("New Game", this.getHardcodedNewGameMenuAction())
+			.addMenuEntry("New Game", this.getHardcodedNewGameMenuAction(stateManager))
 			.addMenuEntry("Exit", this.getExitGameMenuAction())
-			.build(this.menuEntityId);
+			.build(this.menuEntityId, stateManager);
 		
 		for(Component component : menuComponents) {
 			this.components.add(component);
@@ -48,7 +48,7 @@ public class MenuState implements State {
 		
 	}
 
-	private MenuAction getHardcodedNewGameMenuAction() {
+	private MenuAction getHardcodedNewGameMenuAction(final StateManager stateManager) {
 		
 		return new MenuAction() {
 			@Override
@@ -57,7 +57,7 @@ public class MenuState implements State {
 				NewGameManifest manifest = new NewGameManifest();
 				manifest.getPlayers().add("Bob");
 				
-				StateManager.setState(GameState.newGame(manifest));
+				stateManager.changeState(new GameState(manifest));
 
 			}
 		};
@@ -74,6 +74,11 @@ public class MenuState implements State {
 			}
 		};
 		
+	}
+	
+	@Override
+	public void addComponent(Component component) {
+		this.components.add(component);
 	}
 
 	@Override

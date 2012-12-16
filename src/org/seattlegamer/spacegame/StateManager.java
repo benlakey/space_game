@@ -8,23 +8,12 @@ import org.seattlegamer.spacegame.resources.ResourceCache;
 public class StateManager {
 	
 	private static final Logger logger = Logger.getLogger(StateManager.class);
-	
-	private static StateManager instance;
-	
-	public static StateManager from(ComponentBus bus, ResourceCache resourceCache, State initialState) {
-		instance = new StateManager(bus, resourceCache, initialState);
-		return instance;
-	}
-	
-	public static void setState(State state) {
-		instance.changeState(state);
-	}
-	
+
 	private final ComponentBus bus;
 	private final ResourceCache resourceCache;
 	private State currentState;
 
-	private StateManager(ComponentBus bus, ResourceCache resourceCache, State initialState) {
+	public StateManager(ComponentBus bus, ResourceCache resourceCache, State initialState) {
 		this.bus = bus;
 		this.resourceCache = resourceCache;
 		this.changeState(initialState);
@@ -38,7 +27,7 @@ public class StateManager {
 		//different thread. when it finishes, swap in the right state in place 
 		//of the 'loading' state. (or something similar)
 		try {
-			state.load(this.bus, this.resourceCache);
+			state.load(this.bus, this.resourceCache, this);
 		} catch (IOException e) {
 			logger.fatal("State '" + state + "' could not load!", e);
 			throw new RuntimeException(e);

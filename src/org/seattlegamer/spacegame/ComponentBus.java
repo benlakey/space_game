@@ -30,8 +30,9 @@ public class ComponentBus {
 	}
 
 	private void modifyHandlers(Component obj, boolean remove) {
-		
+
 		Class<?> clazz = obj.getClass();
+		//TODO: make it work for subclasses
 		
 		for(Method method : clazz.getMethods()) {
 			

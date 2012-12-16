@@ -12,10 +12,12 @@ public class PlayerInput extends Component {
 	private static final double ROTATION_INCREMENT_DEGREES = 5;
 
 	private final Throttle rotationThrottle;
+	private final StateManager stateManager;
 	
-	public PlayerInput(ComponentBus bus, UUID entityId) {
+	public PlayerInput(ComponentBus bus, UUID entityId, StateManager stateManager) {
 		super(bus, entityId);
 		this.rotationThrottle = new Throttle(ROTATION_DELAY_MILLIS);
+		this.stateManager = stateManager;
 	}
 
 	@Override
@@ -25,7 +27,7 @@ public class PlayerInput extends Component {
 		
 		if(input.isKeyInputActive(KeyEvent.VK_ESCAPE)) {
 			if(MenuState.menuToggleThrottle.getMillisUntilExecution() == 0) {
-				StateManager.setState(new MenuState());
+				this.stateManager.changeState(new MenuState());
 			}
 		} else {
 			MenuState.menuToggleThrottle.unthrottle();
@@ -44,17 +46,15 @@ public class PlayerInput extends Component {
 		}
 		
 		if(input.isKeyInputActive(KeyEvent.VK_SPACE)) {
-			//TODO: this is just here for fun animation testing
-			this.bus.broadcast(new AnimationStart());
-		}
-		
-		if(input.isKeyInputActive(KeyEvent.VK_UP)) {
-			this.bus.broadcast(new SpeedChange(0.1));
-		}
-		if(input.isKeyInputActive(KeyEvent.VK_DOWN)) {
-			this.bus.broadcast(new SpeedChange(-0.1));
+			this.shootProjectile();
 		}
 
+	}
+	
+	private void shootProjectile() {
+		
+		//TODO: create components for a projectile and add them to the current state 
+		
 	}
 	
 }

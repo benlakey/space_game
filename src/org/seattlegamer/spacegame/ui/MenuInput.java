@@ -16,14 +16,15 @@ public class MenuInput extends Component {
 	private final int KEY_DELAY_MILLIS = 300;
 	
 	private int selectionIndex;
+	private final StateManager stateManager;
 	private final int maxEntries;
 	private final Throttle upThrottle;
 	private final Throttle downThrottle;
 	private final Throttle executeThrottle;
 
-	public MenuInput(ComponentBus bus, UUID entityId, int maxEntries) {
+	public MenuInput(ComponentBus bus, UUID entityId, StateManager stateManager, int maxEntries) {
 		super(bus, entityId);
-
+		this.stateManager = stateManager;
 		this.maxEntries = maxEntries;
 		this.upThrottle = new Throttle(KEY_DELAY_MILLIS);
 		this.downThrottle = new Throttle(KEY_DELAY_MILLIS);
@@ -61,7 +62,7 @@ public class MenuInput extends Component {
 		
 		if(input.isKeyInputActive(KeyEvent.VK_ESCAPE)) {
 			if(MenuState.menuToggleThrottle.getMillisUntilExecution() == 0) {
-				StateManager.setState(GameState.getCurrent());
+				this.stateManager.changeState(GameState.getCurrentGame());
 			}
 		} else {
 			MenuState.menuToggleThrottle.unthrottle();
