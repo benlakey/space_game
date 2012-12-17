@@ -21,7 +21,7 @@ public class MenuEntry extends Component {
 	@Subscription
 	public void execute(MenuExecution execution) {
 		if(this.index == execution.getIndex()) {
-			this.action.execute(this.bus);
+			this.action.execute();
 		}
 	}
 

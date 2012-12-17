@@ -31,7 +31,7 @@ public class PlayerInput extends Component {
 		
 		if(input.isKeyInputActive(KeyEvent.VK_ESCAPE)) {
 			if(stateToggleThrottle.getMillisUntilExecution() == 0) {
-				this.stateManager.changeState(new MenuState());
+				this.stateManager.changeState(new MenuState(this.bus));
 			}
 		} else {
 			stateToggleThrottle.unthrottle();

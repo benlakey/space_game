@@ -15,7 +15,6 @@ public class StateManager {
 	
 	private static final int STATE_TOGGLE_DELAY_MILLIS = 300;
 
-	private final ComponentBus bus;
 	private final ResourceCache resourceCache;
 	private final GameSettings settings;
 	private State currentState;
@@ -24,8 +23,7 @@ public class StateManager {
 	private final Queue<Component> componentsToAdd;
 	private final Queue<Component> componentsToRemove;
 
-	public StateManager(ComponentBus bus, ResourceCache resourceCache, GameSettings settings, State initialState) {
-		this.bus = bus;
+	public StateManager(ResourceCache resourceCache, GameSettings settings, State initialState) {
 		this.resourceCache = resourceCache;
 		this.settings = settings;
 		this.changeState(initialState);
@@ -40,7 +38,7 @@ public class StateManager {
 		}
 		//TODO: interim loading screen state?
 		try {
-			state.load(this.bus, this.resourceCache, this, settings);
+			state.load(this.resourceCache, this, settings);
 		} catch (IOException e) {
 			logger.fatal("State '" + state + "' could not load!", e);
 			throw new RuntimeException(e);

@@ -23,15 +23,17 @@ public class MenuState implements State {
 	private static final Logger logger = Logger.getLogger(MenuState.class);
 	private static final int MENU_FONT_SIZE = 64;
 
+	private final ComponentBus bus;
 	private final Collection<Component> components;
 	private final UUID menuEntityId = UUID.randomUUID();
 
-	public MenuState() {
+	public MenuState(ComponentBus bus) {
+		this.bus = bus;
 		this.components = new LinkedList<Component>();
 	}
 	
 	@Override
-	public void load(ComponentBus bus, ResourceCache resourceCache, StateManager stateManager, GameSettings settings) {
+	public void load(ResourceCache resourceCache, StateManager stateManager, GameSettings settings) {
 		
 		this.components.clear();
 
@@ -53,13 +55,13 @@ public class MenuState implements State {
 		
 		return new MenuAction() {
 			@Override
-			public void execute(ComponentBus bus) {
+			public void execute() {
 				
 				NewGameManifest manifest = new NewGameManifest();
 				manifest.getPlayers().add("Bob");
 				manifest.getPlayers().add("Joe");
 				
-				stateManager.changeState(new GameState(manifest));
+				stateManager.changeState(new GameState(bus, manifest));
 
 			}
 		};
@@ -70,7 +72,7 @@ public class MenuState implements State {
 		
 		return new MenuAction() {
 			@Override
-			public void execute(ComponentBus bus) {
+			public void execute() {
 				logger.info("exiting game");
 				System.exit(0);
 			}

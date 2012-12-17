@@ -31,17 +31,19 @@ public class GameState implements State {
 	//TODO: move to a component that handles player health, when such a component exists (will be the component that takes damage and reports health to HUD)
 	private static final int STARTING_HEALTH = 100;
 
+	private final ComponentBus bus;
 	private final NewGameManifest manifest;
 	private final Collection<Component> components;
 	private boolean loaded;
 
-	public GameState(NewGameManifest manifest) {
+	public GameState(ComponentBus bus, NewGameManifest manifest) {
+		this.bus = bus;
 		this.manifest = manifest;
 		this.components = new LinkedList<Component>();
 	}
 
 	@Override
-	public void load(ComponentBus bus, ResourceCache resourceCache, StateManager stateManager, GameSettings settings) throws IOException {
+	public void load(ResourceCache resourceCache, StateManager stateManager, GameSettings settings) throws IOException {
 		
 		if(this.loaded) {
 			return;
