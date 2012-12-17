@@ -10,9 +10,9 @@ import org.seattlegamer.spacegame.utils.Throttle;
 
 public class StateManager {
 	
-	private static final int STATE_TOGGLE_DELAY_MILLIS = 300;
-
 	private static final Logger logger = Logger.getLogger(StateManager.class);
+	
+	private static final int STATE_TOGGLE_DELAY_MILLIS = 300;
 
 	private final ComponentBus bus;
 	private final ResourceCache resourceCache;
@@ -35,9 +35,7 @@ public class StateManager {
 		if(state == null) {
 			return;
 		}
-		//TODO: switch in a 'loading' state and perform state loading on a 
-		//different thread. when it finishes, swap in the right state in place 
-		//of the 'loading' state. (or something similar)
+		//TODO: interim loading screen state?
 		try {
 			state.load(this.bus, this.resourceCache, this);
 		} catch (IOException e) {

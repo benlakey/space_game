@@ -48,4 +48,40 @@ public final class TestImageCreator {
 
 	}
 	
+	public static BufferedImage buildAsteroid(Color color) {
+
+		int size = 400;
+		int buffer = size / PIXEL_PADDING_DIVISOR;
+		
+		int planetCircumference = size - (2 * buffer);
+		int planetWidth = planetCircumference;
+		int planetHeight = planetCircumference;
+		int planetX = buffer;
+		int planetY = buffer;
+		
+//		int gunWidth = buffer;
+//		int gunHeight = buffer * 2;
+//		int gunX = (size / 2) - (buffer / 2);
+//		int gunY = 0;
+		
+		BufferedImage newImage = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D graphics = newImage.createGraphics();
+        try {
+
+        	graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+
+        	graphics.setColor(color);
+	        graphics.fillOval(planetX, planetY, planetWidth, planetHeight);
+
+//	        graphics.setColor(Color.WHITE);
+//	        graphics.fillRect(gunX, gunY, gunWidth, gunHeight);
+
+        } finally {
+        	graphics.dispose();
+        }
+        
+        return newImage;
+
+	}
+	
 }

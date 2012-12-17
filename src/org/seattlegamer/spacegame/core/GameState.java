@@ -3,6 +3,7 @@ package org.seattlegamer.spacegame.core;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -13,6 +14,7 @@ import org.seattlegamer.spacegame.config.GameSettings;
 import org.seattlegamer.spacegame.messages.AnimationStart;
 import org.seattlegamer.spacegame.messages.NewGameManifest;
 import org.seattlegamer.spacegame.messages.PlayerStatsReport;
+import org.seattlegamer.spacegame.messages.SpeedChange;
 import org.seattlegamer.spacegame.resources.ResourceCache;
 import org.seattlegamer.spacegame.ui.HeadsUpDisplayEntryRenderer;
 import org.seattlegamer.spacegame.utils.GraphicsUtils;
@@ -63,9 +65,33 @@ public class GameState implements State {
 		this.addExplosion(bus, resourceCache, random.nextInt(maxX), random.nextInt(maxY));
 		this.addExplosion(bus, resourceCache, random.nextInt(maxX), random.nextInt(maxY));
 		
+		this.addAsteroid(bus, resourceCache, 200, 200);
+		
 		currentGame = this;
 		
 		this.loaded = true;
+		
+	}
+
+	private void addAsteroid(ComponentBus bus, ResourceCache resourceCache, int x, int y) {
+
+		UUID asteroidId = UUID.randomUUID();
+
+		BufferedImage asteroidImage = TestImageCreator.buildAsteroid(Color.RED);
+		Image scaledAsteroidImage = GraphicsUtils.getScaledImage(asteroidImage, GameSettings.current().getScale());
+		
+		Sprite sprite = new Sprite(bus, asteroidId, scaledAsteroidImage);
+		
+		this.components.add(sprite);
+		
+		Physics physics = new Physics(bus, asteroidId, new Point(x, y), 0, 
+				scaledAsteroidImage.getWidth(null), 
+				scaledAsteroidImage.getHeight(null));
+		
+		this.components.add(physics);
+		
+		bus.send(new SpeedChange(0.1), asteroidId);
+		
 		
 	}
 
