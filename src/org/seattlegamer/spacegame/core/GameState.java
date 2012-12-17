@@ -1,24 +1,13 @@
 package org.seattlegamer.spacegame.core;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Image;
-import java.awt.Point;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Random;
-import java.util.UUID;
 
 import org.seattlegamer.spacegame.config.GameSettings;
-import org.seattlegamer.spacegame.messages.AnimationStart;
 import org.seattlegamer.spacegame.messages.NewGameManifest;
-import org.seattlegamer.spacegame.messages.PlayerStatsReport;
-import org.seattlegamer.spacegame.messages.SpeedChange;
 import org.seattlegamer.spacegame.resources.ResourceCache;
-import org.seattlegamer.spacegame.ui.HeadsUpDisplayEntryRenderer;
-import org.seattlegamer.spacegame.utils.GraphicsUtils;
 
 public class GameState implements State {
 	
@@ -27,9 +16,6 @@ public class GameState implements State {
 	public static GameState getCurrentGame() {
 		return currentGame; //can be null
 	}
-
-	//TODO: move to a component that handles player health, when such a component exists (will be the component that takes damage and reports health to HUD)
-	private static final int STARTING_HEALTH = 100;
 
 	private final ComponentBus bus;
 	private final NewGameManifest manifest;
@@ -49,105 +35,52 @@ public class GameState implements State {
 			return;
 		}
 		
-		int playerNumber = 1;
-		
-		for(String player : manifest.getPlayers()) {
-			this.addPlayer(bus, resourceCache, stateManager, settings, playerNumber, player);
-			playerNumber++;
-		}
-		
-		int maxX = settings.getDisplayModeWidth();
-		int maxY = settings.getDisplayModeHeight();
-		
-		Random random = new Random();
+		this.addPlayers(resourceCache, stateManager, settings);
+		this.addTestExplosions(resourceCache, stateManager, settings);
 
-		//TODO: this stuff is just here for testing.
-		this.addExplosion(bus, resourceCache, settings, random.nextInt(maxX), random.nextInt(maxY));
-		this.addExplosion(bus, resourceCache, settings, random.nextInt(maxX), random.nextInt(maxY));
-		this.addExplosion(bus, resourceCache, settings, random.nextInt(maxX), random.nextInt(maxY));
-		this.addExplosion(bus, resourceCache, settings, random.nextInt(maxX), random.nextInt(maxY));
-		this.addExplosion(bus, resourceCache, settings, random.nextInt(maxX), random.nextInt(maxY));
-		
-		this.addAsteroid(bus, resourceCache, settings, 200, 200);
-		
 		currentGame = this;
 		
 		this.loaded = true;
 		
 	}
-
-	private void addAsteroid(ComponentBus bus, ResourceCache resourceCache, GameSettings settings, int x, int y) {
-
-		UUID asteroidId = UUID.randomUUID();
-
-		BufferedImage asteroidImage = TestImageCreator.buildAsteroid(Color.RED);
-		Image scaledAsteroidImage = GraphicsUtils.getScaledImage(asteroidImage, settings.getScale());
+	
+	private void addPlayers(ResourceCache resourceCache, StateManager stateManager, GameSettings settings) throws IOException {
 		
-		Sprite sprite = new Sprite(bus, asteroidId, scaledAsteroidImage);
+		int playerNumber = 1;
 		
-		this.components.add(sprite);
+		PlayerCreator playerCreator = new PlayerCreator(this.bus, resourceCache, stateManager, settings);
 		
-		Physics physics = new Physics(bus, asteroidId, new Point(x, y), 0, 
-				scaledAsteroidImage.getWidth(null), 
-				scaledAsteroidImage.getHeight(null));
-		
-		this.components.add(physics);
-		
-		bus.send(new SpeedChange(0.1), asteroidId);
-		
+		for(String player : manifest.getPlayers()) {
+			Iterable<Component> playerComponents = playerCreator.createPlayer(playerNumber, player);
+			for(Component playerComponent : playerComponents) {
+				this.components.add(playerComponent);
+			}
+			playerNumber++;
+		}
 		
 	}
-
-	private void addPlayer(
-			ComponentBus bus, 
-			ResourceCache resourceCache, 
-			StateManager stateManager, 
-			GameSettings settings,
-			int playerNumber, 
-			String name) throws IOException {
-
-		UUID playerEntityId = UUID.randomUUID();
-		UUID hudEntityId = UUID.randomUUID();
-		
-		Image player = TestImageCreator.buildPlayer(Color.BLUE);
-		Image scaledPlayer = GraphicsUtils.getScaledImage(player, settings.getScale());
+	
+	//TODO: this stuff is just here for testing.
+	private void addTestExplosions(ResourceCache resourceCache, StateManager stateManager, GameSettings settings) throws IOException {
 
 		int maxX = settings.getDisplayModeWidth();
 		int maxY = settings.getDisplayModeHeight();
 		
-		Point position = new Point(new Random().nextInt(maxX), new Random().nextInt(maxY));
+		Random random = new Random();
 
-		Font hudFont = new Font(settings.getFont(), Font.PLAIN, 32);
+		AnimationCreator animationCreator = new AnimationCreator(this.bus, resourceCache, settings);
 		
-		this.components.add(new HeadsUpDisplayEntryRenderer(bus, hudEntityId, playerEntityId, playerNumber, hudFont));
-		this.components.add(new Sprite(bus, playerEntityId, scaledPlayer));
-		this.components.add(new Physics(bus, playerEntityId, position, 0, scaledPlayer.getWidth(null), scaledPlayer.getHeight(null)));
-		this.components.add(new ProjectileLauncher(bus, playerEntityId, resourceCache, stateManager, settings));
-		
-		//TODO: hack for testing. input will be assigned turn-based.
-		if(playerNumber == 1) {
-			this.components.add(new PlayerInput(bus, playerEntityId, stateManager));
+		for(int i = 0; i < 20; i++) {
+			
+			Iterable<Component> animationComponents = animationCreator.createAnimation(
+					"assets/explosion.png", random.nextInt(maxX), random.nextInt(maxY));
+			
+			for(Component component : animationComponents) {
+				this.components.add(component);
+			}
+			
 		}
 		
-		bus.send(new PlayerStatsReport(playerEntityId, name, STARTING_HEALTH), hudEntityId);
-
-	}
-
-	//TODO: just here for testing
-	private void addExplosion(ComponentBus bus, ResourceCache resourceCache, GameSettings settings, int x, int y) throws IOException {
-
-		final UUID explosionEntityId = UUID.randomUUID();
-		
-		Image explosionImage = resourceCache.getImage("assets/explosion.png");
-		Image scaledExplosionImage = GraphicsUtils.getScaledImage(explosionImage, settings.getScale());
-
-		AnimationLoader animationLoader = new AnimationLoader(scaledExplosionImage);
-		Image[] frames = animationLoader.getFrames();
-
-		this.components.add(new Animation(bus, explosionEntityId, frames, new Point(x, y)));
-
-		bus.send(new AnimationStart(), explosionEntityId);
-
 	}
 
 	@Override
