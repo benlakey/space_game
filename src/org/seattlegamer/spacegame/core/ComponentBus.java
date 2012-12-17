@@ -21,11 +21,11 @@ public class ComponentBus {
 		this.handlers = new HashMap<>();
 	}
 
-	public <T extends Component> void register(T obj) {
+	public void register(Component obj) {
 		this.modifyHandlers(obj, false);
 	}
 
-	public <T extends Component> void deregister(T obj) {
+	public void deregister(Component obj) {
 		this.modifyHandlers(obj, true);
 	}
 
