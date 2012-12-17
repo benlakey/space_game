@@ -6,9 +6,9 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.UUID;
 
-import org.seattlegamer.spacegame.Component;
-import org.seattlegamer.spacegame.ComponentBus;
-import org.seattlegamer.spacegame.StateManager;
+import org.seattlegamer.spacegame.core.Component;
+import org.seattlegamer.spacegame.core.ComponentBus;
+import org.seattlegamer.spacegame.core.StateManager;
 
 public class MenuBuilder {
 

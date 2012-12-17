@@ -1,10 +1,13 @@
-package org.seattlegamer.spacegame;
+package org.seattlegamer.spacegame.core;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.geom.AffineTransform;
 import java.util.UUID;
+
+import org.seattlegamer.spacegame.messages.AnimationStart;
+import org.seattlegamer.spacegame.messages.PositionChange;
 
 public class Animation extends Component {
 

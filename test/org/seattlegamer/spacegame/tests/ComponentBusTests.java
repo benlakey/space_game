@@ -6,9 +6,9 @@ import static org.junit.Assert.assertTrue;
 import java.util.UUID;
 
 import org.junit.Test;
-import org.seattlegamer.spacegame.Component;
-import org.seattlegamer.spacegame.ComponentBus;
-import org.seattlegamer.spacegame.Subscription;
+import org.seattlegamer.spacegame.core.Component;
+import org.seattlegamer.spacegame.core.ComponentBus;
+import org.seattlegamer.spacegame.core.Subscription;
 
 public class ComponentBusTests {
 

@@ -1,4 +1,4 @@
-package org.seattlegamer.spacegame;
+package org.seattlegamer.spacegame.messages;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package org.seattlegamer.spacegame;
+package org.seattlegamer.spacegame.core;
 
 import java.awt.Color;
 import java.awt.Image;
@@ -10,6 +10,9 @@ import java.util.Random;
 import java.util.UUID;
 
 import org.seattlegamer.spacegame.config.GameSettings;
+import org.seattlegamer.spacegame.messages.AnimationStart;
+import org.seattlegamer.spacegame.messages.NewGameManifest;
+import org.seattlegamer.spacegame.messages.PlayerStatsReport;
 import org.seattlegamer.spacegame.resources.ResourceCache;
 import org.seattlegamer.spacegame.ui.HeadsUpDisplayEntryRenderer;
 import org.seattlegamer.spacegame.utils.GraphicsUtils;

@@ -1,6 +1,8 @@
-package org.seattlegamer.spacegame;
+package org.seattlegamer.spacegame.messages;
 
 import java.util.UUID;
+
+import org.seattlegamer.spacegame.core.Physics;
 
 public class PhysicsCloning {
 

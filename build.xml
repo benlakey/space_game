@@ -15,7 +15,7 @@
 	<property name="bin-dir.jar-dir" value="${bin-dir}/jar" />
 
 	<property name="jar-path" value="${bin-dir.jar-dir}/${ant.project.name}.jar" />
-	<property name="main-class" value="org.seattlegamer.spacegame.Game" />
+	<property name="main-class" value="org.seattlegamer.spacegame.core.Game" />
 	
 	<target name="compile">
 	    <mkdir dir="${bin-dir.classes-dir}" />

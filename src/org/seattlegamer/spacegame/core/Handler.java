@@ -1,4 +1,4 @@
-package org.seattlegamer.spacegame;
+package org.seattlegamer.spacegame.core;
 
 import java.lang.reflect.Method;
 

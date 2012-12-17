@@ -1,8 +1,10 @@
-package org.seattlegamer.spacegame;
+package org.seattlegamer.spacegame.core;
 
 import java.awt.event.KeyEvent;
 import java.util.UUID;
 
+import org.seattlegamer.spacegame.messages.ProjectileLaunch;
+import org.seattlegamer.spacegame.messages.RotationChange;
 import org.seattlegamer.spacegame.ui.MenuState;
 import org.seattlegamer.spacegame.utils.Throttle;
 

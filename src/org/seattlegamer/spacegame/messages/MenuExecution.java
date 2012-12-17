@@ -1,4 +1,4 @@
-package org.seattlegamer.spacegame.ui;
+package org.seattlegamer.spacegame.messages;
 
 public class MenuExecution {
 

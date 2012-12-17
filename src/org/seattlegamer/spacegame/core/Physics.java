@@ -1,9 +1,13 @@
-package org.seattlegamer.spacegame;
+package org.seattlegamer.spacegame.core;
 
 import java.awt.Point;
 import java.awt.geom.AffineTransform;
 import java.util.UUID;
 
+import org.seattlegamer.spacegame.messages.PhysicsCloning;
+import org.seattlegamer.spacegame.messages.PositionChange;
+import org.seattlegamer.spacegame.messages.RotationChange;
+import org.seattlegamer.spacegame.messages.SpeedChange;
 import org.seattlegamer.spacegame.utils.NumberUtils;
 
 public class Physics extends Component {

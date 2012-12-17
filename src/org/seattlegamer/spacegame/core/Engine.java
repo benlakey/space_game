@@ -1,4 +1,4 @@
-package org.seattlegamer.spacegame;
+package org.seattlegamer.spacegame.core;
 
 import org.seattlegamer.spacegame.utils.Throttle;
 

@@ -4,8 +4,8 @@ import static org.junit.Assert.assertEquals;
 import java.util.UUID;
 
 import org.junit.Test;
-import org.seattlegamer.spacegame.Component;
-import org.seattlegamer.spacegame.ComponentBus;
+import org.seattlegamer.spacegame.core.Component;
+import org.seattlegamer.spacegame.core.ComponentBus;
 
 public class ComponentTests {
 

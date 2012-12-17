@@ -3,11 +3,13 @@ package org.seattlegamer.spacegame.ui;
 import java.awt.event.KeyEvent;
 import java.util.UUID;
 
-import org.seattlegamer.spacegame.Component;
-import org.seattlegamer.spacegame.ComponentBus;
-import org.seattlegamer.spacegame.GameState;
-import org.seattlegamer.spacegame.Input;
-import org.seattlegamer.spacegame.StateManager;
+import org.seattlegamer.spacegame.core.Component;
+import org.seattlegamer.spacegame.core.ComponentBus;
+import org.seattlegamer.spacegame.core.GameState;
+import org.seattlegamer.spacegame.core.Input;
+import org.seattlegamer.spacegame.core.StateManager;
+import org.seattlegamer.spacegame.messages.MenuExecution;
+import org.seattlegamer.spacegame.messages.MenuSelectionChanged;
 import org.seattlegamer.spacegame.utils.NumberUtils;
 import org.seattlegamer.spacegame.utils.Throttle;
 

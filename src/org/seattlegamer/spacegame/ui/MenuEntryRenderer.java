@@ -8,10 +8,11 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.util.UUID;
 
-import org.seattlegamer.spacegame.Component;
-import org.seattlegamer.spacegame.ComponentBus;
-import org.seattlegamer.spacegame.Subscription;
 import org.seattlegamer.spacegame.config.GameSettings;
+import org.seattlegamer.spacegame.core.Component;
+import org.seattlegamer.spacegame.core.ComponentBus;
+import org.seattlegamer.spacegame.core.Subscription;
+import org.seattlegamer.spacegame.messages.MenuSelectionChanged;
 import org.seattlegamer.spacegame.utils.GraphicsUtils;
 
 public class MenuEntryRenderer extends Component {
