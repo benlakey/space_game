@@ -1,10 +1,12 @@
 package org.seattlegamer.spacegame.ui;
 
+import java.awt.Font;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.UUID;
 
 import org.apache.log4j.Logger;
+import org.seattlegamer.spacegame.config.GameSettings;
 import org.seattlegamer.spacegame.core.Component;
 import org.seattlegamer.spacegame.core.ComponentBus;
 import org.seattlegamer.spacegame.core.GameState;
@@ -19,6 +21,7 @@ import org.seattlegamer.spacegame.resources.ResourceCache;
 public class MenuState implements State {
 	
 	private static final Logger logger = Logger.getLogger(MenuState.class);
+	private static final int MENU_FONT_SIZE = 64;
 
 	private final Collection<Component> components;
 	private final UUID menuEntityId = UUID.randomUUID();
@@ -28,11 +31,12 @@ public class MenuState implements State {
 	}
 	
 	@Override
-	public void load(ComponentBus bus, ResourceCache resourceCache, StateManager stateManager) {
+	public void load(ComponentBus bus, ResourceCache resourceCache, StateManager stateManager, GameSettings settings) {
 		
 		this.components.clear();
 
 		Iterable<Component> menuComponents = new MenuBuilder(bus)
+			.setFont(new Font(settings.getFont(), Font.BOLD, MENU_FONT_SIZE))
 			.addMenuEntry("New Game", this.getHardcodedNewGameMenuAction(stateManager))
 			.addMenuEntry("Exit", this.getExitGameMenuAction())
 			.build(this.menuEntityId, stateManager);

@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 import org.apache.log4j.Logger;
+import org.seattlegamer.spacegame.config.GameSettings;
 import org.seattlegamer.spacegame.resources.ResourceCache;
 import org.seattlegamer.spacegame.utils.Throttle;
 
@@ -16,15 +17,17 @@ public class StateManager {
 
 	private final ComponentBus bus;
 	private final ResourceCache resourceCache;
+	private final GameSettings settings;
 	private State currentState;
 	private final Throttle stateToggleThrottle;
 	
 	private final Queue<Component> componentsToAdd;
 	private final Queue<Component> componentsToRemove;
 
-	public StateManager(ComponentBus bus, ResourceCache resourceCache, State initialState) {
+	public StateManager(ComponentBus bus, ResourceCache resourceCache, GameSettings settings, State initialState) {
 		this.bus = bus;
 		this.resourceCache = resourceCache;
+		this.settings = settings;
 		this.changeState(initialState);
 		this.stateToggleThrottle = new Throttle(STATE_TOGGLE_DELAY_MILLIS);
 		this.componentsToAdd = new LinkedList<>();
@@ -37,7 +40,7 @@ public class StateManager {
 		}
 		//TODO: interim loading screen state?
 		try {
-			state.load(this.bus, this.resourceCache, this);
+			state.load(this.bus, this.resourceCache, this, settings);
 		} catch (IOException e) {
 			logger.fatal("State '" + state + "' could not load!", e);
 			throw new RuntimeException(e);

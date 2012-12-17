@@ -9,7 +9,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.UUID;
 
-import org.seattlegamer.spacegame.config.GameSettings;
 import org.seattlegamer.spacegame.core.Component;
 import org.seattlegamer.spacegame.core.ComponentBus;
 import org.seattlegamer.spacegame.core.Subscription;
@@ -18,21 +17,20 @@ import org.seattlegamer.spacegame.utils.GraphicsUtils;
 
 public class HeadsUpDisplayEntryRenderer extends Component {
 
-	private static final int FONT_SIZE = 32;
-	private static final String FONT_NAME = GameSettings.current().getFont();
-	private static final Font HUD_FONT = new Font(FONT_NAME, Font.PLAIN, FONT_SIZE);
 	private static final Color HUD_COLOR = Color.WHITE;
 
 	private final UUID playerEntityId;
 	private final int playerNumber;
+	private final Font font;
 	private Point position;
 	private String text;
 	private int health;
 
-	public HeadsUpDisplayEntryRenderer(ComponentBus bus, UUID entityId, UUID playerEntityId, int playerNumber) {
+	public HeadsUpDisplayEntryRenderer(ComponentBus bus, UUID entityId, UUID playerEntityId, int playerNumber, Font font) {
 		super(bus, entityId);
 		this.playerEntityId = playerEntityId;
 		this.playerNumber = playerNumber;
+		this.font = font;
 		this.health = 0;
 	}
 	
@@ -51,16 +49,16 @@ public class HeadsUpDisplayEntryRenderer extends Component {
 		String text = String.format("%s: %d HP", this.text, this.health);
 
 		if(this.position == null) {
-			FontMetrics fontMetrics = graphics.getFontMetrics(HUD_FONT);
+			FontMetrics fontMetrics = graphics.getFontMetrics(this.font);
 			Rectangle screenSize = graphics.getDeviceConfiguration().getBounds();
-			Dimension textSize = GraphicsUtils.measureTextPixels(fontMetrics, HUD_FONT, text);
+			Dimension textSize = GraphicsUtils.measureTextPixels(fontMetrics, this.font, text);
 			
 			int positionY = screenSize.height - (this.playerNumber * textSize.height);
 			
 			this.position = new Point(0,  positionY);
 		}
 		
-		graphics.setFont(HUD_FONT);
+		graphics.setFont(this.font);
 		graphics.setColor(HUD_COLOR);
 
 		graphics.drawString(text, this.position.x, this.position.y);

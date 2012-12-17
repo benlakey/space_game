@@ -16,6 +16,7 @@ import org.seattlegamer.spacegame.resources.InMemoryResourceCache;
 import org.seattlegamer.spacegame.resources.ResourceCache;
 import org.seattlegamer.spacegame.resources.ResourceLoader;
 import org.seattlegamer.spacegame.ui.MenuState;
+import org.seattlegamer.spacegame.utils.PropertiesLoader;
 import org.seattlegamer.spacegame.utils.Throttle;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,21 +30,29 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class DependencyConfig {
+	
+	private static final String PROPERTIES_FILE_PATH = "/spacegame.properties";
 
+	public @Bean GameSettings settings() {
+		return new GameSettings(PropertiesLoader.loadProperties(PROPERTIES_FILE_PATH));
+	}
+	
 	public @Bean Canvas canvas() {
+		
+		GameSettings settings = settings();
 
 		DisplayMode displayMode = new DisplayMode(
-				GameSettings.current().getDisplayModeWidth(),
-				GameSettings.current().getDisplayModeHeight(),
-				GameSettings.current().getDisplayModeBitDepth(),
-				GameSettings.current().getDisplayModeRefreshRate());
+				settings.getDisplayModeWidth(),
+				settings.getDisplayModeHeight(),
+				settings.getDisplayModeBitDepth(),
+				settings.getDisplayModeRefreshRate());
 
-		return new GameCanvas(input(), GameSettings.current().getTitle(), displayMode);
+		return new GameCanvas(input(), settings.getTitle(), displayMode);
 
 	}
 	
 	public @Bean StateManager stateManager() {
-		return new StateManager(componentBus(), resourceCache(), new MenuState());
+		return new StateManager(componentBus(), resourceCache(), settings(), new MenuState());
 	}
 
 	public @Bean Engine engine() {
@@ -55,7 +64,8 @@ public class DependencyConfig {
 	}
 
 	public @Bean Throttle framerateThrottle() {
-		return new Throttle(1000 / GameSettings.current().getTargetFramerate());
+		GameSettings settings = settings();
+		return new Throttle(1000 / settings.getTargetFramerate());
 	}
 
 	public @Bean Input input() {
@@ -67,7 +77,7 @@ public class DependencyConfig {
 	}
 
 	public @Bean ResourceLoader<Image> imageResourceLoader() {
-		return new ImageResourceLoader();
+		return new ImageResourceLoader(settings());
 	}
 	
 	public @Bean ComponentBus componentBus() {

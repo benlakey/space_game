@@ -18,11 +18,18 @@ public class ProjectileLauncher extends Component {
 	
 	private final ResourceCache resourceCache;
 	private final StateManager stateManager;
+	private final GameSettings settings;
 
-	public ProjectileLauncher(ComponentBus bus, UUID entityId, ResourceCache resourceCache, StateManager stateManager) {
+	public ProjectileLauncher(
+			ComponentBus bus, 
+			UUID entityId, 
+			ResourceCache resourceCache, 
+			StateManager stateManager,
+			GameSettings settings) {
 		super(bus, entityId);
 		this.resourceCache = resourceCache;
 		this.stateManager = stateManager;
+		this.settings = settings;
 	}
 
 	@Subscription
@@ -38,7 +45,7 @@ public class ProjectileLauncher extends Component {
 			return;
 		}
 		
-		Image scaledProjectileImage = GraphicsUtils.getScaledImage(projectileImage, GameSettings.current().getScale());
+		Image scaledProjectileImage = GraphicsUtils.getScaledImage(projectileImage, this.settings.getScale());
 		
 		int projectileWidth = projectileImage.getWidth(null);
 		int projectileHeight = projectileImage.getHeight(null);

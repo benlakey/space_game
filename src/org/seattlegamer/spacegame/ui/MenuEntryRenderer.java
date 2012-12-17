@@ -8,7 +8,6 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.util.UUID;
 
-import org.seattlegamer.spacegame.config.GameSettings;
 import org.seattlegamer.spacegame.core.Component;
 import org.seattlegamer.spacegame.core.ComponentBus;
 import org.seattlegamer.spacegame.core.Subscription;
@@ -17,17 +16,17 @@ import org.seattlegamer.spacegame.utils.GraphicsUtils;
 
 public class MenuEntryRenderer extends Component {
 
-	private static final Font MENU_FONT = new Font(GameSettings.current().getFont(), Font.BOLD, 64);
-
 	private final int index;
 	private final String text;
 	private boolean selected;
 	private Point position;
+	private final Font font;
 
-	public MenuEntryRenderer(ComponentBus bus, UUID entityId, int index, String text) {
+	public MenuEntryRenderer(ComponentBus bus, UUID entityId, int index, String text, Font font) {
 		super(bus, entityId);
 		this.index = index;
 		this.text = text;
+		this.font = font;
 	}
 	
 	@Subscription
@@ -39,12 +38,12 @@ public class MenuEntryRenderer extends Component {
 	public void render(Graphics2D graphics) {
 		
 		if(this.position == null) {
-			FontMetrics fontMetrics = graphics.getFontMetrics(MENU_FONT);
-			Dimension textSize = GraphicsUtils.measureTextPixels(fontMetrics, MENU_FONT, text);
+			FontMetrics fontMetrics = graphics.getFontMetrics(this.font);
+			Dimension textSize = GraphicsUtils.measureTextPixels(fontMetrics, this.font, text);
 			this.position = new Point(0, (this.index + 1) * textSize.height);
 		}
 
-		graphics.setFont(MENU_FONT);
+		graphics.setFont(this.font);
 		if(this.selected) {
 			graphics.setColor(Color.RED);
 		} else {

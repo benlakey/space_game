@@ -13,6 +13,12 @@ import org.seattlegamer.spacegame.utils.GraphicsUtils;
 
 public class ImageResourceLoader implements ResourceLoader<Image> {
 
+	private final GameSettings settings;
+
+	public ImageResourceLoader(GameSettings settings) {
+		this.settings = settings;
+	}
+	
 	@Override
 	public Image load(String name) throws IOException {
 
@@ -23,7 +29,7 @@ public class ImageResourceLoader implements ResourceLoader<Image> {
 		}
 		
 		BufferedImage bufferedImage = ImageIO.read(stream);
-		Image scaledImage = GraphicsUtils.getScaledImage(bufferedImage, GameSettings.current().getScale());
+		Image scaledImage = GraphicsUtils.getScaledImage(bufferedImage, this.settings.getScale());
 
 		return GraphicsUtils.toAcceleratedImage(scaledImage);
 

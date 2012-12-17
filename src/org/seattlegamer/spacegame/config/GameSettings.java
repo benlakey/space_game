@@ -3,20 +3,8 @@ package org.seattlegamer.spacegame.config;
 import java.util.Properties;
 
 import org.seattlegamer.spacegame.utils.PropertiesAccessor;
-import org.seattlegamer.spacegame.utils.PropertiesLoader;
 
 public class GameSettings {
-
-	private static final String PROPERTIES_FILE_PATH = "/spacegame.properties";
-
-	private static GameSettings instance;
-	
-	public static GameSettings current() {
-		if(instance == null) {
-			instance = new GameSettings(PropertiesLoader.loadProperties(PROPERTIES_FILE_PATH));
-		}
-		return instance;
-	}
 
 	private final PropertiesAccessor propertiesAccessor;
 
