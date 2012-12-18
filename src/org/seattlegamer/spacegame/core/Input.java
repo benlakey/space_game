@@ -9,23 +9,16 @@ import java.awt.event.MouseMotionListener;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class Input {
+public final class Input implements KeyListener, MouseListener, MouseMotionListener {
 
 	private Point mouseLocation;
 	private final Map<Integer, Boolean> keyInputsPressed;
 	private final Map<Integer, Boolean> mouseInputsPressed;
-	private final KeyListener keyListener;
-	private final MouseListener mouseListener;
-	private final MouseMotionListener mouseMotionListener;
 
 	public Input() {
 		this.mouseLocation = new Point();
 		this.keyInputsPressed = new HashMap<Integer, Boolean>();
 		this.mouseInputsPressed = new HashMap<Integer, Boolean>();
-		this.keyListener = new KeyboardInput();
-		MouseInput mouseInput = new MouseInput();
-		this.mouseListener = mouseInput;
-		this.mouseMotionListener = mouseInput;
 	}
 
 	public boolean isKeyInputActive(Integer code) {
@@ -42,62 +35,41 @@ public final class Input {
 		return this.mouseLocation;
 	}
 
-	public KeyListener getKeyListener() {
-		return this.keyListener;
+	@Override
+	public void keyPressed(KeyEvent e) {
+		keyInputsPressed.put(e.getKeyCode(), true);
 	}
 
-	public MouseListener getMouseListener() {
-		return this.mouseListener;
+	@Override
+	public void keyReleased(KeyEvent e) {
+		keyInputsPressed.put(e.getKeyCode(), false);
 	}
 
-	public MouseMotionListener getMouseMotionListener() {
-		return this.mouseMotionListener;
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		mouseLocation = e.getPoint();
 	}
 
-	private class KeyboardInput implements KeyListener {
-
-		@Override
-		public void keyPressed(KeyEvent e) {
-			keyInputsPressed.put(e.getKeyCode(), true);
-		}
-
-		@Override
-		public void keyReleased(KeyEvent e) {
-			keyInputsPressed.put(e.getKeyCode(), false);
-		}
-
-		@Override public void keyTyped(KeyEvent e) {}
-
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		mouseLocation = e.getPoint();
 	}
-	
-	private class MouseInput implements MouseListener, MouseMotionListener {
-		
-		@Override
-		public void mouseDragged(MouseEvent e) {
-			mouseLocation = e.getPoint();
-		}
 
-		@Override
-		public void mouseMoved(MouseEvent e) {
-			mouseLocation = e.getPoint();
-		}
-
-		@Override
-		public void mousePressed(MouseEvent e) {
-			mouseInputsPressed.put(e.getButton(), true);
-			mouseLocation = e.getPoint();
-		}
-
-		@Override
-		public void mouseReleased(MouseEvent e) {
-			mouseInputsPressed.put(e.getButton(), false);
-			mouseLocation = e.getPoint();
-		}
-
-		@Override public void mouseClicked(MouseEvent e) {}
-		@Override public void mouseEntered(MouseEvent e) {}
-		@Override public void mouseExited(MouseEvent e) {}
-		
+	@Override
+	public void mousePressed(MouseEvent e) {
+		mouseInputsPressed.put(e.getButton(), true);
+		mouseLocation = e.getPoint();
 	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		mouseInputsPressed.put(e.getButton(), false);
+		mouseLocation = e.getPoint();
+	}
+
+	@Override public void keyTyped(KeyEvent e) {}
+	@Override public void mouseClicked(MouseEvent e) {}
+	@Override public void mouseEntered(MouseEvent e) {}
+	@Override public void mouseExited(MouseEvent e) {}
 
 }

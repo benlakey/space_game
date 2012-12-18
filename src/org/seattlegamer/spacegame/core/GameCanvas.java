@@ -33,9 +33,9 @@ public final class GameCanvas extends Canvas {
 		this.createBufferStrategy(BUFFER_COUNT);
 		this.requestFocus();
 		
-		this.addKeyListener(input.getKeyListener());
-		this.addMouseListener(input.getMouseListener());
-		this.addMouseMotionListener(input.getMouseMotionListener());
+		this.addKeyListener(input);
+		this.addMouseListener(input);
+		this.addMouseMotionListener(input);
 
 	}
 
