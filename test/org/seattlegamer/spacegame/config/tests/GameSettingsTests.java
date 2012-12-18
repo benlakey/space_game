@@ -6,6 +6,7 @@ import java.util.Properties;
 
 import org.junit.Test;
 import org.seattlegamer.spacegame.config.GameSettings;
+import org.seattlegamer.spacegame.utils.PropertiesAccessor;
 
 public class GameSettingsTests {
 	
@@ -22,14 +23,16 @@ public class GameSettingsTests {
 
 	@Test
 	public void gameSettingsPullsTitleFromProperties() {
-		GameSettings settings = new GameSettings(testProperties);
+		PropertiesAccessor propertiesAccessor = new PropertiesAccessor(testProperties);
+		GameSettings settings = new GameSettings(propertiesAccessor);
 		String title = settings.getTitle();
 		assertEquals(GAME_TITLE, title);
 	}
 	
 	@Test
 	public void gameSettingsPullsTargetFramerateFromProperties() {
-		GameSettings settings = new GameSettings(testProperties);
+		PropertiesAccessor propertiesAccessor = new PropertiesAccessor(testProperties);
+		GameSettings settings = new GameSettings(propertiesAccessor);
 		Integer targetFramerate = settings.getTargetFramerate();	
 		assertEquals(TARGET_FRAMERATE, targetFramerate);
 	}
