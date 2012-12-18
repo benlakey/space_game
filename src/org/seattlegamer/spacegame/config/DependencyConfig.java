@@ -3,6 +3,7 @@ package org.seattlegamer.spacegame.config;
 import java.awt.Canvas;
 import java.awt.DisplayMode;
 import java.awt.Image;
+import java.util.Properties;
 
 import org.seattlegamer.spacegame.core.CanvasRenderer;
 import org.seattlegamer.spacegame.core.ComponentBus;
@@ -18,6 +19,7 @@ import org.seattlegamer.spacegame.resources.InMemoryResourceCache;
 import org.seattlegamer.spacegame.resources.ResourceCache;
 import org.seattlegamer.spacegame.resources.ResourceLoader;
 import org.seattlegamer.spacegame.ui.MenuState;
+import org.seattlegamer.spacegame.utils.PropertiesAccessor;
 import org.seattlegamer.spacegame.utils.PropertiesLoader;
 import org.seattlegamer.spacegame.utils.Throttle;
 import org.springframework.context.annotation.Bean;
@@ -36,7 +38,9 @@ public class DependencyConfig {
 	private static final String PROPERTIES_FILE_PATH = "/spacegame.properties";
 
 	public @Bean GameSettings settings() {
-		return new GameSettings(PropertiesLoader.loadProperties(PROPERTIES_FILE_PATH));
+		Properties properties = PropertiesLoader.loadProperties(PROPERTIES_FILE_PATH);
+		PropertiesAccessor propertiesAccessor = new PropertiesAccessor(properties);
+		return new GameSettings(propertiesAccessor);
 	}
 	
 	public @Bean Canvas canvas() {

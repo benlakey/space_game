@@ -1,15 +1,13 @@
 package org.seattlegamer.spacegame.config;
 
-import java.util.Properties;
-
 import org.seattlegamer.spacegame.utils.PropertiesAccessor;
 
 public class GameSettings {
 
 	private final PropertiesAccessor propertiesAccessor;
 
-	public GameSettings(Properties properties) {
-		this.propertiesAccessor = new PropertiesAccessor(properties);
+	public GameSettings(PropertiesAccessor propertiesAccessor) {
+		this.propertiesAccessor = propertiesAccessor;
 	}
 
 	public String getTitle() {
