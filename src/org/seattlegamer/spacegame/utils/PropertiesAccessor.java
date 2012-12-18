@@ -4,7 +4,7 @@ import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
-public class PropertiesAccessor {
+public final class PropertiesAccessor {
 	
 	private static Logger logger = Logger.getLogger(PropertiesAccessor.class);
 	

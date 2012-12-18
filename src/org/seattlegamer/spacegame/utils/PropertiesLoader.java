@@ -6,10 +6,12 @@ import java.util.Properties;
 
 import org.apache.log4j.Logger;
 
-public class PropertiesLoader {
+public final class PropertiesLoader {
 	
 	private static Logger logger = Logger.getLogger(PropertiesLoader.class);
 
+	private PropertiesLoader() {}
+	
 	public static Properties loadProperties(String path) {
 		
 		InputStream in = PropertiesLoader.class.getResourceAsStream(path);

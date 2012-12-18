@@ -12,8 +12,10 @@ import java.awt.RenderingHints;
 import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 
-public class GraphicsUtils {
+public final class GraphicsUtils {
 
+	private GraphicsUtils() {}
+	
 	public static Dimension measureTextPixels(FontMetrics metrics, Font font, String text) {
 		int width = metrics.stringWidth(text);
 		int height = metrics.getHeight();
