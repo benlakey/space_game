@@ -16,7 +16,7 @@ public class PlayerInput extends Component {
 	private final Throttle rotationThrottle;
 	private final StateManager stateManager;
 	
-	public PlayerInput(ComponentBus bus, UUID entityId, StateManager stateManager) {
+	public PlayerInput(Bus<Component> bus, UUID entityId, StateManager stateManager) {
 		super(bus, entityId);
 		this.rotationThrottle = new Throttle(ROTATION_DELAY_MILLIS);
 		this.stateManager = stateManager;

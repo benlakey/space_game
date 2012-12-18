@@ -21,7 +21,7 @@ public class ProjectileLauncher extends Component {
 	private final GameSettings settings;
 
 	public ProjectileLauncher(
-			ComponentBus bus, 
+			Bus<Component> bus, 
 			UUID entityId, 
 			ResourceCache resourceCache, 
 			StateManager stateManager,

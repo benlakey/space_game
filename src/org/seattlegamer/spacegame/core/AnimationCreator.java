@@ -14,11 +14,11 @@ import org.seattlegamer.spacegame.utils.GraphicsUtils;
 
 public class AnimationCreator {
 	
-	private final ComponentBus bus;
+	private final Bus<Component> bus;
 	private final ResourceCache resourceCache;
 	private final GameSettings settings;
 
-	public AnimationCreator(ComponentBus bus, ResourceCache resourceCache, GameSettings settings) {
+	public AnimationCreator(Bus<Component> bus, ResourceCache resourceCache, GameSettings settings) {
 		this.bus = bus;
 		this.resourceCache = resourceCache;
 		this.settings = settings;

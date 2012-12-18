@@ -18,7 +18,7 @@ public class Animation extends Component {
 	private int millisSinceLastSample;
 	private int currentFrameIndex;
 
-	public Animation(ComponentBus bus, UUID entityId, Image[] frames, Point position) {
+	public Animation(Bus<Component> bus, UUID entityId, Image[] frames, Point position) {
 		super(bus, entityId);
 		this.frames = frames;
 		this.transform = new AffineTransform();

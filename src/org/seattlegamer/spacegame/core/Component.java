@@ -5,11 +5,11 @@ import java.util.UUID;
 
 public abstract class Component {
 
-	protected final ComponentBus bus;
+	protected final Bus<Component> bus;
 	private final UUID entityId;
 	private boolean enabled;
 
-	public Component(ComponentBus bus, UUID entityId) {
+	public Component(Bus<Component> bus, UUID entityId) {
 		this.bus = bus;
 		this.entityId = entityId;
 		this.setEnabled(true);

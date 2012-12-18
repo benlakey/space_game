@@ -10,7 +10,7 @@ public class Sprite extends Component {
 	private final Image image;
 	private AffineTransform transform;
 	
-	public Sprite(ComponentBus bus, UUID entityId, Image image) {
+	public Sprite(Bus<Component> bus, UUID entityId, Image image) {
 		super(bus, entityId);
 		this.image = image;
 		this.transform = new AffineTransform();

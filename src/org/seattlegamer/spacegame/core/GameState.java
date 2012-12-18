@@ -17,12 +17,12 @@ public class GameState implements State {
 		return currentGame; //can be null
 	}
 
-	private final ComponentBus bus;
+	private final Bus<Component> bus;
 	private final NewGameManifest manifest;
 	private final Collection<Component> components;
 	private boolean loaded;
 
-	public GameState(ComponentBus bus, NewGameManifest manifest) {
+	public GameState(Bus<Component> bus, NewGameManifest manifest) {
 		this.bus = bus;
 		this.manifest = manifest;
 		this.components = new LinkedList<Component>();

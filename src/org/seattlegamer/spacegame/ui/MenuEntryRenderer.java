@@ -8,8 +8,8 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.util.UUID;
 
+import org.seattlegamer.spacegame.core.Bus;
 import org.seattlegamer.spacegame.core.Component;
-import org.seattlegamer.spacegame.core.ComponentBus;
 import org.seattlegamer.spacegame.core.Subscription;
 import org.seattlegamer.spacegame.messages.MenuSelectionChanged;
 import org.seattlegamer.spacegame.utils.GraphicsUtils;
@@ -22,7 +22,7 @@ public class MenuEntryRenderer extends Component {
 	private Point position;
 	private final Font font;
 
-	public MenuEntryRenderer(ComponentBus bus, UUID entityId, int index, String text, Font font) {
+	public MenuEntryRenderer(Bus<Component> bus, UUID entityId, int index, String text, Font font) {
 		super(bus, entityId);
 		this.index = index;
 		this.text = text;

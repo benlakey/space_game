@@ -7,8 +7,8 @@ import java.util.UUID;
 
 import org.apache.log4j.Logger;
 import org.seattlegamer.spacegame.config.GameSettings;
+import org.seattlegamer.spacegame.core.Bus;
 import org.seattlegamer.spacegame.core.Component;
-import org.seattlegamer.spacegame.core.ComponentBus;
 import org.seattlegamer.spacegame.core.GameState;
 import org.seattlegamer.spacegame.core.KeyInput;
 import org.seattlegamer.spacegame.core.PointerInput;
@@ -24,11 +24,11 @@ public class MenuState implements State {
 	private static final Logger logger = Logger.getLogger(MenuState.class);
 	private static final int MENU_FONT_SIZE = 64;
 
-	private final ComponentBus bus;
+	private final Bus<Component> bus;
 	private final Collection<Component> components;
 	private final UUID menuEntityId = UUID.randomUUID();
 
-	public MenuState(ComponentBus bus) {
+	public MenuState(Bus<Component> bus) {
 		this.bus = bus;
 		this.components = new LinkedList<Component>();
 	}

@@ -7,19 +7,19 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.UUID;
 
+import org.seattlegamer.spacegame.core.Bus;
 import org.seattlegamer.spacegame.core.Component;
-import org.seattlegamer.spacegame.core.ComponentBus;
 import org.seattlegamer.spacegame.core.StateManager;
 
 public class MenuBuilder {
 	
 	private static final Font DEFAULT_FONT = new Font("Arial", Font.BOLD, 64);
 
-	private final ComponentBus bus;
+	private final Bus<Component> bus;
 	private final Map<String, MenuAction> entries;
 	private Font font;
 
-	public MenuBuilder(ComponentBus bus) {
+	public MenuBuilder(Bus<Component> bus) {
 		this.bus = bus;
 		this.entries = new LinkedHashMap<String, MenuAction>();
 		this.font = DEFAULT_FONT;

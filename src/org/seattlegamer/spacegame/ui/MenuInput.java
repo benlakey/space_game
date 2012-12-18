@@ -3,8 +3,8 @@ package org.seattlegamer.spacegame.ui;
 import java.awt.event.KeyEvent;
 import java.util.UUID;
 
+import org.seattlegamer.spacegame.core.Bus;
 import org.seattlegamer.spacegame.core.Component;
-import org.seattlegamer.spacegame.core.ComponentBus;
 import org.seattlegamer.spacegame.core.GameState;
 import org.seattlegamer.spacegame.core.KeyInput;
 import org.seattlegamer.spacegame.core.PointerInput;
@@ -25,7 +25,7 @@ public class MenuInput extends Component {
 	private final Throttle downThrottle;
 	private final Throttle executeThrottle;
 
-	public MenuInput(ComponentBus bus, UUID entityId, StateManager stateManager, int maxEntries) {
+	public MenuInput(Bus<Component> bus, UUID entityId, StateManager stateManager, int maxEntries) {
 		super(bus, entityId);
 		this.stateManager = stateManager;
 		this.maxEntries = maxEntries;

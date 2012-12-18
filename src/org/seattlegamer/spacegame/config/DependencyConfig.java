@@ -5,7 +5,9 @@ import java.awt.DisplayMode;
 import java.awt.Image;
 import java.util.Properties;
 
+import org.seattlegamer.spacegame.core.Bus;
 import org.seattlegamer.spacegame.core.CanvasRenderer;
+import org.seattlegamer.spacegame.core.Component;
 import org.seattlegamer.spacegame.core.ComponentBus;
 import org.seattlegamer.spacegame.core.Engine;
 import org.seattlegamer.spacegame.core.GameCanvas;
@@ -58,7 +60,7 @@ public class DependencyConfig {
 	}
 	
 	public @Bean StateManager stateManager() {
-		return new StateManager(resourceCache(), settings(), new MenuState(componentBus()));
+		return new StateManager(resourceCache(), settings(), new MenuState(bus()));
 	}
 
 	public @Bean Engine engine() {
@@ -94,7 +96,7 @@ public class DependencyConfig {
 		return new ImageResourceLoader(settings());
 	}
 	
-	public @Bean ComponentBus componentBus() {
+	public @Bean Bus<Component> bus() {
 		return new ComponentBus();
 	}
 

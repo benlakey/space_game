@@ -11,7 +11,7 @@ import java.util.UUID;
 
 import org.apache.log4j.Logger;
 
-public class ComponentBus {
+public class ComponentBus implements Bus<Component> {
 
 	private static final Logger logger = Logger.getLogger(ComponentBus.class);
 
@@ -21,10 +21,12 @@ public class ComponentBus {
 		this.handlers = new HashMap<>();
 	}
 
+	@Override
 	public void register(Component obj) {
 		this.modifyHandlers(obj, false);
 	}
 
+	@Override
 	public void deregister(Component obj) {
 		this.modifyHandlers(obj, true);
 	}
@@ -91,10 +93,12 @@ public class ComponentBus {
 		
 	}
 
+	@Override
 	public void broadcast(Object event) {
 		this.send(event, null);
 	}
 
+	@Override
 	public void send(Object event, UUID entityId) {
 		
 		if(entityId == null) {

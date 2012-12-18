@@ -9,8 +9,8 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.UUID;
 
+import org.seattlegamer.spacegame.core.Bus;
 import org.seattlegamer.spacegame.core.Component;
-import org.seattlegamer.spacegame.core.ComponentBus;
 import org.seattlegamer.spacegame.core.Subscription;
 import org.seattlegamer.spacegame.messages.PlayerStatsReport;
 import org.seattlegamer.spacegame.utils.GraphicsUtils;
@@ -26,7 +26,7 @@ public class HeadsUpDisplayEntryRenderer extends Component {
 	private String text;
 	private int health;
 
-	public HeadsUpDisplayEntryRenderer(ComponentBus bus, UUID entityId, UUID playerEntityId, int playerNumber, Font font) {
+	public HeadsUpDisplayEntryRenderer(Bus<Component> bus, UUID entityId, UUID playerEntityId, int playerNumber, Font font) {
 		super(bus, entityId);
 		this.playerEntityId = playerEntityId;
 		this.playerNumber = playerNumber;

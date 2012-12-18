@@ -21,12 +21,12 @@ public class PlayerCreator {
 	//TODO: move to a component that handles player health, when such a component exists (will be the component that takes damage and reports health to HUD)
 	private static final int STARTING_HEALTH = 100;
 	
-	private final ComponentBus bus;
+	private final Bus<Component> bus;
 	private final ResourceCache resourceCache;
 	private final StateManager stateManager;
 	private final GameSettings settings;
 
-	public PlayerCreator(ComponentBus bus, ResourceCache resourceCache, StateManager stateManager, GameSettings settings) {
+	public PlayerCreator(Bus<Component> bus, ResourceCache resourceCache, StateManager stateManager, GameSettings settings) {
 		this.bus = bus;
 		this.resourceCache = resourceCache;
 		this.stateManager = stateManager;
