@@ -23,13 +23,13 @@ public class PlayerInput extends Component {
 	}
 
 	@Override
-	public void update(Input input, long elapsedMillis) {
+	public void update(KeyInput keyInput, PointerInput pointerInput, long elapsedMillis) {
 
 		this.rotationThrottle.tick(elapsedMillis);
 		
 		Throttle stateToggleThrottle = this.stateManager.getStateToggleThrottle();
 		
-		if(input.isKeyInputActive(KeyEvent.VK_ESCAPE)) {
+		if(keyInput.isKeyInputActive(KeyEvent.VK_ESCAPE)) {
 			if(stateToggleThrottle.getMillisUntilExecution() == 0) {
 				this.stateManager.changeState(new MenuState(this.bus));
 			}
@@ -37,11 +37,11 @@ public class PlayerInput extends Component {
 			stateToggleThrottle.unthrottle();
 		}
 
-		if(input.isKeyInputActive(KeyEvent.VK_LEFT)) {
+		if(keyInput.isKeyInputActive(KeyEvent.VK_LEFT)) {
 			if(this.rotationThrottle.getMillisUntilExecution() == 0) {
 				this.bus.send(new RotationChange(-ROTATION_INCREMENT_DEGREES), this.getEntityId());
 			}
-		} else if(input.isKeyInputActive(KeyEvent.VK_RIGHT)) {
+		} else if(keyInput.isKeyInputActive(KeyEvent.VK_RIGHT)) {
 			if(this.rotationThrottle.getMillisUntilExecution() == 0) {
 				this.bus.send(new RotationChange(ROTATION_INCREMENT_DEGREES), this.getEntityId());
 			}
@@ -49,7 +49,7 @@ public class PlayerInput extends Component {
 			this.rotationThrottle.unthrottle();
 		}
 		
-		if(input.isKeyInputActive(KeyEvent.VK_SPACE)) {
+		if(keyInput.isKeyInputActive(KeyEvent.VK_SPACE)) {
 			this.bus.send(new ProjectileLaunch(), this.getEntityId());
 		}
 

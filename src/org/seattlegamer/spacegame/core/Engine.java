@@ -6,13 +6,15 @@ public class Engine {
 
 	private long lastMillis;
 	private final Throttle throttle;
-	private final Input input;
+	private final KeyInput keyInput;
+	private final PointerInput pointerInput;
 	private final Renderer renderer;
 	private final StateManager stateManager;
 
-	public Engine(Throttle throttle, Input input, Renderer renderer, StateManager stateManager) {
+	public Engine(Throttle throttle, KeyInput keyInput, PointerInput pointerInput, Renderer renderer, StateManager stateManager) {
 		this.throttle = throttle;
-		this.input = input;
+		this.keyInput = keyInput;
+		this.pointerInput = pointerInput;
 		this.renderer = renderer;
 		this.stateManager = stateManager;
 	}
@@ -32,7 +34,7 @@ public class Engine {
 				throttle.unthrottle();
 			}
 
-			this.stateManager.update(this.input, elapsedMillis);
+			this.stateManager.update(this.keyInput, this.pointerInput, elapsedMillis);
 			this.stateManager.render(this.renderer);
 
 		}

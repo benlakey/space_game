@@ -94,9 +94,9 @@ public class GameState implements State {
 	}
 	
 	@Override
-	public void update(Input input, long elapsedMillis) {
+	public void update(KeyInput keyInput, PointerInput pointerInput, long elapsedMillis) {
 		for(Component component : this.components) {
-			component.update(input, elapsedMillis);
+			component.update(keyInput, pointerInput, elapsedMillis);
 		}
 	}
 

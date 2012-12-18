@@ -9,6 +9,8 @@ import org.seattlegamer.spacegame.core.ComponentBus;
 import org.seattlegamer.spacegame.core.Engine;
 import org.seattlegamer.spacegame.core.GameCanvas;
 import org.seattlegamer.spacegame.core.Input;
+import org.seattlegamer.spacegame.core.KeyInput;
+import org.seattlegamer.spacegame.core.PointerInput;
 import org.seattlegamer.spacegame.core.Renderer;
 import org.seattlegamer.spacegame.core.StateManager;
 import org.seattlegamer.spacegame.resources.ImageResourceLoader;
@@ -56,7 +58,7 @@ public class DependencyConfig {
 	}
 
 	public @Bean Engine engine() {
-		return new Engine(framerateThrottle(), input(), renderer(), stateManager());
+		return new Engine(framerateThrottle(), keyInput(), pointerInput(), renderer(), stateManager());
 	}
 	
 	public @Bean Renderer renderer() {
@@ -68,6 +70,14 @@ public class DependencyConfig {
 		return new Throttle(1000 / settings.getTargetFramerate());
 	}
 
+	public @Bean KeyInput keyInput() {
+		return input();
+	}
+	
+	public @Bean PointerInput pointerInput() {
+		return input();
+	}
+	
 	public @Bean Input input() {
 		return new Input();
 	}

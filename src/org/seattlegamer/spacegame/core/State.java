@@ -9,6 +9,6 @@ public interface State {
 	void load(ResourceCache resourceCache, StateManager stateManager, GameSettings settings) throws IOException;
 	void addComponent(Component component);
 	void removeComponent(Component component);
-	void update(Input input, long elapsedMillis);
+	void update(KeyInput keyInput, PointerInput pointerInput, long elapsedMillis);
 	void render(Renderer renderer);
 }

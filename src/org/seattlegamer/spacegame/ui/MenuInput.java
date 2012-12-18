@@ -6,7 +6,8 @@ import java.util.UUID;
 import org.seattlegamer.spacegame.core.Component;
 import org.seattlegamer.spacegame.core.ComponentBus;
 import org.seattlegamer.spacegame.core.GameState;
-import org.seattlegamer.spacegame.core.Input;
+import org.seattlegamer.spacegame.core.KeyInput;
+import org.seattlegamer.spacegame.core.PointerInput;
 import org.seattlegamer.spacegame.core.StateManager;
 import org.seattlegamer.spacegame.messages.MenuExecution;
 import org.seattlegamer.spacegame.messages.MenuSelectionChanged;
@@ -34,11 +35,11 @@ public class MenuInput extends Component {
 	}
 	
 	@Override
-	public void update(Input input, long elapsedMillis) {
+	public void update(KeyInput keyInput, PointerInput pointerInput, long elapsedMillis) {
 		
 		this.tickThrottles(elapsedMillis);
 		
-		if(input.isKeyInputActive(KeyEvent.VK_UP)) {
+		if(keyInput.isKeyInputActive(KeyEvent.VK_UP)) {
 			if(this.upThrottle.getMillisUntilExecution() == 0) {
 				this.scroll(-1);
 			}
@@ -46,7 +47,7 @@ public class MenuInput extends Component {
 			this.upThrottle.unthrottle();
 		}
 		
-		if(input.isKeyInputActive(KeyEvent.VK_DOWN)) {
+		if(keyInput.isKeyInputActive(KeyEvent.VK_DOWN)) {
 			if(this.downThrottle.getMillisUntilExecution() == 0) {
 				this.scroll(1);
 			}
@@ -54,7 +55,7 @@ public class MenuInput extends Component {
 			this.downThrottle.unthrottle();
 		}
 		
-		if(input.isKeyInputActive(KeyEvent.VK_ENTER)) {
+		if(keyInput.isKeyInputActive(KeyEvent.VK_ENTER)) {
 			if(this.executeThrottle.getMillisUntilExecution() == 0) {
 				this.bus.broadcast(new MenuExecution(this.selectionIndex));
 			}
@@ -64,7 +65,7 @@ public class MenuInput extends Component {
 		
 		Throttle stateToggleThrottle = this.stateManager.getStateToggleThrottle();
 		
-		if(input.isKeyInputActive(KeyEvent.VK_ESCAPE)) {
+		if(keyInput.isKeyInputActive(KeyEvent.VK_ESCAPE)) {
 			if(stateToggleThrottle.getMillisUntilExecution() == 0) {
 				this.stateManager.changeState(GameState.getCurrentGame());
 			}

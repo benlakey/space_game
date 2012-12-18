@@ -9,7 +9,7 @@ import java.awt.event.MouseMotionListener;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class Input implements KeyListener, MouseListener, MouseMotionListener {
+public final class Input implements KeyInput, PointerInput, KeyListener, MouseListener, MouseMotionListener {
 
 	private Point mouseLocation;
 	private final Map<Integer, Boolean> keyInputsPressed;

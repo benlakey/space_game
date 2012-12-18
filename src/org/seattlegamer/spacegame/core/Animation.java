@@ -58,7 +58,7 @@ public class Animation extends Component {
 	}
 	
 	@Override
-	public void update(Input input, long elapsedMillis) {
+	public void update(KeyInput keyInput, PointerInput pointerInput, long elapsedMillis) {
 		if(this.isPlaying()) {
 			this.millisSinceLastSample += elapsedMillis;
 		}

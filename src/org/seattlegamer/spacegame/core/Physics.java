@@ -79,7 +79,7 @@ public class Physics extends Component {
 	}
 
 	@Override
-	public void update(Input input, long elapsedMillis) {
+	public void update(KeyInput keyInput, PointerInput pointerInput, long elapsedMillis) {
 
 		AffineTransform transform = this.createTransform(elapsedMillis);
 		this.bus.send(transform, this.getEntityId());

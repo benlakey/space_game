@@ -10,7 +10,8 @@ import org.seattlegamer.spacegame.config.GameSettings;
 import org.seattlegamer.spacegame.core.Component;
 import org.seattlegamer.spacegame.core.ComponentBus;
 import org.seattlegamer.spacegame.core.GameState;
-import org.seattlegamer.spacegame.core.Input;
+import org.seattlegamer.spacegame.core.KeyInput;
+import org.seattlegamer.spacegame.core.PointerInput;
 import org.seattlegamer.spacegame.core.Renderer;
 import org.seattlegamer.spacegame.core.State;
 import org.seattlegamer.spacegame.core.StateManager;
@@ -91,9 +92,9 @@ public class MenuState implements State {
 	}
 
 	@Override
-	public void update(Input input, long elapsedMillis) {
+	public void update(KeyInput keyInput, PointerInput pointerInput, long elapsedMillis) {
 		for(Component component : this.components) {
-			component.update(input, elapsedMillis);
+			component.update(keyInput, pointerInput, elapsedMillis);
 		}
 	}
 

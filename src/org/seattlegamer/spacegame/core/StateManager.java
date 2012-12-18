@@ -54,8 +54,8 @@ public class StateManager {
 		this.componentsToRemove.offer(component);
 	}
 
-	public void update(Input input, long elapsedMillis) {
-		currentState.update(input, elapsedMillis);
+	public void update(KeyInput keyInput, PointerInput pointerInput, long elapsedMillis) {
+		currentState.update(keyInput, pointerInput, elapsedMillis);
 		while(!this.componentsToAdd.isEmpty()) {
 			Component newComponent = this.componentsToAdd.poll();
 			this.currentState.addComponent(newComponent);
