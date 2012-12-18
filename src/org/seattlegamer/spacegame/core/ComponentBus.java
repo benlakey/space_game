@@ -15,7 +15,7 @@ public class ComponentBus implements Bus<Component> {
 
 	private static final Logger logger = Logger.getLogger(ComponentBus.class);
 
-	private final Map<Class<?>, Collection<Handler>> handlers;
+	private final Map<Class<?>, Collection<ReflectiveHandler<Component>>> handlers;
 
 	public ComponentBus() {
 		this.handlers = new HashMap<>();
@@ -64,27 +64,27 @@ public class ComponentBus implements Bus<Component> {
 
 	private void addHandler(Class<?> messageClass, Component target, Method method) {
 		
-		Collection<Handler> handlersForClass = this.handlers.get(messageClass);
+		Collection<ReflectiveHandler<Component>> handlersForClass = this.handlers.get(messageClass);
 		if(handlersForClass == null) {
-			handlersForClass = new LinkedList<Handler>();
+			handlersForClass = new LinkedList<>();
 			this.handlers.put(messageClass, handlersForClass);
 		}
 		
-		Handler handler = new Handler(target, method);
+		ReflectiveHandler<Component> handler = new ReflectiveHandler<Component>(target, method);
 		handlersForClass.add(handler);
 		
 	}
 
 	private void removeHandler(Class<?> messageClass, Object obj) {
 		
-		Collection<Handler> handlersForClass = this.handlers.get(messageClass);
+		Collection<ReflectiveHandler<Component>> handlersForClass = this.handlers.get(messageClass);
 		if(handlersForClass == null) {
 			return;
 		}
 
-		Iterator<Handler> iterator = handlersForClass.iterator();
+		Iterator<ReflectiveHandler<Component>> iterator = handlersForClass.iterator();
 		while(iterator.hasNext()) {
-			Handler handler = iterator.next();
+			ReflectiveHandler<Component> handler = iterator.next();
 			Object target = handler.getTarget();
 			if(target == obj) {
 				iterator.remove();
@@ -107,26 +107,18 @@ public class ComponentBus implements Bus<Component> {
 			logger.debug("sending " + event + " to " + entityId);
 		}
 
-		Collection<Handler> handlers = this.handlers.get(event.getClass());
+		Collection<ReflectiveHandler<Component>> handlers = this.handlers.get(event.getClass());
 		if(handlers == null) {
 			return;
 		}
-		for(Handler handler : handlers) {
+		for(ReflectiveHandler<Component> handler : handlers) {
 			if(entityId != null) {
 				Component target = handler.getTarget();
 				if(!entityId.equals(target.getEntityId())) {
 					continue;
 				}
 			}
-			try {
-				handler.handle(event);
-			} catch (IllegalArgumentException e) {
-				logger.error("The handler doesn't accept the parameter: " + event);
-				continue;
-			} catch (ReflectiveOperationException e) {
-				logger.error(String.format("Executing the handler '%s' failed for the event '%s'.", handler, event), e);
-				continue;
-			}
+			handler.handle(event);
 		}
 		
 	}
