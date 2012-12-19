@@ -40,7 +40,7 @@ public final class GraphicsUtils {
 		return acceleratedImage;
 	
 	}
-	
+
 	public static Image getScaledImage(Image original, int scale) {
 
 		int aspectRatio = original.getWidth(null) / original.getHeight(null);

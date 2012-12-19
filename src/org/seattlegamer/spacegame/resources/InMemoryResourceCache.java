@@ -22,6 +22,11 @@ public class InMemoryResourceCache implements ResourceCache {
 	public Image getImage(String name) throws IOException {
 		return this.get(name, this.imageResourceLoader);
 	}
+	
+	@Override
+	public void putImage(String name, Object asset) {
+		this.cache.putIfAbsent(name, asset);
+	}
 
 	private <T> T get(String name, ResourceLoader<T> loader) throws IOException {
 		
@@ -47,5 +52,7 @@ public class InMemoryResourceCache implements ResourceCache {
 		return loader.getResourceType().cast(retrieved);
 
 	}
+
+
 
 }

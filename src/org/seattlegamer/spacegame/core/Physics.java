@@ -18,12 +18,12 @@ public class Physics extends Component {
 	private int height;
 	private double speed;
 	
-	public Physics(Bus<Component> bus, UUID entityId) {
+	public Physics(Bus bus, UUID entityId) {
 		super(bus, entityId);
 		this.position = new Point();
 	}
 	
-	public Physics(Bus<Component> bus, UUID entityId, Point position, double angleDegrees, int width, int height) {
+	public Physics(Bus bus, UUID entityId, Point position, double angleDegrees, int width, int height) {
 		super(bus, entityId);
 		this.position = position;
 		this.angleDegrees = angleDegrees;

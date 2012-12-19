@@ -5,31 +5,16 @@ import java.util.UUID;
 
 public abstract class Component {
 
-	protected final Bus<Component> bus;
+	protected final Bus bus;
 	private final UUID entityId;
-	private boolean enabled;
 
-	public Component(Bus<Component> bus, UUID entityId) {
+	public Component(Bus bus, UUID entityId) {
 		this.bus = bus;
 		this.entityId = entityId;
-		this.setEnabled(true);
 	}
 
 	public UUID getEntityId() {
 		return this.entityId;
-	}
-
-	public boolean isEnabled() {
-		return this.enabled;
-	}
-
-	public void setEnabled(boolean enabled) {
-		this.enabled = enabled;
-		if(enabled) {
-			this.bus.register(this);
-		} else {
-			this.bus.deregister(this);
-		}
 	}
 
 	public void update(KeyInput keyInput, PointerInput pointerInput, long elapsedMillis) {}

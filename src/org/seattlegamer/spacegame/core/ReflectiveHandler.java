@@ -1,24 +1,36 @@
 package org.seattlegamer.spacegame.core;
 
 import java.lang.reflect.Method;
+import java.util.UUID;
 
 import org.apache.log4j.Logger;
 
-public class ReflectiveHandler<T> implements Handler<T> {
+public class ReflectiveHandler implements Handler {
 
 	private static final Logger logger = Logger.getLogger(ReflectiveHandler.class);
 	
-	private final T target;
+	private final Object target;
 	private final Method method;
+	private final UUID entityId;
+	private boolean enabled;
 
-	public ReflectiveHandler(T target, Method method) {
+	public ReflectiveHandler(Object target, Method method, UUID entityId) {
 		this.target = target;
 		this.method = method;
+		this.entityId = entityId;
+		this.enabled = true;
+	}
+	
+	public void disable() {
+		this.enabled = false;
 	}
 
 	public void handle(Object message) {
+		if(!this.enabled){ 
+			return;
+		}
 		try {
-			method.invoke(getTarget(), new Object[] { message });
+			method.invoke(this.target, new Object[] { message });
 		} catch(ReflectiveOperationException e) {
 			logger.error(String.format("Unable to invoke handler '%s' for message '%s'", this, message));
 		} catch(IllegalArgumentException e) {
@@ -26,8 +38,12 @@ public class ReflectiveHandler<T> implements Handler<T> {
 		}
 	}
 
-	public T getTarget() {
-		return target;
+	public Object getTarget() {
+		return this.target;
+	}
+
+	public UUID getEntityId() {
+		return this.entityId;
 	}
 
 }

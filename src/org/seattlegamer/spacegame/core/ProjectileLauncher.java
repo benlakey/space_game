@@ -5,31 +5,21 @@ import java.io.IOException;
 import java.util.UUID;
 
 import org.apache.log4j.Logger;
-import org.seattlegamer.spacegame.config.GameSettings;
+import org.seattlegamer.spacegame.messages.ComponentAddition;
 import org.seattlegamer.spacegame.messages.PhysicsCloning;
 import org.seattlegamer.spacegame.messages.ProjectileLaunch;
 import org.seattlegamer.spacegame.messages.SpeedChange;
 import org.seattlegamer.spacegame.resources.ResourceCache;
-import org.seattlegamer.spacegame.utils.GraphicsUtils;
 
 public class ProjectileLauncher extends Component {
 
 	private static final Logger logger = Logger.getLogger(ProjectileLauncher.class);
 	
 	private final ResourceCache resourceCache;
-	private final StateManager stateManager;
-	private final GameSettings settings;
 
-	public ProjectileLauncher(
-			Bus<Component> bus, 
-			UUID entityId, 
-			ResourceCache resourceCache, 
-			StateManager stateManager,
-			GameSettings settings) {
+	public ProjectileLauncher(Bus bus, UUID entityId, ResourceCache resourceCache) {
 		super(bus, entityId);
 		this.resourceCache = resourceCache;
-		this.stateManager = stateManager;
-		this.settings = settings;
 	}
 
 	@Subscription
@@ -44,15 +34,13 @@ public class ProjectileLauncher extends Component {
 			logger.error("Failed to launch projectile because an assset could not be loaded! Asset: " + asset);
 			return;
 		}
-		
-		Image scaledProjectileImage = GraphicsUtils.getScaledImage(projectileImage, this.settings.getScale());
-		
+
 		int projectileWidth = projectileImage.getWidth(null);
 		int projectileHeight = projectileImage.getHeight(null);
 		
 		UUID projectileId = UUID.randomUUID();
 		
-		this.stateManager.addComponent(new Sprite(this.bus, projectileId, scaledProjectileImage));
+		this.bus.broadcast(new ComponentAddition(new Sprite(this.bus, projectileId, projectileImage)));
 		
 		Physics physics = new Physics(this.bus, projectileId);
 		this.bus.send(new PhysicsCloning(this.getEntityId(), physics), this.getEntityId());
@@ -60,7 +48,7 @@ public class ProjectileLauncher extends Component {
 		physics.setWidth(projectileWidth);
 		physics.setHeight(projectileHeight);
 		
-		this.stateManager.addComponent(physics);
+		this.bus.broadcast(new ComponentAddition(physics));
 
 		this.bus.send(new SpeedChange(0.4), projectileId);
 		

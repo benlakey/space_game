@@ -1,6 +1,6 @@
 package org.seattlegamer.spacegame.core;
 
-public interface Handler<T> {
+public interface Handler {
 	void handle(Object message);
-	T getTarget();
+	Object getTarget();
 }

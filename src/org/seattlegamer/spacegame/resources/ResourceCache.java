@@ -5,4 +5,5 @@ import java.io.IOException;
 
 public interface ResourceCache {
 	Image getImage(String name) throws IOException;
+	void putImage(String name, Object asset);
 }

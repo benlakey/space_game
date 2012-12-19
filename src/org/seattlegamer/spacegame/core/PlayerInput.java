@@ -5,7 +5,7 @@ import java.util.UUID;
 
 import org.seattlegamer.spacegame.messages.ProjectileLaunch;
 import org.seattlegamer.spacegame.messages.RotationChange;
-import org.seattlegamer.spacegame.ui.MenuState;
+import org.seattlegamer.spacegame.messages.StateChange;
 import org.seattlegamer.spacegame.utils.Throttle;
 
 public class PlayerInput extends Component {
@@ -14,27 +14,19 @@ public class PlayerInput extends Component {
 	private static final double ROTATION_INCREMENT_DEGREES = 5;
 
 	private final Throttle rotationThrottle;
-	private final StateManager stateManager;
 	
-	public PlayerInput(Bus<Component> bus, UUID entityId, StateManager stateManager) {
+	public PlayerInput(Bus bus, UUID entityId) {
 		super(bus, entityId);
 		this.rotationThrottle = new Throttle(ROTATION_DELAY_MILLIS);
-		this.stateManager = stateManager;
 	}
 
 	@Override
 	public void update(KeyInput keyInput, PointerInput pointerInput, long elapsedMillis) {
 
 		this.rotationThrottle.tick(elapsedMillis);
-		
-		Throttle stateToggleThrottle = this.stateManager.getStateToggleThrottle();
-		
+
 		if(keyInput.isKeyInputActive(KeyEvent.VK_ESCAPE)) {
-			if(stateToggleThrottle.getMillisUntilExecution() == 0) {
-				this.stateManager.changeState(new MenuState(this.bus));
-			}
-		} else {
-			stateToggleThrottle.unthrottle();
+			this.bus.broadcast(new StateChange(MenuState.class));
 		}
 
 		if(keyInput.isKeyInputActive(KeyEvent.VK_LEFT)) {

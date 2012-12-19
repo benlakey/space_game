@@ -26,7 +26,7 @@ public class Engine {
 			long nowMillis = System.currentTimeMillis();
 			long elapsedMillis = nowMillis - this.lastMillis;
 			this.lastMillis = nowMillis;
-			
+
 			throttle.tick(elapsedMillis);
 			long millisUntilExecution = throttle.getMillisUntilExecution();
 			if(millisUntilExecution != 0) {

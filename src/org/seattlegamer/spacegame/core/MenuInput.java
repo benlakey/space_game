@@ -1,16 +1,11 @@
-package org.seattlegamer.spacegame.ui;
+package org.seattlegamer.spacegame.core;
 
 import java.awt.event.KeyEvent;
 import java.util.UUID;
 
-import org.seattlegamer.spacegame.core.Bus;
-import org.seattlegamer.spacegame.core.Component;
-import org.seattlegamer.spacegame.core.GameState;
-import org.seattlegamer.spacegame.core.KeyInput;
-import org.seattlegamer.spacegame.core.PointerInput;
-import org.seattlegamer.spacegame.core.StateManager;
 import org.seattlegamer.spacegame.messages.MenuExecution;
 import org.seattlegamer.spacegame.messages.MenuSelectionChanged;
+import org.seattlegamer.spacegame.messages.StateChange;
 import org.seattlegamer.spacegame.utils.NumberUtils;
 import org.seattlegamer.spacegame.utils.Throttle;
 
@@ -19,15 +14,13 @@ public class MenuInput extends Component {
 	private final int KEY_DELAY_MILLIS = 300;
 	
 	private int selectionIndex;
-	private final StateManager stateManager;
 	private final int maxEntries;
 	private final Throttle upThrottle;
 	private final Throttle downThrottle;
 	private final Throttle executeThrottle;
 
-	public MenuInput(Bus<Component> bus, UUID entityId, StateManager stateManager, int maxEntries) {
+	public MenuInput(Bus bus, UUID entityId, int maxEntries) {
 		super(bus, entityId);
-		this.stateManager = stateManager;
 		this.maxEntries = maxEntries;
 		this.upThrottle = new Throttle(KEY_DELAY_MILLIS);
 		this.downThrottle = new Throttle(KEY_DELAY_MILLIS);
@@ -56,21 +49,16 @@ public class MenuInput extends Component {
 		}
 		
 		if(keyInput.isKeyInputActive(KeyEvent.VK_ENTER)) {
-			if(this.executeThrottle.getMillisUntilExecution() == 0) {
+			long millisUntilExecution = this.executeThrottle.getMillisUntilExecution();
+			if(millisUntilExecution == 0) {
 				this.bus.broadcast(new MenuExecution(this.selectionIndex));
 			}
 		} else {
 			this.executeThrottle.unthrottle();
 		}
-		
-		Throttle stateToggleThrottle = this.stateManager.getStateToggleThrottle();
-		
+
 		if(keyInput.isKeyInputActive(KeyEvent.VK_ESCAPE)) {
-			if(stateToggleThrottle.getMillisUntilExecution() == 0) {
-				this.stateManager.changeState(GameState.getCurrentGame());
-			}
-		} else {
-			stateToggleThrottle.unthrottle();
+			this.bus.broadcast(new StateChange(GameState.class));
 		}
 
 	}
