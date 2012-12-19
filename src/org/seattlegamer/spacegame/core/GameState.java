@@ -4,6 +4,7 @@ import java.awt.DisplayMode;
 import java.io.IOException;
 import java.util.Random;
 
+import org.seattlegamer.spacegame.messages.AnimationStart;
 import org.seattlegamer.spacegame.messages.ComponentAddition;
 import org.seattlegamer.spacegame.messages.NewGameManifest;
 import org.seattlegamer.spacegame.resources.ResourceCache;
@@ -45,6 +46,8 @@ public class GameState extends State {
 			}
 			
 		}
+		
+		this.bus.broadcast(new AnimationStart());
 
 	}
 
