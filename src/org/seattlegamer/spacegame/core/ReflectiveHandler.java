@@ -32,9 +32,9 @@ public class ReflectiveHandler implements Handler {
 		try {
 			method.invoke(this.target, new Object[] { message });
 		} catch(ReflectiveOperationException e) {
-			logger.error(String.format("Unable to invoke handler '%s' for message '%s'", this, message));
+			logger.error(String.format("Unable to invoke handler '%s' for message '%s'", this, message), e);
 		} catch(IllegalArgumentException e) {
-			logger.error(String.format("Handler '%s' does not accept as a parameter message '%s'", this, message));
+			logger.error(String.format("Handler '%s' does not accept as a parameter message '%s'", this, message), e);
 		}
 	}
 

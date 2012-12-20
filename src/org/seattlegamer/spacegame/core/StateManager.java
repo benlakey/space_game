@@ -23,7 +23,7 @@ public class StateManager {
 	}
 
 	@Subscription
-	public void changeState(StateChange stateChange) { //Class<? extends State> stateClass) {
+	public void changeState(StateChange stateChange) {
 		
 		Class<? extends State> stateClass = stateChange.getNewStateClass();
 		
@@ -43,21 +43,18 @@ public class StateManager {
 		if(this.currentState != null) {
 			this.currentState.onDeactivate();
 		}
-		
-		//TODO: interim loading screen state?
-		newState.onActivate();
-		
 		this.currentState = newState;
-		
+		this.currentState.onActivate();
+
 	}
 
 	public void update(KeyInput keyInput, PointerInput pointerInput, long elapsedMillis) {
 		this.stateToggleThrottle.tick(elapsedMillis);
-		currentState.update(keyInput, pointerInput, elapsedMillis);
+		this.currentState.update(keyInput, pointerInput, elapsedMillis);
 	}
 	
 	public void render(Renderer renderer) {
-		currentState.render(renderer);
+		this.currentState.render(renderer);
 	}
 	
 }

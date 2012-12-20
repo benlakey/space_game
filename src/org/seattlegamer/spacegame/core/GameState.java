@@ -12,20 +12,44 @@ import org.seattlegamer.spacegame.resources.ResourceCache;
 public class GameState extends State {
 
 	private final DisplayMode displayMode;
+	private NewGameManifest manifest;
 
 	//TODO: drop displayMode here when we have a map that isn't just the current pixel space on screen (a viewport)
 	public GameState(Bus bus, ResourceCache resourceCache, DisplayMode displayMode) {
 		super(bus, resourceCache);
 		this.displayMode = displayMode;
 	}
+	
+	public void loadNewGame(NewGameManifest manifest) {
+		this.manifest = manifest;
+	}
+	
+	@Override
+	public void onActivate() {
 
-	public void loadNewGame(NewGameManifest manifest) throws IOException {
+		super.onActivate();
+		
+		if(this.manifest == null){
+			return;
+		}
+		
+		try {
+			this.clear();
+			this.loadNewGame();
+			this.manifest = null;
+		} catch (IOException e) {
+			
+		}
+
+	}
+
+	private void loadNewGame() throws IOException {
 
 		int playerNumber = 1;
 		
 		PlayerCreator playerCreator = new PlayerCreator(this.bus, this.resourceCache, this.displayMode);
 		
-		for(String player : manifest.getPlayers()) {
+		for(String player : this.manifest.getPlayers()) {
 			playerCreator.createPlayer(playerNumber, player);
 			playerNumber++;
 		}

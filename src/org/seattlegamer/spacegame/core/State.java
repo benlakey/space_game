@@ -39,6 +39,13 @@ public abstract class State {
 			this.bus.deregister(component, component.getEntityId());
 		}
 	}
+	
+	public void clear() {
+		for(Component component : this.components) {
+			this.componentsToRemove.offer(component);
+			this.bus.deregister(component, component.getEntityId());
+		}
+	}
 
 	@Subscription
 	public void addComponent(ComponentAddition addition) {

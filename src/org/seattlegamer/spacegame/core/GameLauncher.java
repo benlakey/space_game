@@ -17,9 +17,8 @@ public class GameLauncher {
 	
 	@Subscription
 	public void startNewGame(NewGameManifest manifest) throws IOException {
-		//TODO: set loading screen state
-		this.bus.broadcast(new StateChange(GameState.class));
 		this.gameState.loadNewGame(manifest);
+		this.bus.broadcast(new StateChange(GameState.class));
 	}
 	
 }
