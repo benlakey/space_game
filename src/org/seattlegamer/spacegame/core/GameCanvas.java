@@ -1,12 +1,8 @@
 package org.seattlegamer.spacegame.core;
 
 import java.awt.Canvas;
-import java.awt.Dimension;
 import java.awt.DisplayMode;
 import java.awt.Frame;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
-import java.awt.Toolkit;
 
 public final class GameCanvas extends Canvas {
 
@@ -22,7 +18,8 @@ public final class GameCanvas extends Canvas {
 
 		this.frame.setUndecorated(true);
 		this.frame.setResizable(false);
-		this.setScreenSize(displayMode);
+
+		this.setBounds(0, 0, displayMode.getWidth(), displayMode.getHeight());
 		
 		this.setIgnoreRepaint(true);
 		this.frame.setIgnoreRepaint(true);
@@ -36,26 +33,6 @@ public final class GameCanvas extends Canvas {
 		this.addKeyListener(input);
 		this.addMouseListener(input);
 		this.addMouseMotionListener(input);
-
-	}
-
-	private void setScreenSize(DisplayMode displayMode) {
-
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		this.setBounds(0, 0, screenSize.width, screenSize.height);
-
-		GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		GraphicsDevice graphicsDevice = graphicsEnvironment.getDefaultScreenDevice();
-		
-		if (!graphicsDevice.isFullScreenSupported()) {
-            throw new RuntimeException("Full screen mode not supported.");
-        }
-		
-		graphicsDevice.setFullScreenWindow(this.frame);
-
-		if(graphicsDevice.isDisplayChangeSupported()) {
-			graphicsDevice.setDisplayMode(displayMode);
-		}
 
 	}
 

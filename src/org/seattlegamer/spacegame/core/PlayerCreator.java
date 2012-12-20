@@ -12,7 +12,7 @@ import org.seattlegamer.spacegame.messages.PlayerStatsReport;
 import org.seattlegamer.spacegame.resources.ResourceCache;
 
 public class PlayerCreator {
-	
+
 	//TODO: move to a component that handles player health, when such a component exists (will be the component that takes damage and reports health to HUD)
 	private static final int STARTING_HEALTH = 100;
 	
@@ -35,7 +35,7 @@ public class PlayerCreator {
 
 		Point position = new Point(
 				random.nextInt(this.displayMode.getWidth()), 
-				random.nextInt(this.displayMode.getWidth()));
+				random.nextInt(this.displayMode.getHeight()));
 
 		Image player = this.resourceCache.getImage("replaceme_hardcoded_planet");
 
@@ -50,6 +50,7 @@ public class PlayerCreator {
 		}
 
 		bus.send(new PlayerStatsReport(playerEntityId, name, STARTING_HEALTH), hudEntityId);
+
 	}
 	
 }

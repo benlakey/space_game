@@ -3,13 +3,17 @@ package org.seattlegamer.spacegame.core;
 import java.awt.DisplayMode;
 import java.io.IOException;
 import java.util.Random;
+import java.util.UUID;
 
+import org.apache.log4j.Logger;
 import org.seattlegamer.spacegame.messages.AnimationStart;
 import org.seattlegamer.spacegame.messages.ComponentAddition;
 import org.seattlegamer.spacegame.messages.NewGameManifest;
 import org.seattlegamer.spacegame.resources.ResourceCache;
 
 public class GameState extends State {
+	
+	private static final Logger logger = Logger.getLogger(GameState.class);
 
 	private final DisplayMode displayMode;
 	private NewGameManifest manifest;
@@ -35,15 +39,23 @@ public class GameState extends State {
 		
 		try {
 			this.clear();
-			this.loadNewGame();
+			this.loadStarField();
+			this.loadPlayers();
+			this.loadTestExplosions();
 			this.manifest = null;
 		} catch (IOException e) {
-			
+			logger.error("Unable to load game state!", e);
+			throw new RuntimeException(e);
 		}
 
 	}
+	
+	private void loadStarField() {
+		StarField starField = new StarField(this.bus, UUID.randomUUID(), this.displayMode);
+		this.bus.broadcast(new ComponentAddition(starField));
+	}
 
-	private void loadNewGame() throws IOException {
+	private void loadPlayers() throws IOException {
 
 		int playerNumber = 1;
 		
@@ -53,6 +65,10 @@ public class GameState extends State {
 			playerCreator.createPlayer(playerNumber, player);
 			playerNumber++;
 		}
+
+	}
+	
+	private void loadTestExplosions() throws IOException {
 		
 		//TODO: this stuff is just here for testing.
 		Random random = new Random();
@@ -72,7 +88,7 @@ public class GameState extends State {
 		}
 		
 		this.bus.broadcast(new AnimationStart());
-
+		
 	}
 
 }

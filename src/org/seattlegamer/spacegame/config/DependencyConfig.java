@@ -56,8 +56,8 @@ public class DependencyConfig {
 		PropertiesAccessor propertiesAccessor = propertiesAccessor();
 		
 		return new DisplayMode(
-			propertiesAccessor.getInteger("displaymode.width", 800),
-			propertiesAccessor.getInteger("displaymode.width", 600),
+			propertiesAccessor.getInteger("displaymode.width", 1280),
+			propertiesAccessor.getInteger("displaymode.height", 800),
 			propertiesAccessor.getInteger("displaymode.bit_depth", 16),
 			propertiesAccessor.getInteger("displaymode.refresh_rate", 60));
 
