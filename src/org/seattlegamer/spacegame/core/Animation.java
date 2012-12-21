@@ -53,10 +53,6 @@ public class Animation extends Component {
 		return this.currentFrameIndex == this.frames.length - 1;
 	}
 
-	private void completeAnimationCycle() {
-		this.currentFrameIndex = -1;
-	}
-	
 	@Override
 	public void update(KeyInput keyInput, PointerInput pointerInput, long elapsedMillis) {
 		if(this.isPlaying()) {
@@ -76,7 +72,7 @@ public class Animation extends Component {
 		graphics.drawImage(image, this.transform, null);
 
 		if(this.isAtEndOfAnimation()) {
-			this.completeAnimationCycle();
+			this.currentFrameIndex = -1;
 			return;
 		}
 		

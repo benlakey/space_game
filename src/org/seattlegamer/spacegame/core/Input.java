@@ -11,7 +11,7 @@ import java.util.Map;
 
 public final class Input implements KeyInput, PointerInput, KeyListener, MouseListener, MouseMotionListener {
 
-	private Point mouseLocation;
+	private final Point mouseLocation;
 	private final Map<Integer, Boolean> keyInputsPressed;
 	private final Map<Integer, Boolean> mouseInputsPressed;
 
@@ -47,24 +47,29 @@ public final class Input implements KeyInput, PointerInput, KeyListener, MouseLi
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		mouseLocation = e.getPoint();
+		this.updateMouseLocation(e.getPoint());
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		mouseLocation = e.getPoint();
+		this.updateMouseLocation(e.getPoint());
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
 		mouseInputsPressed.put(e.getButton(), true);
-		mouseLocation = e.getPoint();
+		this.updateMouseLocation(e.getPoint());
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		mouseInputsPressed.put(e.getButton(), false);
-		mouseLocation = e.getPoint();
+		this.updateMouseLocation(e.getPoint());
+	}
+	
+	private void updateMouseLocation(Point newMouseLocation) {
+		mouseLocation.x = newMouseLocation.x;
+		mouseLocation.y = newMouseLocation.y;
 	}
 
 	@Override public void keyTyped(KeyEvent e) {}

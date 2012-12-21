@@ -1,11 +1,8 @@
 package org.seattlegamer.spacegame.core;
 
-import org.apache.log4j.Logger;
 
 public class Engine {
 
-	private static final Logger logger = Logger.getLogger(Engine.class);
-	
 	private long lastMillis;
 	private final int millisPerFrame;
 	private final KeyInput keyInput;
@@ -36,11 +33,7 @@ public class Engine {
 			long toSleepFor = cutOff - System.currentTimeMillis();
 			toSleepFor = Math.max(toSleepFor, 0);
 			
-			try {
-				Thread.sleep(toSleepFor);
-			} catch(InterruptedException e) {
-				logger.error("Unable to maintain constant update rate in engine.", e);
-			}
+			Thread.sleep(toSleepFor);
 
 		}
 
