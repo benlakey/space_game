@@ -30,14 +30,18 @@ public class BusImpl implements Bus {
 		
 		for(Method method : handlerMethods) {
 			Class<?> messageClass = method.getParameterTypes()[0];
-			Collection<ReflectiveHandler> handlersForClass = this.handlers.get(messageClass);
-			if(handlersForClass == null) {
-				handlersForClass = new LinkedList<>();
-				this.handlers.put(messageClass, handlersForClass);
-			}
-			handlersForClass.add(new ReflectiveHandler(handler, method, entityId));
+			this.addHandler(messageClass, handler, method, entityId);
 		}
 
+	}
+	
+	private void addHandler(Class<?> messageClass, Object handler, Method method, UUID entityId) {
+		Collection<ReflectiveHandler> handlersForClass = this.handlers.get(messageClass);
+		if(handlersForClass == null) {
+			handlersForClass = new LinkedList<>();
+			this.handlers.put(messageClass, handlersForClass);
+		}
+		handlersForClass.add(new ReflectiveHandler(handler, method, entityId));
 	}
 	
 	@Override
@@ -47,19 +51,24 @@ public class BusImpl implements Bus {
 		
 		for(Method method : handlerMethods) {
 			Class<?> messageClass = method.getParameterTypes()[0];
-			Collection<ReflectiveHandler> handlersForClass = this.handlers.get(messageClass);
-			if(handlersForClass == null) {
-				continue;
-			}
-			
-			for(ReflectiveHandler reflectiveHandler : handlersForClass) {
-				if(reflectiveHandler.getTarget() == handler) {
-					reflectiveHandler.disable(); //TODO: this is a hack. actually remove once proper data structures exist here.
-				}
-			}
-
+			this.removeHandler(messageClass, handler);
 		}
 
+	}
+	
+	private void removeHandler(Class<?> messageClass, Object handler) {
+		
+		Collection<ReflectiveHandler> handlersForClass = this.handlers.get(messageClass);
+		if(handlersForClass == null) {
+			return;
+		}
+		
+		for(ReflectiveHandler reflectiveHandler : handlersForClass) {
+			if(reflectiveHandler.getTarget() == handler) {
+				reflectiveHandler.disable(); //TODO: this is a hack. actually remove once proper data structures exist here.
+			}
+		}
+		
 	}
 	
 	private Set<Method> getHandlerMethods(Object obj) {
@@ -71,25 +80,30 @@ public class BusImpl implements Bus {
 		Set<Method> handlerMethods = new HashSet<Method>();
 
 		Class<?> clazz = obj.getClass();
-		
 		while(clazz != null) {
-			for(Method method : clazz.getDeclaredMethods()) {
-				if(!Modifier.isPublic(method.getModifiers())) {
-					continue;
-				}
-				if(!method.isAnnotationPresent(Subscription.class)) {
-					continue;
-				}
-				if (method.getParameterTypes().length != 1) {
-					continue;
-				}
-				handlerMethods.add(method);
-			}
+			this.appendClassHandlerMethods(clazz, handlerMethods);
 			clazz = clazz.getSuperclass();
 		}
 
 		return handlerMethods;
 
+	}
+	
+	private void appendClassHandlerMethods(Class<?> clazz, Set<Method> handlerMethods) {
+		
+		for(Method method : clazz.getDeclaredMethods()) {
+			if(!Modifier.isPublic(method.getModifiers())) {
+				continue;
+			}
+			if(!method.isAnnotationPresent(Subscription.class)) {
+				continue;
+			}
+			if (method.getParameterTypes().length != 1) {
+				continue;
+			}
+			handlerMethods.add(method);
+		}
+		
 	}
 
 	@Override
