@@ -1,4 +1,4 @@
-package org.seattlegamer.spacegame.tests;
+package org.seattlegamer.spacegame.core.tests;
 import static org.junit.Assert.assertEquals;
 
 import java.util.UUID;
