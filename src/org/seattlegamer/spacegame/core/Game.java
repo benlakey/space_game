@@ -13,6 +13,8 @@ public class Game {
 	
 	public static void main(String[] args) throws InterruptedException {
 
+		//TODO: unit tests throw warnings because no such initialization like this has taken place. 
+		//TODO: figure out how to make the unit tests not complain
 		PropertyConfigurator.configure(PropertiesLoader.loadProperties(PROPERTIES_FILE_PATH));
 
 		AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext();

@@ -45,13 +45,7 @@ public class HeadsUpDisplay extends Component {
 		String text = String.format("%s: %d HP", this.text, this.health);
 
 		if(this.position == null) {
-			FontMetrics fontMetrics = graphics.getFontMetrics(HUD_FONT);
-			Rectangle screenSize = graphics.getDeviceConfiguration().getBounds();
-			Dimension textSize = GraphicsUtils.measureTextPixels(fontMetrics, HUD_FONT, text);
-			
-			int positionY = screenSize.height - (this.playerNumber * textSize.height);
-			
-			this.position = new Point(0,  positionY);
+			this.positionTextAtBottomLeft(graphics);
 		}
 		
 		graphics.setFont(HUD_FONT);
@@ -59,6 +53,15 @@ public class HeadsUpDisplay extends Component {
 
 		graphics.drawString(text, this.position.x, this.position.y);
 
+	}
+	
+	private void positionTextAtBottomLeft(Graphics2D graphics) {
+		FontMetrics fontMetrics = graphics.getFontMetrics(HUD_FONT);
+		Rectangle screenSize = graphics.getDeviceConfiguration().getBounds();
+		Dimension textSize = GraphicsUtils.measureTextPixels(fontMetrics, HUD_FONT, text);
+		
+		int positionY = screenSize.height - (this.playerNumber * textSize.height);
+		this.position = new Point(0,  positionY);
 	}
 
 }
