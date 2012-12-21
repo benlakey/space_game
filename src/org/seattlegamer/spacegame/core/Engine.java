@@ -1,6 +1,5 @@
 package org.seattlegamer.spacegame.core;
 
-
 public class Engine {
 
 	private long lastMillis;

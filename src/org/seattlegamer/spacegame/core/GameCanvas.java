@@ -12,25 +12,33 @@ public final class GameCanvas extends Canvas {
 	private final Frame frame;
 
 	public GameCanvas(Input input, String title, DisplayMode displayMode) {
-
+		this.frame = new Frame();
+		this.configureCanvas(displayMode);
+		this.configureFrame(title);
+		this.createBufferStrategy(BUFFER_COUNT);
+		this.configureInput(input);
+	}
+	
+	private void configureCanvas(DisplayMode displayMode) {
 		this.setBounds(0, 0, displayMode.getWidth(), displayMode.getHeight());
 		this.setIgnoreRepaint(true);
-
-		this.frame = new Frame(title);
+	}
+	
+	private void configureFrame(String title) {
+		this.frame.setTitle(title);
 		this.frame.add(this);
 		this.frame.setUndecorated(true);
 		this.frame.setResizable(false);
 		this.frame.setIgnoreRepaint(true);
 		this.frame.pack();
 		this.frame.setVisible(true);
-		
-		this.createBufferStrategy(BUFFER_COUNT);
-
+	}
+	
+	private void configureInput(Input input) {
 		this.addKeyListener(input);
 		this.addMouseListener(input);
 		this.addMouseMotionListener(input);
 		this.requestFocus();
-
 	}
 
 }
