@@ -30,7 +30,6 @@ import org.seattlegamer.spacegame.resources.ResourceLoader;
 import org.seattlegamer.spacegame.resources.ScaledImageResourceLoader;
 import org.seattlegamer.spacegame.utils.PropertiesAccessor;
 import org.seattlegamer.spacegame.utils.PropertiesLoader;
-import org.seattlegamer.spacegame.utils.Throttle;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -95,17 +94,13 @@ public class DependencyConfig {
 	}
 
 	public @Bean Engine engine() {
-		return new Engine(framerateThrottle(), keyInput(), pointerInput(), renderer(), stateManager());
+		PropertiesAccessor propertiesAccessor = propertiesAccessor();
+		int targetFramerate = propertiesAccessor.getInteger("target_framerate", 100);
+		return new Engine(targetFramerate, keyInput(), pointerInput(), renderer(), stateManager());
 	}
 	
 	public @Bean Renderer renderer() {
 		return new CanvasRenderer(canvas());
-	}
-
-	public @Bean Throttle framerateThrottle() {
-		PropertiesAccessor propertiesAccessor = propertiesAccessor();
-		int targetFramerate = propertiesAccessor.getInteger("target_framerate", 100);
-		return new Throttle(1000 / targetFramerate);
 	}
 
 	public @Bean KeyInput keyInput() {

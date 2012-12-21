@@ -8,7 +8,7 @@ public abstract class Component {
 	protected final Bus bus;
 	private final UUID entityId;
 
-	public Component(Bus bus, UUID entityId) {
+	protected Component(Bus bus, UUID entityId) {
 		this.bus = bus;
 		this.entityId = entityId;
 	}
