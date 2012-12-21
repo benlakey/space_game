@@ -12,7 +12,7 @@ import java.util.UUID;
 import org.seattlegamer.spacegame.messages.PlayerStatsReport;
 import org.seattlegamer.spacegame.utils.GraphicsUtils;
 
-public class HeadsUpDisplayEntryRenderer extends Component {
+public class HeadsUpDisplay extends Component {
 
 	private static final Color HUD_COLOR = Color.WHITE;
 	private static final Font HUD_FONT = new Font("Arial", Font.PLAIN, 32);
@@ -23,7 +23,7 @@ public class HeadsUpDisplayEntryRenderer extends Component {
 	private String text;
 	private int health;
 
-	public HeadsUpDisplayEntryRenderer(Bus bus, UUID hudEntityId, UUID playerEntityId, int playerNumber) {
+	public HeadsUpDisplay(Bus bus, UUID hudEntityId, UUID playerEntityId, int playerNumber) {
 		super(bus, hudEntityId);
 		this.playerEntityId = playerEntityId;
 		this.playerNumber = playerNumber;

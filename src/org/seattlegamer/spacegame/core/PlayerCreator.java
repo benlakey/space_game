@@ -42,7 +42,7 @@ public class PlayerCreator {
 		this.bus.broadcast(new ComponentAddition(new Sprite(bus, playerEntityId, player)));
 		this.bus.broadcast(new ComponentAddition(new Physics(bus, playerEntityId, position, 0, player.getWidth(null), player.getHeight(null))));
 		this.bus.broadcast(new ComponentAddition(new ProjectileLauncher(bus, playerEntityId, this.resourceCache)));
-		this.bus.broadcast(new ComponentAddition(new HeadsUpDisplayEntryRenderer(bus, hudEntityId, playerEntityId, playerNumber)));
+		this.bus.broadcast(new ComponentAddition(new HeadsUpDisplay(bus, hudEntityId, playerEntityId, playerNumber)));
 		
 		//TODO: hack for testing. input will be assigned turn-based.
 		if(playerNumber == 1) {
