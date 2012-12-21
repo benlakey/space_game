@@ -1,6 +1,8 @@
 package org.seattlegamer.spacegame.core;
 
 import java.awt.DisplayMode;
+import java.awt.Image;
+import java.awt.Point;
 import java.io.IOException;
 import java.util.Random;
 import java.util.UUID;
@@ -73,17 +75,15 @@ public class GameState extends State {
 		//TODO: this stuff is just here for testing.
 		Random random = new Random();
 
-		AnimationCreator animationCreator = new AnimationCreator(this.bus, resourceCache);
-		
 		for(int i = 0; i < 20; i++) {
 			
-			Iterable<Component> animationComponents = animationCreator.createAnimation(
-					"assets/explosion.png", random.nextInt(this.displayMode.getWidth()), random.nextInt(this.displayMode.getHeight()));
+			Point position = new Point(
+					random.nextInt(this.displayMode.getWidth()), 
+					random.nextInt(this.displayMode.getHeight()));
 			
-			for(Component component : animationComponents) {
-				//this.bus.register(component, component.getEntityId());
-				this.bus.broadcast(new ComponentAddition(component));
-			}
+			UUID explosionEntityId = UUID.randomUUID();
+			Image explosionImage = resourceCache.getImage("assets/explosion.png");
+			this.bus.broadcast(new ComponentAddition(new Animation(bus, explosionEntityId, explosionImage, position)));
 			
 		}
 		

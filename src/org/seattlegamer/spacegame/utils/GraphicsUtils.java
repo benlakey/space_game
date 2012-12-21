@@ -59,5 +59,43 @@ public final class GraphicsUtils {
         return newImage;
 
     }
+	
+	public static Image[] splitImageHorizontally(Image image, int count) {
+
+		int frameWidth = image.getWidth(null) / count;
+		int frameHeight = image.getHeight(null);
+		
+		Image[] frames = new Image[count];
+
+		for(int i = 0; i < count; i++) {
+
+			BufferedImage frame = new BufferedImage(frameWidth, frameHeight, BufferedImage.TYPE_INT_ARGB);
+			
+			Graphics2D graphics = null;
+	        try {
+	        	
+	        	int sourceTopLeftX = frameWidth * i;
+	        	int sourceTopLeftY = 0;
+	        	int sourceBottomRightX = sourceTopLeftX + frameWidth;
+	        	int sourceBottomRightY = sourceTopLeftY + frameHeight;
+ 	        	
+				graphics = frame.createGraphics();
+		        graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+		        graphics.drawImage(
+		        		image, 
+		        		0, 0, frameWidth, frameHeight, 
+		        		sourceTopLeftX, sourceTopLeftY, sourceBottomRightX, sourceBottomRightY, 
+		        		null);
+	        } finally {
+	        	graphics.dispose();
+	        }
+	        
+	        frames[i] =  frame;
+			
+		}
+		
+		return frames;
+
+	}
 
 }

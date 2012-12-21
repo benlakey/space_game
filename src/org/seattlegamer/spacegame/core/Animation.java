@@ -8,9 +8,11 @@ import java.util.UUID;
 
 import org.seattlegamer.spacegame.messages.AnimationStart;
 import org.seattlegamer.spacegame.messages.PositionChange;
+import org.seattlegamer.spacegame.utils.GraphicsUtils;
 
 public class Animation extends Component {
 
+	private static final int FRAME_COUNT = 8;
 	private static final int SAMPLE_DELAY_MILLIS = 70;
 
 	private Image[] frames;
@@ -18,13 +20,17 @@ public class Animation extends Component {
 	private int millisSinceLastSample;
 	private int currentFrameIndex;
 
-	public Animation(Bus bus, UUID entityId, Image[] frames, Point position) {
+	public Animation(Bus bus, UUID entityId, Image animationAsset, Point position) {
 		super(bus, entityId);
-		this.frames = frames;
+		this.frames = GraphicsUtils.splitImageHorizontally(animationAsset, FRAME_COUNT);
 		this.transform = new AffineTransform();
+		this.configureTransform(position);
+		this.currentFrameIndex = -1;
+	}
+	
+	private void configureTransform(Point position) {
 		this.transform.setToTranslation(position.x, position.y);
 		this.transform.rotate(0, this.frames[0].getWidth(null) / 2, this.frames[0].getHeight(null) / 2);
-		this.currentFrameIndex = -1;
 	}
 
 	@Subscription
